@@ -5,26 +5,64 @@
 * {
     margin: 0; padding: 0;
 }
+    
+nav {
+    display: block;
+    background: rgb(49, 35, 198);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 40px;
+    overflow: hidden;
+  }
+  
+  nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav li {
+    display: inline;
+  }
+  
+  nav a {
+    display: inline;
+    padding: 10px;
+    color: #ffffff;
+    text-decoration: none;
+    margin-top: 15px;
+    line-height: 40px;
+  }
+  
+  #app-title {
+    color: #ffffff;
+    display: inline;
+    margin-top: 5px;
+    margin-left: 10px;
+    float: left;
+  }
+  
 
 html {
 	height: 100%;
 	background: 
-		linear-gradient(rgb(255, 253, 253), rgba(63, 90, 247, 0.6));
+	linear-gradient(rgb(255, 253, 253), rgba(63, 90, 247, 0.6));
 }
 
 body {
 	font-family: montserrat, arial, verdana;
 }
 
-#app-title{
-    color: #1000e9;
-}
-
 #msform {
-	width: 400px;
-	margin: 50px auto;
-	text-align: center;
-	position: relative;
+    width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    position: relative;
+
 }
 
 #msform fieldset {
@@ -49,7 +87,7 @@ body {
 	color: #2C3E50;
 	font-size: 13px;
 }
-/*buttons*/
+
 #msform .action-button {
 	width: 100px;
 	background: #0b3ad4;
