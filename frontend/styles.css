@@ -1,3 +1,75 @@
+/*Tipus de lletra*/
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+/*Reset*/
 * {
-    color: blue;
+    margin: 0; padding: 0;
+}
+
+html {
+	height: 100%;
+	background: 
+		linear-gradient(rgb(255, 253, 253), rgba(63, 90, 247, 0.6));
+}
+
+body {
+	font-family: montserrat, arial, verdana;
+}
+
+#app-title{
+    color: #1000e9;
+}
+
+#msform {
+	width: 400px;
+	margin: 50px auto;
+	text-align: center;
+	position: relative;
+}
+
+#msform fieldset {
+	background: white;
+	border: 0 none;
+	border-radius: 3px;
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	padding: 20px 30px;
+	box-sizing: border-box;
+	width: 80%;
+	margin: 0 10%;	
+	position: relative;
+}
+#msform input {
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat, arial, verdana;
+	color: #2C3E50;
+	font-size: 13px;
+}
+/*buttons*/
+#msform .action-button {
+	width: 100px;
+	background: #0b3ad4;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
+	cursor: pointer;
+	padding: 10px;
+	margin: 10px 5px;
+  text-decoration: none;
+  font-size: 14px;
+}
+#msform .action-button:hover, #msform .action-button:focus {
+	box-shadow: 0 0 0 2px white, 0 0 0 3px #1000e9;
+}
+
+.fs-title {
+	font-size: 15px;
+	text-transform: uppercase;
+	color: #2C3E50;
+	margin-bottom: 10px;
 }
