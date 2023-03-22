@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Enlaces a archivos CSS -->
   <link rel="stylesheet" href="styles.css">
+  <script src="script.js"></script>
 </head>
 <body>
   <!-- Contenido de la página -->
@@ -25,13 +26,13 @@
     <section>
       <!-- Sección de contenido -->
       <div>
-        <form id="msform">
+        <form id="msform" method="POST" action="http://127.0.0.1:8000/api/issues/">
           <!-- fieldsets -->
           <fieldset>
             <h2 class="fs-title">Create a new Issue</h2>
             <input type="text" name="subject" placeholder="Enter a subject" required />
-            <input type="text" name="description" placeholder="Enter a description" required />
-            <input type="button" name="create" class="create action-button" value="Create" />
+            <textarea id="prova" name="description" placeholder="Enter a description" required></textarea>
+            <input type="submit" onclick="sendForm()" name="create" class="create action-button" value="Create" />
           </fieldset>
         </form>
       </div>

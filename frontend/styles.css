@@ -76,7 +76,8 @@ body {
 	margin: 0 10%;	
 	position: relative;
 }
-#msform input {
+
+#msform input, textarea {
 	padding: 15px;
 	border: 1px solid #ccc;
 	border-radius: 3px;
@@ -86,6 +87,11 @@ body {
 	font-family: montserrat, arial, verdana;
 	color: #2C3E50;
 	font-size: 13px;
+}
+
+input[name="description"] {
+  height: 300px;
+  vertical-align: top;
 }
 
 #msform .action-button {
@@ -100,6 +106,7 @@ body {
 	margin: 10px 5px;
   text-decoration: none;
   font-size: 14px;
+  clear: both;
 }
 #msform .action-button:hover, #msform .action-button:focus {
 	box-shadow: 0 0 0 2px white, 0 0 0 3px #1000e9;
@@ -110,4 +117,32 @@ body {
 	text-transform: uppercase;
 	color: #2C3E50;
 	margin-bottom: 10px;
+}
+
+.custom-textbox {
+  position: relative;
+  width: 400px;
+  height: 50px;
+  margin: 20px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px;
+  overflow: hidden;
+}
+/* Estilo para la barra inferior */
+.custom-textbox::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #4caf50;
+  transform: scaleX(0);
+  transition: transform 0.2s ease-in-out;
+}
+/* Estilo para la barra inferior cuando se enfoca */
+.custom-textbox:focus-within::after {
+  transform: scaleX(1);
 }
