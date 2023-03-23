@@ -26,20 +26,17 @@
     <section>
       <!-- Sección de contenido -->
       <div>
-        <form id="msform" method="POST" action="http://127.0.0.1:8000/api/issues/">
+        <form id="msform" method="POST" action="http://127.0.0.1:8000/api/issues/" >
           <!-- fieldsets -->
           <fieldset>
             <h2 class="fs-title">Create a new Issue</h2>
-            <input type="text" name="subject" placeholder="Enter a subject" required />
-            <textarea id="prova" name="description" placeholder="Enter a description" required></textarea>
-            <input type="submit" onclick="sendForm()" name="create" class="create action-button" value="Create" />
+            <input type="text" name="Subject" placeholder="Enter a subject" required />
+            <textarea class="fs-textarea" name="Description" placeholder="Enter a description" required></textarea>
+            <input type="submit" name="create" class="create action-button" value="Create" />
           </fieldset>
         </form>
       </div>
     </section>
   </main>
-  <footer>
-    <p>Copyright &copy; 2023</p>
-  </footer>
 </body>
 </html>
