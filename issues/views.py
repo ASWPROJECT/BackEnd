@@ -12,5 +12,5 @@ def issues_view(request):
     context = {'issues': data}
     
     # Renderizar la plantilla HTML y pasar los datos de los resultados
-    return render(request, 'templates/issues.html', context)
+    return render(request, 'issues.html', context)
 
