@@ -1,3 +1,148 @@
+/*Tipus de lletra*/
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+/*Reset*/
 * {
-    color: blue;
+    margin: 0; padding: 0;
+}
+    
+nav {
+    display: block;
+    background: rgb(49, 35, 198);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 40px;
+    overflow: hidden;
+  }
+  
+  nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav li {
+    display: inline;
+  }
+  
+  nav a {
+    display: inline;
+    padding: 10px;
+    color: #ffffff;
+    text-decoration: none;
+    margin-top: 15px;
+    line-height: 40px;
+  }
+  
+  #app-title {
+    color: #ffffff;
+    display: inline;
+    margin-top: 5px;
+    margin-left: 10px;
+    float: left;
+  }
+  
+
+html {
+	height: 100%;
+	background: 
+	linear-gradient(rgb(255, 253, 253), rgba(63, 90, 247, 0.6));
+}
+
+body {
+	font-family: montserrat, arial, verdana;
+}
+
+#msform {
+    width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    position: relative;
+
+}
+
+#msform fieldset {
+	background: white;
+	border: 0 none;
+	border-radius: 3px;
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	padding: 20px 30px;
+	box-sizing: border-box;
+	width: 80%;
+	margin: 0 10%;	
+	position: relative;
+}
+
+#msform input, textarea {
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin-bottom: 10px; 
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat, arial, verdana;
+	color: #2C3E50;
+	font-size: 13px;
+}
+
+input[name="description"] {
+  height: 300px;
+  vertical-align: top;
+}
+
+#msform .action-button {
+	width: 100px;
+	background: #0b3ad4;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
+	cursor: pointer;
+	padding: 10px;
+	margin: 10px 5px;
+  text-decoration: none;
+  font-size: 14px;
+  clear: both;
+}
+#msform .action-button:hover, #msform .action-button:focus {
+	box-shadow: 0 0 0 2px white, 0 0 0 3px #1000e9;
+}
+
+.fs-title {
+	font-size: 15px;
+	text-transform: uppercase;
+	color: #2C3E50;
+	margin-bottom: 10px;
+}
+
+.custom-textbox {
+  position: relative;
+  width: 400px;
+  height: 50px;
+  margin: 20px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 10px;
+  overflow: hidden;
+}
+/* Estilo para la barra inferior */
+.custom-textbox::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #4caf50;
+  transform: scaleX(0);
+  transition: transform 0.2s ease-in-out;
+}
+/* Estilo para la barra inferior cuando se enfoca */
+.custom-textbox:focus-within::after {
+  transform: scaleX(1);
 }
