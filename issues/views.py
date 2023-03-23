@@ -8,7 +8,6 @@ import requests
 def issues_view(request):
     # Hacer la solicitud GET a la API
     response = requests.get('http://127.0.0.1:8000/api/issues')
-    #response = requests.get('http://127.0.0.1:8000/api/add')
     
     # Obtener los datos de la respuesta de la API
     data = response.json()
