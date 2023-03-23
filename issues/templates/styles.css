@@ -26,7 +26,7 @@ nav {
   }
   
   nav li {
-    display: inline;
+    display: inline; 
   }
   
   nav a {
@@ -58,7 +58,7 @@ body {
 }
 
 #msform {
-    width: 400px;
+    width: 500px;
     margin: 50px auto;
     text-align: center;
     position: relative;
@@ -145,4 +145,10 @@ input[name="description"] {
 /* Estilo para la barra inferior cuando se enfoca */
 .custom-textbox:focus-within::after {
   transform: scaleX(1);
+}
+
+#prova {
+  height: 100px;
+  overflow-y: scroll;
+  resize: none;
 }
