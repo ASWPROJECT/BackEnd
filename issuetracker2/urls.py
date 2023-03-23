@@ -23,6 +23,5 @@ urlpatterns = [
     path('', include('issues.urls')),
     path('get/', issues_view, name='getData'),
     path('newIssues/', new_issue_view, name='getData'),
-    path('add/', new_issue_view, name='getData'),
-
+    path('add/', new_issue_view, name='getData')
 ]
