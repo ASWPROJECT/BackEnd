@@ -14,3 +14,5 @@ def issues_view(request):
     # Renderizar la plantilla HTML y pasar los datos de los resultados
     return render(request, 'issues.html', context)
 
+def new_issue_view(request):
+    return render(request, 'new_issue.html')

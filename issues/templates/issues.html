@@ -8,76 +8,123 @@
     <link rel="stylesheet" href="styles.css">
 
     <style>
+      /* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* Tipografía */
 @import url(https://fonts.googleapis.com/css?family=Montserrat);
 
-/* Reset */
+/* Estilo de la página */
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #9dacd6;
+  color: #333;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-    }
 
-    /* Estilo para el cuerpo de la página */
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: #f2f2f2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Estilo para el título principal */
-    h1 {
-      text-align: center;
-      font-size: 36px;
-      color: #0077cc;
-      margin-top: 50px;
-    }
-
-    /* Estilo para la lista de issues */
-    ul {
-      list-style: none;
-      margin: 0 auto;
-      width: 80%;
-      padding: 20px;
-      background-color: #e6f3ff;
-      border-radius: 10px;
-      width: 80%;
-  margin: 0 auto;
+.issues h1 {
+  font-size: 36px;
   text-align: center;
-    }
+  margin-top: 50px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
 
-    /* Estilo para cada issue */
-    li {
-      margin-bottom: 30px;
-    }
+.issues ul {
+  list-style: none;
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 0;
+}
 
-    /* Estilo para el título del issue */
-    h2 {
-      font-size: 24px;
-      color: #0077cc;
-      margin-bottom: 10px;
-    }
+.issues li {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+  overflow: hidden;
+  padding: 1rem;
+}
 
-    /* Estilo para la descripción del issue */
-    p {
-      font-size: 16px;
-      color: #333333;
-      line-height: 1.5;
-    }
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
 
-    /* Estilo para el mensaje de no hay issues disponibles */
-    li:last-child {
-      font-size: 18px;
-      color: #333333;
-      font-style: italic;
-      text-align: center;
-      margin-top: 30px;
-    }
-      </style>
+p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.issues li:first-child {
+  margin-top: 0;
+}
+
+.issues li:last-child {
+  margin-bottom: 0;
+}
+nav {
+    display: block;
+    background: rgb(49, 35, 198);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 40px;
+    overflow: hidden;
+  }
+  
+  nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav li {
+    display: inline; 
+  }
+  
+  nav a {
+    display: inline;
+    padding: 10px;
+    color: #ffffff;
+    text-decoration: none;
+    margin-top: 15px;
+    line-height: 40px;
+  }
+  
+  .app-title {
+    color: #ffffff;
+    display: inline;
+    margin-top: 5px;
+    margin-left: 10px;
+    float: left;
+  }
+  
+    </style>
 </head>
 <body>
+  <!-- Contenido de la página -->
+  <header> 
+    <!-- Encabezado de la página -->
+    <nav>
+      <!-- Barra de navegación -->
+      <h1 class="app-title">Issue Tracker</h1>
+      <ul>
+        <li><a href="http://127.0.0.1:8000/newIssues">Create new Issue</a></li>
+        <li><a href="http://127.0.0.1:8000/get">View all Issues</a></li>
+      </ul>
+    </nav>
+  </header> 
+
+  <div class="issues">
     <h1>Issues</h1>
     <ul>
       {% for issue in issues %}
@@ -89,5 +136,6 @@
         <li>No hay issues disponibles</li>
       {% endfor %}
     </ul>
+  </div>
   </body>
 </html>
