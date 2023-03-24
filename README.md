@@ -1,5 +1,16 @@
 # issuetracker2
 
+##Miembros del grup
+- Javier Rodríguez Carrasco
+- Pau Carbó Pascual
+- Santiago Lara Celis
+- Toni Bosch Castells
+
+
+##Framework utilizado
+- Django
+
+
 ## Como crear el Virutal Enviroment
 Entra en la raíz del protyecto y ejecuta:
   ```
