@@ -23,5 +23,9 @@ urlpatterns = [
     path('', include('issues.urls')),
     path('get/', issues_view, name='getData'),
     path('newIssues/', new_issue_view, name='getData'),
+<<<<<<< HEAD
 
+=======
+    path('add/', new_issue_view, name='getData')
+>>>>>>> 6e473756d7300120be8d1bfa17f512c3d91ef77f
 ]

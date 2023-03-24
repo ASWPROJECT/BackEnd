@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import redirect
 import requests
 
 # Create your views here.import requests
@@ -18,14 +19,7 @@ def issues_view(request):
 @csrf_exempt
 def new_issue_view(request):
     if request.method == 'POST':
-        subject = request.POST.get('Subject')
-        print(subject)
-        description = request.POST.get('Description')
-        print(description)
-        issue = {
-            'Subject': subject,
-            'Description': description
-        }
-        requests.post('http://127.0.0.1:8000/api/issues/', json = issue)
+        print("he entrado")
+        requests.post('http://127.0.0.1:8000/api/issues', json = request.body)
         
     return render(request, 'new_issue.html')
