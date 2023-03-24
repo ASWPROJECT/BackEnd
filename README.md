@@ -1,13 +1,13 @@
 # issuetracker2
 
-##Miembros del grup
+## Miembros del grup
 - Javier Rodríguez Carrasco
 - Pau Carbó Pascual
 - Santiago Lara Celis
 - Toni Bosch Castells
 
 
-##Framework utilizado
+## Framework utilizado
 - Django
 
 
