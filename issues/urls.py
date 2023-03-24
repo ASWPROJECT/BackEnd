@@ -7,7 +7,7 @@ from . import views
 
 router = routers.DefaultRouter()
 
-router.register('api/issues', api.IssueViewSet, 'licitacions_publiques')
+router.register('issues', api.IssueViewSet, 'licitacions_publiques')
 
 
 urlpatterns =    router.urls
