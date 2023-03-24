@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 from issues.views import issues_view, new_issue_view
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('issues.urls')),
