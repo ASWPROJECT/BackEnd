@@ -18,7 +18,14 @@ def issues_view(request):
 @csrf_exempt
 def new_issue_view(request):
     if request.method == 'POST':
-        print("he entrado")
-        requests.post('http://127.0.0.1:8000/api/issues', json = request.body)
+        subject = request.POST.get('Subject')
+        print(subject)
+        description = request.POST.get('Description')
+        print(description)
+        issue = {
+            'Subject': subject,
+            'Description': description
+        }
+        requests.post('http://127.0.0.1:8000/api/issues/', json = issue)
         
     return render(request, 'new_issue.html')
