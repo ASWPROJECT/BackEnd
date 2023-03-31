@@ -2,6 +2,7 @@
 
 ## Miembros del grup
 |Nom                          |Taiga user         |Github user        |
+| -------------               | -------------     | -------------     |
 | Javier Rodríguez Carrasco   |javierrodriguezupc |javierrodriguezupc |
 | Pau Carbó Pascual           |paucp1             |paucp1             |
 | Santiago Lara Celis         |santilara16        |santilara16        |
