@@ -3,7 +3,12 @@ body {
     font-family: Arial, sans-serif;
     background-color: #F3F3F3;
   }
-  
+
+.issue_selected {
+    text-decoration: none;
+}
+
+
   /* Estilo del encabezado */
   header {
     background-color: #FFFFFF;
@@ -42,6 +47,10 @@ body {
     padding: 20px;
   }
   
+  .issues li:hover {
+    background-color: #D9D9D9;
+  }
+
   .issues h2 {
     font-size: 20px;
     font-weight: bold;

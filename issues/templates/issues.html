@@ -26,6 +26,7 @@
     <h1>Issues</h1>
     <ul>
       {% for issue in issues %}
+      <a class="issue_selected" href="issue/{{ issue.id }}">
         <li class="taiga-btn-issue">
             <h2>{{ issue.Subject }}</h2>
             <p>{{ issue.Description }}</p>
@@ -35,6 +36,7 @@
             <button class="taiga-btn-delete"></button>
           </form>
         </li>
+      </a>
       {% empty %}
         <li>No hay issues disponibles</li>
       {% endfor %}
