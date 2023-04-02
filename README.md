@@ -1,10 +1,12 @@
 # issuetracker2
 
 ## Miembros del grup
-- Javier Rodríguez Carrasco
-- Pau Carbó Pascual
-- Santiago Lara Celis
-- Toni Bosch Castells
+|Nom                          |Taiga user         |Github user        |
+| -------------               | -------------     | -------------     |
+| Javier Rodríguez Carrasco   |javierrodriguezupc |javierrodriguezupc |
+| Pau Carbó Pascual           |paucp1             |paucp1             |
+| Santiago Lara Celis         |santilara16        |santilara16        |
+| Toni Bosch Castells         |Toni Bosch         |Toni Bosch         |
 
 
 ## Framework utilizado

@@ -1,7 +1,9 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 import requests
+from .models import Issue
 
 # Create your views here.import requests
 
@@ -28,3 +30,10 @@ def new_issue_view(request):
         requests.post('http://127.0.0.1:8000/api/issues/', json = issue)
         
     return render(request, 'new_issue.html')
+
+@csrf_exempt
+def delete_by_id(request):
+    id = request.POST.get('id')
+    Issue.objects.filter(id=id).delete()
+
+    return issues_view(request)
