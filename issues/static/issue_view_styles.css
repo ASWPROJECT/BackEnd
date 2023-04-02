@@ -1,0 +1,19 @@
+#msform div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#msform div label {
+    width: 150px;
+    text-align: right;
+    margin-right: 20px;
+}
+
+#msform div select,
+#msform div input[type="text"],
+#msform div textarea {
+    width: 100%;
+    box-sizing: border-box;
+}

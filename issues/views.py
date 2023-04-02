@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 import requests
@@ -37,3 +37,18 @@ def delete_by_id(request):
     Issue.objects.filter(id=id).delete()
 
     return issues_view(request)
+
+
+def view_isue(request, issue_id):
+    issue = get_object_or_404(Issue, id=issue_id)
+    issue = {'Subject': issue.Subject,
+            'Description': issue.Description}
+    context = {'issue': issue}
+    return render(request, 'issue_view.html', context)
+
+@csrf_exempt
+def edit_issue(request):
+    id = request.POST.get('id')
+    Issue.objects.filter(id=id)
+
+    return HttpResponseRedirect('/')
