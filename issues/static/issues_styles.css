@@ -1,111 +1,109 @@
-/* Reset */
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-
-/* Tipografía */
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
-
-/* Estilo de la página */
+/* Establecer la fuente y el color de fondo */
 body {
-font-family: "Montserrat", sans-serif;
-background-color: #9dacd6;
-color: #333;
-}
+    font-family: Arial, sans-serif;
+    background-color: #F3F3F3;
+  }
+  
+  /* Estilo del encabezado */
+  header {
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  /* Estilo del título de la aplicación */
+  .app-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
+  }
+  
+  /* Estilo de la lista de issues */
+  .issues {
+    margin: 20px;
+  }
+  
+  .issues h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333333;
+  }
+  
+  .issues ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .issues li {
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+  
+  .issues h2 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 10px;
+  }
+  
+  .issues p {
+    font-size: 16px;
+    color: #666666;
+    margin-bottom: 10px;
+  }
+  
 
-
-.issues h1 {
-font-size: 36px;
-font-weight: 400;
-text-align: center;
-margin-top: 50px;
-color: #0d1925;
-margin-bottom: 20px;
-}
-
-.issues ul {
-list-style: none;
-margin: 0 auto;
-max-width: 600px;
-padding: 0;
-}
-
-.issues li {
-background-color: #fff;
-border-radius: 3px;
-box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
-margin: 1rem 0;
-overflow: hidden;
-padding: 1rem;
-}
-
-h2 {
-font-size: 1.5rem;
-margin-bottom: 0.5rem;
-}
-
-p {
-font-size: 1rem;
-margin-bottom: 0.5rem;
-line-height: 1.5;
-}
-
-.issues li:first-child {
-margin-top: 0;
-}
-
-.issues li:last-child {
-margin-bottom: 0;
-}
+  /* Estilo de la barra de navegación */
 nav {
-display: block;
-background: rgb(49, 35, 198);
-width: 100%;
-margin: 0;
-padding: 0;
-height: 40px;
-overflow: hidden;
-}
-
-nav ul {
-display: flex;
-justify-content: center;
-align-items: center;
-float: right;
-margin: 0;
-padding: 0;
-}
-
-nav li {
-display: inline; 
-}
-
-nav a {
-display: inline;
-padding: 10px;
-color: #ffffff;
-text-decoration: none;
-margin-top: 15px;
-line-height: 40px;
-}
-
-.app-title {
-color: #ffffff;
-display: inline;
-margin-top: 5px;
-margin-left: 10px;
-float: left;
-font-weight: 500;
-}
-
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* Estilo del título de la aplicación */
+  .app-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
+    margin: 0;
+  }
+  
+  /* Estilo de la lista de enlaces */
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  /* Estilo de los enlaces */
+  nav li {
+    margin-right: 20px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.2s;
+  }
+  
+  nav a:hover {
+    color: #3C91E6;
+  }
+  
 .taiga-btn-delete {
     border: none;
-    padding: 0;
+    padding-bottom: 20px;
     width: 30px;
     height: 30px;
-    background-color: transparent;
     background: url("/static/delete.png") no-repeat center center;
     background-repeat: no-repeat;
     background-position: center;
