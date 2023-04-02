@@ -5,112 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Issues</title>
-    <link rel="stylesheet" href="styles.css">
-
-    <style>
-      /* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Tipografía */
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
-
-/* Estilo de la página */
-body {
-  font-family: "Montserrat", sans-serif;
-  background-color: #9dacd6;
-  color: #333;
-}
-
-
-.issues h1 {
-  font-size: 36px;
-  font-weight: 400;
-  text-align: center;
-  margin-top: 50px;
-  color: #0d1925;
-  margin-bottom: 20px;
-}
-
-.issues ul {
-  list-style: none;
-  margin: 0 auto;
-  max-width: 600px;
-  padding: 0;
-}
-
-.issues li {
-  background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
-  margin: 1rem 0;
-  overflow: hidden;
-  padding: 1rem;
-}
-
-h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-p {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  line-height: 1.5;
-}
-
-.issues li:first-child {
-  margin-top: 0;
-}
-
-.issues li:last-child {
-  margin-bottom: 0;
-}
-nav {
-    display: block;
-    background: rgb(49, 35, 198);
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    height: 40px;
-    overflow: hidden;
-  }
-  
-  nav ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    float: right;
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav li {
-    display: inline; 
-  }
-  
-  nav a {
-    display: inline;
-    padding: 10px;
-    color: #ffffff;
-    text-decoration: none;
-    margin-top: 15px;
-    line-height: 40px;
-  }
-  
-  .app-title {
-    color: #ffffff;
-    display: inline;
-    margin-top: 5px;
-    margin-left: 10px;
-    float: left;
-    font-weight: 500;
-  }
-  
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'issues_styles.css'%}">
 </head>
 <body>
   <!-- Contenido de la página -->
@@ -133,6 +29,11 @@ nav {
         <li>
           <h2>{{ issue.Subject }}</h2>
           <p>{{ issue.Description }}</p>
+          <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
+            <input name="id" type="hidden" value="{{ issue.id }}" />
+            {% load static %}
+            <button class="taiga-btn-delete"></button>
+          </form>
         </li>
       {% empty %}
         <li>No hay issues disponibles</li>

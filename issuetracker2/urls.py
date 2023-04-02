@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from issues.views import issues_view, new_issue_view
+from issues.views import issues_view, new_issue_view, delete_by_id
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('issues.urls')),
     path('', issues_view, name='getData'),
     path('newIssues/', new_issue_view, name='getData'),
+    path('delete/Issue', delete_by_id, name='getData'),
 ]
