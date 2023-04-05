@@ -20,6 +20,7 @@ class Issue(models.Model):
 
 class Comment(models.Model):
     Comment = models.TextField(max_length=1000)
+    Created_at = models.DateTimeField(auto_now_add=True)
     Issue = models.ForeignKey(Issue, to_field='id', related_name='comments', null=False, on_delete=models.CASCADE)
 
 
