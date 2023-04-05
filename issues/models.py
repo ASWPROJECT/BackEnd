@@ -14,6 +14,14 @@ class Issue(models.Model):
     Priority = models.CharField(max_length=50, choices=choices.priority, null=True, blank=True)
     User = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
+    def __str__(self):
+        return self.Subject
+
+
+class Comment(models.Model):
+    Comment = models.TextField(max_length=1000)
+    Issue = models.ForeignKey(Issue, to_field='id', related_name='comments', null=False, on_delete=models.CASCADE)
+
 
 
 
