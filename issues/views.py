@@ -48,4 +48,9 @@ def add_comment(request):
                    'Issue': issue}
         print(comment_obj)
         requests.post('http://127.0.0.1:8000/api/comments/', json = comment_obj)
-    return render(request, 'comments.html')
+    
+    #Crida a la api per a obtenir tots els comments
+    response = requests.get('http://127.0.0.1:8000/api/comments')
+    data = response.json()
+    context = {'comments': data}
+    return render(request, 'comments.html', context)
