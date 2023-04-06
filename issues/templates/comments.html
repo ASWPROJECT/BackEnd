@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issues</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'issues_styles.css'%}">
+</head>
+<body>
+    <header>
+    <!-- Encabezado de la página -->
+        <nav>
+            <!-- Barra de navegación -->
+            <h1 class="app-title">Issue Tracker</h1>
+            <ul>
+                <li><a href="http://127.0.0.1:8000/newIssues">Create new Issue</a></li>
+                <li><a href="http://127.0.0.1:8000">View all Issues</a></li>
+            </ul>
+      </nav>
+    </header>
+    <div class="comments">
+        <h1>Comments</h1>
+        <div>
+            <form id="msform" method="POST" action="http://127.0.0.1:8000/add_comment/"> 
+              <!-- fieldsets -->
+              <fieldset>
+                <h2 class="fs-title">Add a new comment</h2>
+                <input type="text" name="Issue" placeholder="Enter an Issue id" required />
+                <br>
+                <textarea class="fs-textarea" name="Comment" placeholder="Type a new comment here" required></textarea>
+                <br>
+                <input type="submit" name="create" class="create action-button" value="Create" />
+              </fieldset>
+            </form>
+          </div>
+    </div>
+</body>
+</html>

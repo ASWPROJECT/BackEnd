@@ -37,3 +37,15 @@ def delete_by_id(request):
     Issue.objects.filter(id=id).delete()
 
     return issues_view(request)
+
+
+@csrf_exempt
+def add_comment(request):
+    if request.method == 'POST':
+        comment = request.POST.get('Comment')
+        issue = request.POST.get('Issue')
+        comment_obj = {'Comment': comment,
+                   'Issue': issue}
+        print(comment_obj)
+        requests.post('http://127.0.0.1:8000/api/comments/', json = comment_obj)
+    return render(request, 'comments.html')
