@@ -35,6 +35,17 @@
               </fieldset>
             </form>
           </div>
+          <div>
+            <ul>
+                {% for comment in comments %}
+                <h2>{{ comment.Issue }}</h2>
+                <p>{{ comment.Comment }}</p>
+                <p>{{ comment.Created_at }}</p>
+                {% empty %}
+                <li>No hay comments</li>
+                {% endfor %}
+            </ul>
+          </div>
     </div>
 </body>
 </html>
