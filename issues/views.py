@@ -42,13 +42,49 @@ def delete_by_id(request):
 def view_isue(request, issue_id):
     issue = get_object_or_404(Issue, id=issue_id)
     issue = {'Subject': issue.Subject,
-            'Description': issue.Description}
+            'Description': issue.Description,
+            'id': issue.id}
     context = {'issue': issue}
     return render(request, 'issue_view.html', context)
 
 @csrf_exempt
 def edit_issue(request):
     id = request.POST.get('id')
-    Issue.objects.filter(id=id)
+    issue = get_object_or_404(Issue, id=id)
+
+    subject = request.POST.get('Subject')
+    descripition = request.POST.get('Description')
+    status = request.POST.get('status')
+    type = request.POST.get('type')
+    severity = request.POST.get('severity')
+    priority = request.POST.get('priority')
+
+    if(issue.Subject != subject):
+        issue.Subject = subject
+
+    if(issue.Description != descripition):
+        issue.Description = descripition
+
+    if(issue.Status != status):
+        issue.Status = status
+
+    if(issue.Type != type):
+        issue.Type = type
+
+    if(issue.Severity != severity):
+        issue.Severity = severity
+
+    if(issue.Priority != priority):
+        issue.Priority = priority
+
+    print('Aqui empieza el issue')
+    print(issue.Subject)
+    print(issue.Description)
+    print(issue.Status)
+    print(issue.Type)
+    print(issue.Severity)
+    print(issue.Priority)
+
+    issue.save()
 
     return HttpResponseRedirect('/')

@@ -10,58 +10,62 @@
 </head>
 <body>
     <form id="msform" method="POST" action="http://127.0.0.1:8000/editIssue/"> 
-        <div>
-            <label >Subject</label>
-            <input name="Subject" type="text" value="{{ issue.Subject }}" />
-        </div>
-        <div>
-            <label>Description</label>
-            <textarea name="Description" required>{{ issue.Description }}</textarea>
-        </div>
-        <div>
-            <label>Status</label>
-            <select>                
-                <option value="" selected></option>
-                <option value="New">New</option>
-                <option value="In progress">In progress</option>
-                <option value="Ready for test">Ready for test</option>
-                <option value="Closed">Closed</option>
-                <option value="Needs info">Needs info</option>
-                <option value="Rejected">Rejected</option>
-                <option value="Posponed">Posponed</option>
-            </select>
-        </div>
-        <div>
-            <label>Type</label>
-            <select>
-                <option value="" selected></option>
-                <option value="Bug">Bug</option>
-                <option value="Question">Question</option>
-                <option value="Enhancement">Enhancement</option>
-            </select>
-        </div>
-        <div>
-            <label>Severity</label>
-            <select>
-                <option value="" selected></option>
-                <option value="Wishlist">Wishlist</option>
-                <option value="Minor">Minor</option>
-                <option value="Normal">Normal</option>
-                <option value="Important">Important</option>
-                <option value="Critical">Critical</option>
-            </select>
-        </div>
-        <div>
-            <label>Priority</label>
-            <select>
-                <option value="" selected></option>
-                <option value="Low">Low</option>
-                <option value="Normal">Normal</option>
-                <option value="High">High</option>
-            </select>
-        </div>
-        <input name="id" type="hidden" value="{{ issue.id }}" />
-        <button>Guardar</button>
+        {% csrf_token %}
+        <fieldset>
+            <div>
+                <label >Subject</label>
+                <input name="Subject" type="text" value="{{ issue.Subject }}" />
+            </div>
+            <div>
+                <label>Description</label>
+                <textarea name="Description" required>{{ issue.Description }}</textarea>
+            </div>
+            <div>
+                <label>Status</label>
+                <select name="status">                
+                    <option value="" {% if issue.Status == '' %}selected{% endif %}></option>
+                    <option value="New" {% if issue.Status == 'New' %}selected{% endif %}>New</option>
+                    <option value="In progress" {% if issue.Status == "In progress" %}selected{% endif %}>In progress</option>
+                    <option value="Ready for test" {% if issue.Status == "Ready for test" %}selected{% endif %}>Ready for test</option>
+                    <option value="Closed" {% if issue.Status == 'New' %}selected{% endif %}>Closed</option>
+                    <option value="Needs info" {% if issue.Status == 'New' %}selected{% endif %}>Needs info</option>
+                    <option value="Rejected" {% if issue.Status == 'New' %}selected{% endif %}>Rejected</option>
+                    <option value="Posponed" {% if issue.Status == 'New' %}selected{% endif %}>Posponed</option>
+                </select>
+            </div>
+            <div>
+                <label>Type</label>
+                <select name="type">
+                    <option value="" selected></option>
+                    <option value="Bug">Bug</option>
+                    <option value="Question">Question</option>
+                    <option value="Enhancement">Enhancement</option>
+                </select>
+            </div>
+            <div>
+                <label>Severity</label>
+                <select name="severity">
+                    <option value="" selected></option>
+                    <option value="Wishlist">Wishlist</option>
+                    <option value="Minor">Minor</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Important">Important</option>
+                    <option value="Critical">Critical</option>
+                </select>
+            </div>
+            <div>
+                <label>Priority</label>
+                <select name="priority">
+                    <option value="" selected></option>
+                    <option value="Low">Low</option>
+                    <option value="Normal">Normal</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+            <input name="id" type="hidden" value="{{ issue.id }}" />
+            <button>Guardar</button>
+        </fieldset>
       </form>
 </body>
 </html>
+
