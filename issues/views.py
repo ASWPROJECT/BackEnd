@@ -8,9 +8,10 @@ from .models import Issue
 # Create your views here.import requests
 
 def issues_view(request):
+    params = request.GET
+    q = params.get('q', '')
     # Hacer la solicitud GET a la API
-
-    response = requests.get('http://127.0.0.1:8000/api/issues')
+    response = requests.get('http://127.0.0.1:8000/api/issues?q=' + q)
     
     # Obtener los datos de la respuesta de la API
     data = response.json()
@@ -27,7 +28,7 @@ def new_issue_view(request):
         issue = {'Subject': subject,
                  'Description': description}
         print(issue)
-        requests.post('http://127.0.0.1:8000/api/issues/', json = issue)
+        requests.post('http://127.0.0.1:8000/api/issues', json = issue)
         
     return render(request, 'new_issue.html')
 
@@ -47,5 +48,5 @@ def add_comment(request):
         comment_obj = {'Comment': comment,
                    'Issue': issue}
         print(comment_obj)
-        requests.post('http://127.0.0.1:8000/api/comments/', json = comment_obj)
+        requests.post('http://127.0.0.1:8000/api/comments', json = comment_obj)
     return render(request, 'comments.html')

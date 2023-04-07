@@ -5,10 +5,13 @@ from . import views
 
 
 
-router = routers.DefaultRouter()
+'''router = routers.DefaultRouter()
 
 router.register('issues', api.IssueViewSet, 'issues')
-router.register('comments', api.CommentViewSet, 'comments')
+router.register('comments', api.CommentViewSet, 'comments')'''
 
 
-urlpatterns =    router.urls
+urlpatterns = [
+    path('issues', api.IssuesView.as_view()),
+    path('comments', api.CommentsView.as_view())
+]

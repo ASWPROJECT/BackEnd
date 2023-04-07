@@ -24,6 +24,10 @@
 
   <div class="issues">
     <h1>Issues</h1>
+    <form method="GET" action="http://127.0.0.1:8000">
+      <input type="text" name="q" placeholder="subject or description" autocomplete="on">
+      <button type="submit">Search</button>
+    </form>    
     <ul>
       {% for issue in issues %}
       <a class="issue_selected" href="issue/{{ issue.id }}">
