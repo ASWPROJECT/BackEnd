@@ -19,5 +19,5 @@ class CommentsView(generics.ListCreateAPIView):
     serializer_class = serializers.CommentSerializer
 
     def get_queryset(self):
-        queryset = models.Comment.objects.all()
+        queryset = models.Comment.objects.all().order_by('-Created_at')
         return queryset
