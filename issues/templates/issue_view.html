@@ -23,43 +23,43 @@
             <div>
                 <label>Status</label>
                 <select name="status">                
-                    <option value="" {% if issue.Status == '' %}selected{% endif %}></option>
-                    <option value="New" {% if issue.Status == 'New' %}selected{% endif %}>New</option>
-                    <option value="In progress" {% if issue.Status == "In progress" %}selected{% endif %}>In progress</option>
-                    <option value="Ready for test" {% if issue.Status == "Ready for test" %}selected{% endif %}>Ready for test</option>
-                    <option value="Closed" {% if issue.Status == 'New' %}selected{% endif %}>Closed</option>
-                    <option value="Needs info" {% if issue.Status == 'New' %}selected{% endif %}>Needs info</option>
-                    <option value="Rejected" {% if issue.Status == 'New' %}selected{% endif %}>Rejected</option>
-                    <option value="Posponed" {% if issue.Status == 'New' %}selected{% endif %}>Posponed</option>
+                    <option value=""></option>
+                    <option value="New" {% if issue.status == 'New' %}selected{% endif %}>New</option>
+                    <option value="In progress" {% if issue.status == 'In progress' %}selected{% endif %}>In progress</option>
+                    <option value="Ready for test" {% if issue.status == 'Ready for test' %}selected{% endif %}>Ready for test</option>
+                    <option value="Closed" {% if issue.status == 'Closed' %}selected{% endif %}>Closed</option>
+                    <option value="Needs info" {% if issue.status == 'Needs info' %}selected{% endif %}>Needs info</option>
+                    <option value="Rejected" {% if issue.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                    <option value="Postponed" {% if issue.status == 'Postponed' %}selected{% endif %}>Postponed</option>
                 </select>
-            </div>
+            </div>            
             <div>
                 <label>Type</label>
                 <select name="type">
-                    <option value="" selected></option>
-                    <option value="Bug">Bug</option>
-                    <option value="Question">Question</option>
-                    <option value="Enhancement">Enhancement</option>
+                    <option value="" {% if issue.type == '' %}selected{% endif %}></option>
+                    <option value="Bug" {% if issue.type == 'Bug' %}selected{% endif %}>Bug</option>
+                    <option value="Question" {% if issue.type == 'Question' %}selected{% endif %}>Question</option>
+                    <option value="Enhancement" {% if issue.type == 'Enhancement' %}selected{% endif %}>Enhancement</option>
                 </select>
             </div>
             <div>
                 <label>Severity</label>
                 <select name="severity">
-                    <option value="" selected></option>
-                    <option value="Wishlist">Wishlist</option>
-                    <option value="Minor">Minor</option>
-                    <option value="Normal">Normal</option>
-                    <option value="Important">Important</option>
-                    <option value="Critical">Critical</option>
+                    <option value="" {% if issue.severity == '' %}selected{% endif %}></option>
+                    <option value="Wishlist" {% if issue.severity == 'Wishlist' %}selected{% endif %}>Wishlist</option>
+                    <option value="Minor" {% if issue.severity == 'Minor' %}selected{% endif %}>Minor</option>
+                    <option value="Normal" {% if issue.severity == 'Normal' %}selected{% endif %}>Normal</option>
+                    <option value="Important" {% if issue.severity == 'Important' %}selected{% endif %}>Important</option>
+                    <option value="Critical" {% if issue.severity == 'Critical' %}selected{% endif %}>Critical</option>
                 </select>
             </div>
             <div>
                 <label>Priority</label>
                 <select name="priority">
-                    <option value="" selected></option>
-                    <option value="Low">Low</option>
-                    <option value="Normal">Normal</option>
-                    <option value="High">High</option>
+                    <option value="" {% if issue.priority == '' %}selected{% endif %}></option>
+                    <option value="Low" {% if issue.priority == 'Low' %}selected{% endif %}>Low</option>
+                    <option value="Normal" {% if issue.priority == 'Normal' %}selected{% endif %}>Normal</option>
+                    <option value="High" {% if issue.priority == 'High' %}selected{% endif %}>High</option>
                 </select>
             </div>
             <input name="id" type="hidden" value="{{ issue.id }}" />

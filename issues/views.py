@@ -43,7 +43,11 @@ def view_isue(request, issue_id):
     issue = get_object_or_404(Issue, id=issue_id)
     issue = {'Subject': issue.Subject,
             'Description': issue.Description,
-            'id': issue.id}
+            'id': issue.id, 
+            'status': issue.Status,
+            'type': issue.Type,
+            'severity': issue.Severity,
+            'priority': issue.Priority}
     context = {'issue': issue}
     return render(request, 'issue_view.html', context)
 
