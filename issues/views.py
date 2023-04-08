@@ -1,16 +1,17 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import redirect
 import requests
 from .models import Issue
+import json
 
 # Create your views here.import requests
 
 def issues_view(request):
+    params = request.GET
+    q = params.get('q', '')
     # Hacer la solicitud GET a la API
-
-    response = requests.get('http://127.0.0.1:8000/api/issues')
+    response = requests.get('http://127.0.0.1:8000/api/issues?q=' + q)
     
     # Obtener los datos de la respuesta de la API
     data = response.json()
@@ -27,7 +28,7 @@ def new_issue_view(request):
         issue = {'Subject': subject,
                  'Description': description}
         print(issue)
-        requests.post('http://127.0.0.1:8000/api/issues/', json = issue)
+        requests.post('http://127.0.0.1:8000/api/issues', json = issue)
         
     return render(request, 'new_issue.html')
 
@@ -92,3 +93,32 @@ def edit_issue(request):
     issue.save()
 
     return HttpResponseRedirect('/')
+
+
+@csrf_exempt
+def add_comment(request):
+    if request.method == 'POST':
+        comment = request.POST.get('Comment')
+        issue = request.POST.get('Issue')
+        comment_obj = {'Comment': comment,
+                   'Issue': issue}
+        print(comment_obj)
+        requests.post('http://127.0.0.1:8000/api/comments', json = comment_obj)
+    
+    #Crida a la api per a obtenir tots els comments
+    response = requests.get('http://127.0.0.1:8000/api/comments')
+    data = response.json()
+    context = {'comments': data}
+    return render(request, 'comments.html', context)
+
+
+@csrf_exempt
+def bulk_insert(request):
+    if request.method == 'POST':
+        issues = request.POST.get('issues')
+        for line in issues.splitlines():
+            print(line)
+            issue = {'Subject': line}
+            requests.post('http://127.0.0.1:8000/api/issues', json = issue)
+
+    return render(request, 'bulk_insert.html')
