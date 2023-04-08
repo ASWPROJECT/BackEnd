@@ -133,20 +133,84 @@ nav a:hover {
     max-height: 20px;
 }
 
-/* Style the taskboard-actions container */
+.bulk-insert-btn {
+    border: none;
+    padding: 10px;
+    width: 40px;
+    height: 40px;
+    background: url("/static/bulk.png") no-repeat center center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%;
+    border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.bulk-insert-btn:hover {
+    background-color: #18d6b3;
+}
+
+.bulk-insert-btn img {
+    max-width: 30px;
+    max-height: 30px;
+}
+
 .taskboard-actions {
-    margin-top: 10px;
-    text-align: left;
-    background-color: #2ecc71;
-    width: 200px;
-    height: 200px;
-
+    position: relative; /* set the parent to a positioned element */
 }
-
+  
 .issue-table-options {
-    text-align: left;
+    display: flex;
+    position: absolute;
+    left: 0; /* position to the left edge */
+    top: 0; /* position to the top edge */
 }
 
+.search-form {
+    display: flex;
+    align-items: center;
+  }
+
+.search-bar {
+    padding: 10px;
+    border: 1px solid #18d6b3;
+    border-radius: 3px;
+    margin-bottom: 10px; 
+    width: 100%;
+    box-sizing: border-box;
+    font-family: montserrat, arial, verdana;
+    color: #2C3E50;
+    font-size: 13px;
+}
+
+.search-action-button {
+    border: none;
+    padding-bottom: 10px;
+    width: 40px;
+    height: 40px;
+    background: url("/static/search.png") no-repeat center center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%;
+    border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-action-button:hover {
+    background-color: #18d6b3;
+}
+
+.search-action-button img {
+    max-width: 30px;
+    max-height: 30px;
+}
+  
 .new-issue {
-    text-align: right;
+    position: absolute;
+    right: 0; /* position to the right edge */
+    top: 0; /* position to the top edge */
 }
