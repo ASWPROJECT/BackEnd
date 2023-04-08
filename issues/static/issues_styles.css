@@ -1,73 +1,72 @@
 /* Establecer la fuente y el color de fondo */
 body {
     font-family: Arial, sans-serif;
-    background-color: #F3F3F3;
-  }
+    background-color: #f3f3f3;
+}
 
 .issue_selected {
     text-decoration: none;
 }
 
 
-  /* Estilo del encabezado */
-  header {
+/* Estilo del encabezado */
+header {
     background-color: #FFFFFF;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
-  }
+}
   
-  /* Estilo del título de la aplicación */
-  .app-title {
+/* Estilo del título de la aplicación */
+.app-title {
     font-size: 24px;
     font-weight: bold;
     color: #333333;
-  }
+}
   
-  /* Estilo de la lista de issues */
-  .issues {
+/* Estilo de la lista de issues */
+.issues {
     margin: 20px;
-  }
+}
   
-  .issues h1 {
+.issues h1 {
     font-size: 36px;
     font-weight: bold;
     color: #333333;
-  }
+}
   
-  .issues ul {
+.issues ul {
     list-style: none;
     padding: 0;
-  }
+}
   
-  .issues li {
+.issues li {
     background-color: #FFFFFF;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     margin-bottom: 20px;
     padding: 20px;
     transition: background-color 0.3s ease;
-
-  }
+}
   
-  .issues li:hover {
+.issues li:hover {
     background-color: #D9D9D9;
-  }
+}
 
-  .issues h2 {
+.issues h2 {
     font-size: 20px;
     font-weight: bold;
     color: #333333;
     margin-bottom: 10px;
-  }
+}
   
-  .issues p {
+.issues p {
     font-size: 16px;
     color: #666666;
     margin-bottom: 10px;
-  }
+}
   
 
-  /* Estilo de la barra de navegación */
+/* Estilo de la barra de navegación */
 nav {
     background-color: #FFFFFF;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -75,40 +74,40 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-  }
+}
   
-  /* Estilo del título de la aplicación */
-  .app-title {
+/* Estilo del título de la aplicación */
+.app-title {
     font-size: 24px;
     font-weight: bold;
     color: #333333;
     margin: 0;
-  }
+}
   
-  /* Estilo de la lista de enlaces */
-  nav ul {
+/* Estilo de la lista de enlaces */
+nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
-  }
+}
   
-  /* Estilo de los enlaces */
-  nav li {
+/* Estilo de los enlaces */
+nav li {
     margin-right: 20px;
-  }
+}
   
-  nav a {
+nav a {
     text-decoration: none;
     color: #333333;
     font-weight: bold;
     font-size: 16px;
     transition: color 0.2s;
-  }
+}
   
-  nav a:hover {
+nav a:hover {
     color: #3C91E6;
-  }
+}
   
 .taiga-btn-delete {
     border: none;
@@ -132,4 +131,22 @@ nav {
 .taiga-btn-delete img {
     max-width: 20px;
     max-height: 20px;
+}
+
+/* Style the taskboard-actions container */
+.taskboard-actions {
+    margin-top: 10px;
+    text-align: left;
+    background-color: #2ecc71;
+    width: 200px;
+    height: 200px;
+
+}
+
+.issue-table-options {
+    text-align: left;
+}
+
+.new-issue {
+    text-align: right;
 }

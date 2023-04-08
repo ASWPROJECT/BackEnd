@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import requests
 from .models import Issue
+import json
 
 # Create your views here.import requests
 
@@ -53,3 +54,15 @@ def add_comment(request):
     data = response.json()
     context = {'comments': data}
     return render(request, 'comments.html', context)
+
+
+@csrf_exempt
+def bulk_insert(request):
+    if request.method == 'POST':
+        issues = request.POST.get('issues')
+        for line in issues.splitlines():
+            print(line)
+            issue = {'Subject': line}
+            requests.post('http://127.0.0.1:8000/api/issues', json = issue)
+
+    return render(request, 'bulk_insert.html')

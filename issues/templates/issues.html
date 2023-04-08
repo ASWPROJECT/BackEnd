@@ -24,10 +24,19 @@
 
   <div class="issues">
     <h1>Issues</h1>
-    <form method="GET" action="http://127.0.0.1:8000">
-      <input type="text" name="q" placeholder="subject or description" autocomplete="on">
-      <button type="submit">Search</button>
-    </form>    
+    <div class="taskboard-actions">
+      <div class="issue-table-options">
+        <form method="GET" action="http://127.0.0.1:8000">
+          <input type="text" name="q" placeholder="subject or description" autocomplete="on">
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <div class="new-issue">
+        <button onclick="window.location.href='/bulk_insert/'">
+          <img src="{% static '/bulk.png' %}" alt="My Icon" style="width: 22px; height: 22px;">
+        </button>        
+      </div>
+    </div>    
     <ul>
       {% for issue in issues %}
       <a class="issue_selected" href="issue/{{ issue.id }}">

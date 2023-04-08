@@ -6,7 +6,7 @@ from issues import choices
 
 class Issue(models.Model):
     Subject = models.CharField(max_length=250)
-    Description = models.TextField(max_length=500)
+    Description = models.TextField(max_length=500, null=True, blank=True)
     Created_at = models.DateTimeField(auto_now_add=True)
     Status = models.CharField(max_length=50, choices=choices.status, null=True, blank=True)
     Type = models.CharField(max_length=50, choices=choices.type, null=True, blank=True)
