@@ -15,24 +15,14 @@ def register_view(request):
         if request.method == 'POST':
             form = CreateUserForm(request.POST)
             if form.is_valid():
-                # Validar nombre de usuario duplicado
-                username = form.cleaned_data.get('username')
-                if User.objects.filter(username=username).exists():
-                    messages.success(request,'This username (' + username + ') is already in use.')
-                else:
-                    # Validar correo electrónico duplicado
-                    email = form.cleaned_data.get('email')
-                    if User.objects.filter(email=email).exists():
-                        messages.success(request,'This email (' + email + ') is already in use.')
-                    else:
-                        form.save()
-                        user = form.cleaned_data.get('username')
-                        messages.success(request, 'Account with username ('+ user +') was created successfully')
-                        return redirect('login')
-
+                form.save()
+                user = form.cleaned_data.get('username')
+                messages.success(request, f"Account with username ({user}) was created successfully")
+                return redirect('login')
+            
         context = {'form': form}
         return render(request, 'register.html', context)
-
+    
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('allIssues')
