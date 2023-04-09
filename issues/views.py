@@ -41,6 +41,9 @@ def delete_by_id(request):
 
 
 def view_isue(request, issue_id):
+    #Crida a la api per a obtenir tots els comments del issue
+    comments = requests.get('http://127.0.0.1:8000/api/comments?id=' + str(issue_id))
+    comments_json = comments.json()
     issue = get_object_or_404(Issue, id=issue_id)
     issue = {'Subject': issue.Subject,
             'Description': issue.Description,
@@ -49,7 +52,8 @@ def view_isue(request, issue_id):
             'type': issue.Type,
             'severity': issue.Severity,
             'priority': issue.Priority}
-    context = {'issue': issue}
+    context = {'issue': issue,
+               'comments': comments_json}
     return render(request, 'issue_view.html', context)
 
 @csrf_exempt
@@ -104,12 +108,9 @@ def add_comment(request):
                    'Issue': issue}
         print(comment_obj)
         requests.post('http://127.0.0.1:8000/api/comments', json = comment_obj)
-    
-    #Crida a la api per a obtenir tots els comments
-    response = requests.get('http://127.0.0.1:8000/api/comments')
-    data = response.json()
-    context = {'comments': data}
-    return render(request, 'comments.html', context)
+        return HttpResponseRedirect('/issue/' + issue)
+  
+
 
 
 @csrf_exempt

@@ -78,7 +78,19 @@
                 <input type="submit" name="create" class="create action-button" value="Create" />
               </fieldset>
             </form>
-          </div>
+        </div>
+        <div>
+            <ul>
+                {% for comment in comments %}
+                <p>{{ comment.Comment }}</p>
+                <p>{{ comment.Created_at }}</p>
+                <hr>
+                {% empty %}
+                <li>No hay comments</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
 

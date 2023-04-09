@@ -20,4 +20,8 @@ class CommentsView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = models.Comment.objects.all().order_by('-Created_at')
+
+        id = self.request.query_params.get('id')
+        if id is not None:
+            queryset = queryset.filter(Issue_id=id)
         return queryset
