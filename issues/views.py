@@ -1,12 +1,14 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 import requests
 from .models import Issue
 import json
 
 # Create your views here.import requests
 
+@login_required(login_url='login')
 def issues_view(request):
     params = request.GET
     q = params.get('q', '')
@@ -20,6 +22,7 @@ def issues_view(request):
     # Renderizar la plantilla HTML y pasar los datos de los resultados
     return render(request, 'issues.html', context)
 
+@login_required(login_url='login')
 @csrf_exempt
 def new_issue_view(request):
     if request.method == 'POST':
@@ -32,6 +35,7 @@ def new_issue_view(request):
         
     return render(request, 'new_issue.html')
 
+@login_required(login_url='login')
 @csrf_exempt
 def delete_by_id(request):
     id = request.POST.get('id')
@@ -39,7 +43,7 @@ def delete_by_id(request):
 
     return issues_view(request)
 
-
+@login_required(login_url='login')
 def view_isue(request, issue_id):
     #Crida a la api per a obtenir tots els comments del issue
     comments = requests.get('http://127.0.0.1:8000/api/comments?id=' + str(issue_id))
@@ -56,6 +60,7 @@ def view_isue(request, issue_id):
                'comments': comments_json}
     return render(request, 'issue_view.html', context)
 
+@login_required(login_url='login')
 @csrf_exempt
 def edit_issue(request):
     id = request.POST.get('id')
@@ -98,7 +103,7 @@ def edit_issue(request):
 
     return HttpResponseRedirect('/')
 
-
+@login_required(login_url='login')
 @csrf_exempt
 def add_comment(request):
     if request.method == 'POST':
@@ -112,7 +117,7 @@ def add_comment(request):
   
 
 
-
+@login_required(login_url='login')
 @csrf_exempt
 def bulk_insert(request):
     if request.method == 'POST':
