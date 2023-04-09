@@ -1,169 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Issue Tracker</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Enlaces a archivos CSS -->
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    /*Tipus de lletra*/
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
-
-/*Reset*/
-* {
-    margin: 0; padding: 0;
-}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /*Tipus de lletra*/
+    @import url(https://fonts.googleapis.com/css?family=Montserrat);
     
-nav {
-    display: block;
-    background: rgb(49, 35, 198);
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    height: 40px;
-    overflow: hidden;
-  }
-  
-  nav ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    float: right;
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav li {
-    display: inline; 
-  }
-  
-  nav a {
-    display: inline;
-    padding: 10px;
-    color: #ffffff;
-    text-decoration: none;
-    margin-top: 15px;
-    line-height: 40px;
-  }
-  
-  #app-title {
-    color: #ffffff;
-    display: inline;
-    margin-top: 5px;
-    margin-left: 10px;
-    float: left;
-  }
-  
+    /*Reset*/
+    * {
+        margin: 0; padding: 0;
+    }
+    
+    body {
+        font-family: montserrat, arial, verdana;
+    }
+    
+    #msform {
+        width: 500px;
+        margin: 50px auto;
+        text-align: center;
+        position: relative;
+    
+    }
+    
+    #msform fieldset {
+        background: white;
+        border: 0 none;
+        border-radius: 3px;
+        box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+        padding: 20px 30px;
+        box-sizing: border-box;
+        width: 80%;
+        margin: 0 10%;	
+        position: relative;
+    }
+    
+    #msform input, textarea {
+        padding: 15px;
+        border: 1px solid #18d6b3;
+        border-radius: 3px;
+        margin-bottom: 10px; 
+        width: 100%;
+        box-sizing: border-box;
+        font-family: montserrat, arial, verdana;
+        color: #2C3E50;
+        font-size: 13px;
+    }
+    
+    input[name="description"] {
+      height: 300px;
+      vertical-align: top;
+    }
+    
+    #msform .action-button {
+        width: 100px;
+        background: #18d6b3;
+        font-weight: bold;
+        color: #2C3E50;
+        border: 0 none;
+        border-radius: 1px;
+        cursor: pointer;
+        padding: 10px;
+        margin: 10px 5px;
+      text-decoration: none;
+      font-size: 14px;
+      clear: both;
+    }
+    #msform .action-button:hover, #msform .action-button:focus {
+        box-shadow: 0 0 0 2px white, 0 0 0 3px #18d6b3;
+    }
+    
+    .fs-title {
+        font-size: 15px;
+        text-transform: uppercase;
+        color: #2C3E50;
+        margin-bottom: 10px;
+    }
+    
+    .fs-textarea {
+      height: 100px;
+      overflow-y: scroll;
+      resize: none;
+    }
 
-html {
-	height: 100%;
-	background: 
-	linear-gradient(rgb(255, 253, 253), rgba(63, 90, 247, 0.6));
-}
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        color: #fff;
+        background-color: rgb(206, 124, 124);
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
 
-body {
-	font-family: montserrat, arial, verdana;
-}
-
-#msform {
-    width: 500px;
-    margin: 50px auto;
-    text-align: center;
-    position: relative;
-
-}
-
-#msform fieldset {
-	background: white;
-	border: 0 none;
-	border-radius: 3px;
-	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
-	padding: 20px 30px;
-	box-sizing: border-box;
-	width: 80%;
-	margin: 0 10%;	
-	position: relative;
-}
-
-#msform input, textarea {
-	padding: 15px;
-	border: 1px solid #ccc;
-	border-radius: 3px;
-	margin-bottom: 10px; 
-	width: 100%;
-	box-sizing: border-box;
-	font-family: montserrat, arial, verdana;
-	color: #2C3E50;
-	font-size: 13px;
-}
-
-input[name="description"] {
-  height: 300px;
-  vertical-align: top;
-}
-
-#msform .action-button {
-	width: 100px;
-	background: #0b3ad4;
-	font-weight: bold;
-	color: white;
-	border: 0 none;
-	border-radius: 1px;
-	cursor: pointer;
-	padding: 10px;
-	margin: 10px 5px;
-  text-decoration: none;
-  font-size: 14px;
-  clear: both;
-}
-#msform .action-button:hover, #msform .action-button:focus {
-	box-shadow: 0 0 0 2px white, 0 0 0 3px #1000e9;
-}
-
-.fs-title {
-	font-size: 15px;
-	text-transform: uppercase;
-	color: #2C3E50;
-	margin-bottom: 10px;
-}
-
-.fs-textarea {
-  height: 100px;
-  overflow-y: scroll;
-  resize: none;
-}
-  </style>
+    .close-button:hover {
+        background-color: #c00;
+    }
+      </style>
 </head>
 <body>
-  <!-- Contenido de la página -->
-  <header> 
-    <!-- Encabezado de la página -->
-    <nav>
-      <!-- Barra de navegación -->
-      <h1 id="app-title">Issue Tracker</h1>
-      <ul>
-        <li><a href="http://127.0.0.1:8000/newIssues" target="_self">Create new Issue</a></li>
-        <li><a href="http://127.0.0.1:8000" target="_self">View all Issues</a></li>
-      </ul>
-    </nav>
-  </header> 
-  <main>
-    <!-- Contenido principal de la página -->
-    <section>
-      <!-- Sección de contenido -->
-      <div>
-        <form id="msform" method="POST" action="http://127.0.0.1:8000/newIssues/"> 
-          <!-- fieldsets -->
-          <fieldset>
-            <h2 class="fs-title">Create a new Issue</h2>
-            <input type="text" name="Subject" placeholder="Enter a subject" required />
-            <textarea class="fs-textarea" name="Description" placeholder="Enter a description"></textarea>
-            <input type="submit" name="create" class="create action-button" value="Create" />
-          </fieldset>
-        </form>
-      </div>
-    </section>
-  </main>
+  <form id="msform" method="POST" action="http://127.0.0.1:8000/newIssues/"> 
+    <!-- fieldsets -->
+    <fieldset>
+      <h2 class="fs-title">New Issue</h2>
+      <input type="text" name="Subject" placeholder="Enter a subject" required />
+      <textarea class="fs-textarea" name="Description" placeholder="Enter a description"></textarea>
+      <input type="submit" name="create" class="create action-button" value="Create" />
+    </fieldset>
+  </form>
+<button class="close-button" onclick="location.href='http://127.0.0.1:8000'">X</button>
 </body>
-</html>
