@@ -66,6 +66,19 @@
             <button>Guardar</button>
         </fieldset>
       </form>
+      <div class="comments">
+        <h1>Comments</h1>
+        <div>
+            <form id="msform" method="POST" action="http://127.0.0.1:8000/add_comment/"> 
+              <!-- fieldsets -->
+              <fieldset>
+                <input name="id" type="hidden" value="{{ issue.id }}" />
+                <textarea class="fs-textarea" name="Comment" placeholder="Type a new comment here" style="width: 100%; height: 40px;" required></textarea>
+                <br>
+                <input type="submit" name="create" class="create action-button" value="Create" />
+              </fieldset>
+            </form>
+          </div>
 </body>
 </html>
 

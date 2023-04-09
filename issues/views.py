@@ -99,7 +99,7 @@ def edit_issue(request):
 def add_comment(request):
     if request.method == 'POST':
         comment = request.POST.get('Comment')
-        issue = request.POST.get('Issue')
+        issue = request.POST.get('id')
         comment_obj = {'Comment': comment,
                    'Issue': issue}
         print(comment_obj)
