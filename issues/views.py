@@ -130,8 +130,3 @@ def bulk_insert(request):
             requests.post('http://127.0.0.1:8000/api/issues', json = issue)
 
     return render(request, 'bulk_insert.html')
-
-@login_required
-@csrf_exempt
-def edit_user_profile_view(request):
-    return render(request, 'user_configuration.html')

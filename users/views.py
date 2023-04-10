@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .forms import CreateUserForm
+from .models import Profile
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def register_view(request):
@@ -42,9 +45,22 @@ def login_view(request):
         context = {}
         return render(request, 'login.html', context)
 
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('login')
 
+@login_required
+@csrf_exempt
+def edit_user_profile_view(request):
+    profile = Profile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        profile.bio = request.POST.get('bio')
+        profile.save()
+        messages.success(request, 'Your profile has been updated!')
+
+    context = {'profile': profile}
+    return render(request, 'user_configuration.html', context)
 
 

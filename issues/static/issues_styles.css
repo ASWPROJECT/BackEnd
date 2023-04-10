@@ -219,7 +219,7 @@ nav a:hover {
     float: right;
 }
 
-.new-issue-btn {
+.new-issue-btn, .btn-small {
     font-size: .875rem;
     align-items: center;
     background-color: #83eede;
@@ -234,7 +234,7 @@ nav a:hover {
     white-space: nowrap;
 }
 
-.new-issue-btn:hover {
+.new-issue-btn .btn-small:hover {
     background-color: #005b82;
     color: #FFFFFF;
 }
@@ -243,7 +243,7 @@ nav a:hover {
     margin-right: 1rem;
 }
 
-.new-issue-btn {
+.new-issue-btn, .btn-small {
     padding: 0.45rem 1rem;
 }
 
@@ -268,3 +268,12 @@ section h1{
     -webkit-margin-after: 1rem;
     margin-block-end: 1rem;
 }
+
+.messages {
+    color: green;
+    border: 1px solid green;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+  
