@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from issues.views import issues_view, new_issue_view, delete_by_id, view_isue, edit_issue, add_comment, bulk_insert
+from issues.views import issues_view, new_issue_view, delete_by_id, view_isue, edit_issue, add_comment, bulk_insert, edit_user_profile_view
 from users.views import register_view, login_view, logout_view
 
 urlpatterns = [
@@ -32,4 +32,5 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('social-auth/', include('social_django.urls'), name = 'social'),
+    path('user-settings/user-profile/', edit_user_profile_view, name='edit_user_profile'),
 ]

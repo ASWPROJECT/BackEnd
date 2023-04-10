@@ -246,3 +246,25 @@ nav a:hover {
 .new-issue-btn {
     padding: 0.45rem 1rem;
 }
+
+.user-profile {
+    max-width: 780px;
+}
+.main {
+    flex: 1;
+    min-width: 0;
+    padding: 1rem;
+}
+
+section {
+    display: block;
+}
+
+section h1{
+    font-family: Ubuntu-Medium,Arial,Helvetica,sans-serif;
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: #008aa8;
+    -webkit-margin-after: 1rem;
+    margin-block-end: 1rem;
+}
