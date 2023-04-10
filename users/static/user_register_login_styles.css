@@ -24,7 +24,7 @@ label {
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"], .google-btn {
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
@@ -33,7 +33,7 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
-input[type="submit"] {
+input[type="submit"], .google-btn {
   background-color: #2499cb;
   color: white;
   padding: 10px 20px;

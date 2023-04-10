@@ -24,6 +24,14 @@
       {% for message in messages %}
         <p id="messages">{{message}}</p>
       {% endfor %}
+
+      <div>
+        <p>Or login with</p>
+        <button class="google-btn">
+          <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
+        </button>
+      </div>
+
       <div> 
         Don't have an account? 
         <a href="{% url 'register' %}">Sign Up</a>

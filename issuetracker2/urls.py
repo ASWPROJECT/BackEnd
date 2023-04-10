@@ -30,5 +30,6 @@ urlpatterns = [
     path('bulk_insert/', bulk_insert, name='bulkInsert'),
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
-    path('logout/', logout_view, name='logout')
+    path('logout/', logout_view, name='logout'),
+    path('social-auth/', include('social_django.urls'), name = 'social'),
 ]
