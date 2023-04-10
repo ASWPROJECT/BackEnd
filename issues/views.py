@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 import requests
 from .models import Issue
 import json
@@ -32,6 +33,7 @@ def new_issue_view(request):
                  'Description': description}
         print(issue)
         requests.post('http://127.0.0.1:8000/api/issues', json = issue)
+        return redirect('allIssues')
         
     return render(request, 'new_issue.html')
 
