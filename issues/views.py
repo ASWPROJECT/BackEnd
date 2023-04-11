@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 import requests
 from .models import Issue
+from .models import AttachedFile
 import json
 
 # Create your views here.import requests
@@ -50,6 +51,8 @@ def view_isue(request, issue_id):
     #Crida a la api per a obtenir tots els comments del issue
     comments = requests.get('http://127.0.0.1:8000/api/comments?id=' + str(issue_id))
     comments_json = comments.json()
+    files = requests.get('http://127.0.0.1:8000/api/files?id=' + str(issue_id))
+    files_json = files.json()
     issue = get_object_or_404(Issue, id=issue_id)
     issue = {'Subject': issue.Subject,
             'Description': issue.Description,
@@ -60,7 +63,8 @@ def view_isue(request, issue_id):
             'priority': issue.Priority,
             'DeadLine': issue.DeadLine}
     context = {'issue': issue,
-               'comments': comments_json}
+               'comments': comments_json,
+               'files': files_json}
     return render(request, 'issue_view.html', context)
 
 @login_required(login_url='login')
@@ -138,3 +142,23 @@ def bulk_insert(request):
             requests.post('http://127.0.0.1:8000/api/issues', json = issue)
 
     return render(request, 'bulk_insert.html')
+
+
+@login_required(login_url='login')
+@csrf_exempt
+def add_file(request):
+    if request.method == 'POST':
+        issue = request.POST.get('id')
+        file_obj = {'Issue': issue}
+        print(file_obj)
+        requests.post('http://127.0.0.1:8000/api/files', json = file_obj)
+        return HttpResponseRedirect('/issue/' + issue)
+
+@login_required(login_url='login')
+@csrf_exempt
+def delete_file(request):
+    id = request.POST.get('id')
+    issue = request.POST.get('issue')
+    AttachedFile.objects.filter(id=id).delete()
+
+    return view_isue(request, issue)
