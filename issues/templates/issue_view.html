@@ -62,6 +62,11 @@
                     <option value="High" {% if issue.priority == 'High' %}selected{% endif %}>High</option>
                 </select>
             </div>
+            <div>
+                <label>DeadLine</label>
+                <input type="date" name="DeadLine" 
+                value="{{ issue.DeadLine.year }}-{% if issue.DeadLine.month < 10 %}0{{ issue.DeadLine.month }}{% else %}{{ issue.DeadLine.month }}{% endif %}-{% if issue.DeadLine.day < 10 %}0{{ issue.DeadLine.day }}{% else %}{{ issue.DeadLine.day }}{% endif %}" />
+            </div>
             <input name="id" type="hidden" value="{{ issue.id }}" />
             <button>Guardar</button>
         </fieldset>

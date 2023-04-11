@@ -13,6 +13,7 @@ class Issue(models.Model):
     Severity = models.CharField(max_length=50, choices=choices.severity, null=True, blank=True)
     Priority = models.CharField(max_length=50, choices=choices.priority, null=True, blank=True)
     User = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    DeadLine = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.Subject
