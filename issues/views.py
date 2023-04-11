@@ -57,7 +57,8 @@ def view_isue(request, issue_id):
             'status': issue.Status,
             'type': issue.Type,
             'severity': issue.Severity,
-            'priority': issue.Priority}
+            'priority': issue.Priority,
+            'DeadLine': issue.DeadLine}
     context = {'issue': issue,
                'comments': comments_json}
     return render(request, 'issue_view.html', context)
@@ -74,6 +75,7 @@ def edit_issue(request):
     type = request.POST.get('type')
     severity = request.POST.get('severity')
     priority = request.POST.get('priority')
+    DeadLine = request.POST.get('DeadLine')
 
     if(issue.Subject != subject):
         issue.Subject = subject
@@ -92,6 +94,12 @@ def edit_issue(request):
 
     if(issue.Priority != priority):
         issue.Priority = priority
+
+    if(issue.DeadLine != DeadLine):
+        if(DeadLine == ''):
+            issue.DeadLine = None
+        else :            
+            issue.DeadLine = DeadLine
 
     print('Aqui empieza el issue')
     print(issue.Subject)
