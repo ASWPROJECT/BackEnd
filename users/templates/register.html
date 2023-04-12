@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'user_register_login_styles.css'%}">
+  </head>
+  <body>
+    <h1>Sign Up</h1>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <label for="username">Username:</label>
+      {{form.username}}
+
+      <label for="email">Email:</label>
+      {{form.email}}
+
+      <label for="first_name">First name:</label>
+      {{form.first_name}}
+
+      <label for="last_name">Last name:</label>
+      {{form.last_name}}
+
+      <label for="password1">Password:</label>
+      {{form.password1}}
+
+      <label for="password2">Confirm Password:</label>
+      {{form.password2}}
+      <p>Your password must:</p>
+      <ul>
+        <li>The password must have a minimum length specified (8 characters).</li>
+        <li>The password must not be too similar to the username or other user attributes.</li>
+        <li>The password must not be a common password or on a list of known common passwords.</li>
+        <li>The password must contain at least one numeric character.</li>
+      </ul>
+
+      {% for field in form %}
+      {% for error in field.errors %}
+        <div class="messages">{{ error }}</div>
+      {% endfor %}
+      {% endfor %}
+          
+      <input type="submit" value="Register Account">
+
+      <div> 
+        Already have an account? 
+        <a href="{% url 'login' %}">Login</a>
+        </div>
+
+    </form>
+  </body>
+</html> 

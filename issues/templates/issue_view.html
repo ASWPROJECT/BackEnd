@@ -81,6 +81,9 @@
                     <li>No hay usuarios disponibles</li>
                     {% endfor %}
                 </ul>
+                <label>DeadLine</label>
+                <input type="date" name="DeadLine" 
+                value="{{ issue.DeadLine.year }}-{% if issue.DeadLine.month < 10 %}0{{ issue.DeadLine.month }}{% else %}{{ issue.DeadLine.month }}{% endif %}-{% if issue.DeadLine.day < 10 %}0{{ issue.DeadLine.day }}{% else %}{{ issue.DeadLine.day }}{% endif %}" />
             </div>
             <input name="id" type="hidden" value="{{ issue.id }}" />
             <button>Guardar</button>
@@ -104,6 +107,59 @@
         {% endif %}
         {% endfor %}
       </div>
+    </form>
+    <div class="comments">
+        <h1>Comments</h1>
+        <div>
+            <form id="msform" method="POST" action="http://127.0.0.1:8000/add_comment/"> 
+              <!-- fieldsets -->
+              <fieldset>
+                <input name="id" type="hidden" value="{{ issue.id }}" />
+                <textarea class="fs-textarea" name="Comment" placeholder="Type a new comment here" style="width: 100%; height: 40px;" required></textarea>
+                <br>
+                <input type="submit" name="create" class="create action-button" value="Create" />
+              </fieldset>
+            </form>
+        </div>
+        <div>
+            <ul>
+                {% for comment in comments %}
+                <p>{{ comment.Comment }}</p>
+                <p>{{ comment.Created_at }}</p>
+                <hr>
+                {% empty %}
+                <li>No hay comments</li>
+                {% endfor %}
+            </ul>
+        </div>        
+    </div>
+    <div class="AttachedFiles">
+        <h1>Attached files</h1>
+        <div>
+            <form id="msform" method="POST" action="http://127.0.0.1:8000/add_file/"> 
+                <!-- fieldsets -->
+                <fieldset>
+                <input name="id" type="hidden" value="{{ issue.id }}" />
+                <input type="submit" name="create" class="create action-button" value="Create" />
+                </fieldset>
+            </form>
+        </div>
+        <div>
+            <ul>
+                {% for file in files %}
+                <p>{{ file.id }}</p>
+                <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/file/"> 
+                    <input name="id" type="hidden" value="{{ file.id }}" />
+                    <input name="issue" type="hidden" value="{{ issue.id }}" />
+                    <input type="submit" name="delete" class="delete action-button" value="Delete" />
+                  </form>        
+                <hr>
+                {% empty %}
+                <li>No hay attached files</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
 

@@ -16,8 +16,9 @@
       <!-- Barra de navegación -->
       <h1 class="app-title">Issue Tracker</h1>
       <ul>
-        <li><a href="http://127.0.0.1:8000/newIssues">Create new Issue</a></li>
         <li><a href="http://127.0.0.1:8000">View all Issues</a></li>
+        <li><a href="http://127.0.0.1:8000/user-settings/user-profile/">Edit profile</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
       </ul>
     </nav>
   </header> 
@@ -32,6 +33,7 @@
         </form>
       </div>
       <div class="new-issue">
+        <button class="new-issue-btn" onclick="window.location.href='/newIssues/'">NEW ISSUE</button>        
         <button class="bulk-insert-btn" onclick="window.location.href='/bulk_insert/'"></button>        
       </div>
     </div>  
@@ -43,6 +45,10 @@
         <li class="taiga-btn-issue">
             <h2>{{ issue.Subject }}</h2>
             <p>{{ issue.Description }}</p>
+            {% if issue.DeadLine != None %}
+            <img src="/static/RedClock.png" width="20" height="20">
+            <span>{{ issue.DeadLine }}</span>
+            {% endif %}
           <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
             <input name="id" type="hidden" value="{{ issue.id }}" />
             {% load static %}

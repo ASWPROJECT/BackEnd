@@ -14,7 +14,7 @@ class Issue(models.Model):
     Priority = models.CharField(max_length=50, choices=choices.priority, null=True, blank=True)
     Due_Date = models.DateTimeField(auto_now_add=True)
     Creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-
+    DeadLine = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.Subject
@@ -55,3 +55,8 @@ class Watcher(models.Model):
             )
         ]
 
+class AttachedFile(models.Model):
+    id = models.AutoField(primary_key=True)
+    file = models.FileField(null=True, blank=True)
+    Created_at = models.DateTimeField(auto_now_add=True)
+    Issue = models.ForeignKey(Issue, to_field='id', related_name='files', null=False, on_delete=models.CASCADE)
