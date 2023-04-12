@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from issues.views import issues_view, new_issue_view, delete_by_id, view_isue, edit_issue, add_comment, bulk_insert
+from issues.views import issues_view, new_issue_view, delete_by_id, view_isue, edit_issue, add_comment, bulk_insert, remove_all_activities
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +26,7 @@ urlpatterns = [
     path('issue/<int:issue_id>', view_isue, name='getData'),
     path('editIssue/', edit_issue, name='getData'),
     path('add_comment/', add_comment, name='addComment'),
-    path('bulk_insert/', bulk_insert, name='bulkInsert')
+    path('bulk_insert/', bulk_insert, name='bulkInsert'),
+    path('delete_activities/', remove_all_activities, name='deleteActivities')
+
 ]

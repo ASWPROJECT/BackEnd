@@ -62,10 +62,48 @@
                     <option value="High" {% if issue.priority == 'High' %}selected{% endif %}>High</option>
                 </select>
             </div>
+            <div>
+                <label>Asigned to</label>
+                <ul>
+                    {% for user in issue.users %}
+                    <li><input type="checkbox" name="asigned_users[]" value= "{{user.username}}" />{{user.username}}</li>
+                    {% empty %}
+                    <li>No hay usuarios disponibles</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <label>Watchers</label>
+                <ul>
+                    {% for user in issue.users %}
+                    <li><input type="checkbox" name = "watchers[]" value = "{{user.username}}"> {{user.username}}</li>
+                    {% empty %}
+                    <li>No hay usuarios disponibles</li>
+                    {% endfor %}
+                </ul>
+            </div>
             <input name="id" type="hidden" value="{{ issue.id }}" />
             <button>Guardar</button>
         </fieldset>
       </form>
+      <div>
+        {% for activity in issue.activities %}
+        <p>
+            {{activity.creator}}
+        </p>
+        <p>
+            {{activity.created_at}}
+        </p>
+        <p>
+            {{activity.type}}
+        </p>
+        {% if activity.user != None %}
+        <p>
+            {{activity.user}}
+        </p>
+        {% endif %}
+        {% endfor %}
+      </div>
 </body>
 </html>
 
