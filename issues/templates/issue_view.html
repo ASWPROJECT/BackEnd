@@ -91,22 +91,26 @@
       </form>
       <h1>Activities</h1>
       <div>
-        {% for activity in issue.activities %}
-        <p>
-            {{activity.creator}}
-        </p>
-        <p>
-            {{activity.created_at}}
-        </p>
-        <p>
-            {{activity.type}}
-        </p>
-        {% if activity.user != None %}
-        <p>
-            {{activity.user}}
-        </p>
-        {% endif %}
-        {% endfor %}
+        <ul>
+            {% for activity in issue.activities %}
+            <li>
+                <p>
+                    {{activity.creator}}
+                </p>
+                <p>
+                    {{activity.created_at}}
+                </p>
+                <p>
+                    {{activity.type}}
+                </p>
+                {% if activity.user != None %}
+                <p>
+                    {{activity.user}}
+                </p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
       </div>
     </form>
     <div class="comments">
