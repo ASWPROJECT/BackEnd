@@ -229,3 +229,13 @@ def delete_file(request):
     AttachedFile.objects.filter(id=id).delete()
 
     return view_isue(request, issue)
+
+@login_required(login_url='login')
+@csrf_exempt
+def block_issue_view(request, issue_id):
+    print("holaaa")
+    if request.method == 'POST':
+        print("sdfasdfasdfasdf")
+        return redirect('block_issue', issue_id=issue_id)
+        
+    return render(request, 'block_issue.html')
