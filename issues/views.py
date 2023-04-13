@@ -59,13 +59,22 @@ def view_isue(request, issue_id):
     User = get_user_model()
     users = User.objects.all()
     activities = None
-    watchers = None
-    asignedusers = None
+    w_names = []
     try:
-        watchers = Watcher.objects.get(Issue = issue)
-        asignedusers = AsignedUser.objects.get(Issue = issue)
+        for w in Watcher.objects.filter(Issue=issue):
+            w_names.append(w.User.username)
     except:
-        print('No hay watchers ni asignedUsers')
+        print('No hay watchers')
+
+
+    a_names = []
+    try:
+        for ass in AsignedUser.objects.filter(Issue=issue):
+            a_names.append(ass.User.username)
+    except:
+        print('No hay asignedUsers')
+
+    
     try:
         activities = Activity.objects.filter(issue = issue)
     except Http404:
@@ -79,8 +88,8 @@ def view_isue(request, issue_id):
             'severity': issue.Severity,
             'priority': issue.Priority,
             'users': users,
-            'watchers': watchers,
-            'asignedusers': asignedusers,
+            'watchers': w_names,
+            'asignedusers': a_names,
             'activities': activities,
             'DeadLine': issue.DeadLine}
     context = {'issue': issue,
@@ -102,28 +111,69 @@ def edit_issue(request):
     priority = request.POST.get('priority')
     watchers = request.POST.getlist('watchers[]')
     users_asigned = request.POST.getlist('asigned_users[]')
+    
+    watchers_users_selected = []
+
+    for w in watchers:
+        watchers_users_selected.append(User.objects.get(username = w))
+    
+    watchers_db = []
+
+    try:
+        for user in watchers_users_selected:    
+            watchers_db.append(Watcher.objects.filter(Issue = issue).exclude(User = user))
+    except Http404:
+        print('No tiene watchers en la base de datos')
+
+    asigned_users_selected = []
+
+    for u in users_asigned:
+        asigned_users_selected.append(User.objects.get(username = u))
+    
+    asigned_users_db = []
+
+    try:
+        for user in asigned_users_selected:    
+            asigned_users_db.append(AsignedUser.objects.filter(Issue = issue).exclude(User = user))
+    except Http404:
+        print('No tiene watchers en la base de datos')
 
 
     if(len(watchers) > 0):
-        for watcher in watchers:
-            Watcher.objects.create(
-            User = User.objects.get(username=watcher),
-            Issue = issue,
-            )
+        for w in watchers_db:
+            w.delete()
+        try:
+            for w in watchers:
+                Watcher.objects.create(
+                    User = User.objects.get(username = w),
+                    Issue = issue,
+                )
+        except:
+            print("Ya existe")
+    else:
+        Watcher.objects.filter(Issue = issue).delete()
 
 
     if(len(users_asigned) > 0):
-        for user in users_asigned:
-            AsignedUser.objects.create(
-            User = User.objects.get(username=user),
-            Issue = issue,
-            )
-            Activity.objects.create(
-                creator = User.objects.get(username=request.user.username),
-                issue = issue,
-                type = "assigned to",
-                user = User.objects.get(username=user)
-            )    
+        for u in asigned_users_db:
+            u.delete()
+            for u in users_asigned:
+                try:
+                    AsignedUser.objects.create(
+                        User = User.objects.get(username=u),
+                        Issue = issue,
+                        )
+                except:
+                    print("Ya existe")
+                Activity.objects.create(
+                    creator = User.objects.get(username=request.user.username),
+                    issue = issue,
+                    type = "assigned to",
+                    user = User.objects.get(username=u)
+                )    
+    else:
+        AsignedUser.objects.filter(Issue = issue).delete()
+        
 
     DeadLine = request.POST.get('DeadLine')
 
@@ -174,14 +224,6 @@ def edit_issue(request):
         else :            
             issue.DeadLine = DeadLine
 
-    print('Aqui empieza el issue')
-    print(issue.Subject)
-    print(issue.Description)
-    print(issue.Status)
-    print(issue.Type)
-    print(issue.Severity)
-    print(issue.Priority)
-
     issue.save()
 
     return HttpResponseRedirect('/')
@@ -216,7 +258,10 @@ def bulk_insert(request):
 
 
 def remove_all_activities(request):
-    Watcher.objects.all().delete()
+    Activity.objects.all().delete()
+    
+
+
 @login_required(login_url='login')
 @csrf_exempt
 def add_file(request):
