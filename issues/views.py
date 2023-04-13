@@ -119,7 +119,7 @@ def edit_issue(request):
             Issue = issue,
             )
             Activity.objects.create(
-                creator = User.objects.get(username='santi'),
+                creator = User.objects.get(username=request.user.username),
                 issue = issue,
                 type = "assigned to",
                 user = User.objects.get(username=user)
@@ -134,7 +134,7 @@ def edit_issue(request):
         issue.Description = descripition
         
         Activity.objects.create(
-                creator = User.objects.get(username='santi'),
+                creator = User.objects.get(username=request.user.username),
                 issue = issue,
                 type = "description"
         )
@@ -146,7 +146,7 @@ def edit_issue(request):
         issue.Type = type
         
         Activity.objects.create(
-                creator = User.objects.get(username='santi'),
+                creator = User.objects.get(username=request.user.username),
                 issue = issue,
                 type = "type"
         )
@@ -155,7 +155,7 @@ def edit_issue(request):
         issue.Severity = severity
         
         Activity.objects.create(
-                creator = User.objects.get(username='santi'),
+                creator = User.objects.get(username=request.user.username),
                 issue = issue,
                 type = "severity"
         )
@@ -164,7 +164,7 @@ def edit_issue(request):
         issue.Priority = priority
 
         Activity.objects.create(
-                creator = User.objects.get(username='santi'),
+                creator = User.objects.get(username= request.user.username),
                 issue = issue,
                 type = "priority"
         )
