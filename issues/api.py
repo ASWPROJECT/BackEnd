@@ -7,11 +7,27 @@ class IssuesView(generics.ListCreateAPIView):
     serializer_class = serializers.IssueSerializer
 
     def get_queryset(self):
-        queryset = models.Issue.objects.all()
+        order_by = self.request.query_params.get('order_by')
+        if order_by is not None:
+            queryset = models.Issue.objects.all().order_by(order_by)
+        else:
+            queryset = models.Issue.objects.all()
 
         q = self.request.query_params.get('q')
         if q is not None:
             queryset = queryset.filter(Q(Subject__icontains=q) | Q(Description__icontains=q))
+        
+        status = self.request.query_params.get('status')
+        if status is not None:
+            queryset = queryset.filter(Status__icontains=status)
+        
+        priority = self.request.query_params.get('priority')
+        if priority is not None:
+            queryset = queryset.filter(Priority__icontains=priority)
+        
+        creator = self.request.query_params.get('creator')
+        if creator is not None:
+            queryset = queryset.filter(Creator__username__icontains=creator)
         return queryset
 
 

@@ -16,13 +16,36 @@ import json
 @login_required(login_url='login')
 def issues_view(request):
     params = request.GET
+    url = 'http://127.0.0.1:8000/api/issues?'
     q = params.get('q', '')
+    if q != '':
+        url = url + "q=" + q
+    
+    status = params.get('status', '')
+    if status != '':
+        url = url + "&status=" + status
+
+    priority = params.get('priority', '')
+    if priority != '':
+        url = url + "&priority=" + priority
+    
+    creator = params.get('creator', '')
+    if creator != '':
+        url = url + "&creator=" + creator
+    
+    order_by = params.get('order_by', '')
+    if order_by != '':
+        url = url + "&order_by=" + order_by
     # Hacer la solicitud GET a la API
-    response = requests.get('http://127.0.0.1:8000/api/issues?q=' + q)
+    print(url)
+    response = requests.get(url)
+    User = get_user_model()
+    users = User.objects.all()
     
     # Obtener los datos de la respuesta de la API
     data = response.json()
-    context = {'issues': data}
+    context = {'issues': data,
+               'users': users}
     
     # Renderizar la plantilla HTML y pasar los datos de los resultados
     return render(request, 'issues.html', context)
@@ -193,8 +216,10 @@ def add_comment(request):
     if request.method == 'POST':
         comment = request.POST.get('Comment')
         issue = request.POST.get('id')
+        creator_id = User.objects.get(username=request.user.username).id
         comment_obj = {'Comment': comment,
-                   'Issue': issue}
+                   'Issue': issue,
+                   'Creator': creator_id}
         print(comment_obj)
         requests.post('http://127.0.0.1:8000/api/comments', json = comment_obj)
         return HttpResponseRedirect('/issue/' + issue)
@@ -222,8 +247,10 @@ def add_file(request):
     if request.method == 'POST':
         issue = request.POST.get('id')
         file = request.FILES['myfile']
+        name = str(file)
         file_obj = {
             'File': file,
+            'Name': name,
             'Issue': issue
         }
         print(file_obj)

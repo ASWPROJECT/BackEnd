@@ -25,7 +25,7 @@ class Comment(models.Model):
     Comment = models.TextField(max_length=1000)
     Created_at = models.DateTimeField(auto_now_add=True)
     Issue = models.ForeignKey(Issue, to_field='id', related_name='comments', null=False, on_delete=models.CASCADE)
-
+    Creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', null=False)
 
 class Activity(models.Model):
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_activities')
@@ -57,7 +57,7 @@ class Watcher(models.Model):
         ]
 
 class AttachedFile(models.Model):
-    id = models.AutoField(primary_key=True)
+    Name = models.TextField(max_length=500, null=True, blank=True)
     File = models.FileField(null=True, blank=True)
     Created_at = models.DateTimeField(auto_now_add=True)
     Issue = models.ForeignKey(Issue, to_field='id', related_name='files', null=False, on_delete=models.CASCADE)
