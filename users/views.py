@@ -13,8 +13,10 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 def register_view(request):
     if request.user.is_authenticated:
+        print("REGISTER 2")
         return redirect('allIssues')
     else:
+        print("REGISTER")
         form = CreateUserForm()
         if request.method == 'POST':
             form = CreateUserForm(request.POST)
@@ -29,8 +31,10 @@ def register_view(request):
     
 def login_view(request):
     if request.user.is_authenticated:
+        print("la tenc petita")
         return redirect('allIssues')
     else:
+        print("LOGIN")
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
@@ -54,10 +58,14 @@ def logout_view(request):
 @login_required
 @csrf_exempt
 def edit_user_profile_view(request):
-    try: 
-        profile = Profile.objects.get(user=request.user)
-    except Http404:
-        print("No existen perfiles")
+    try:
+        profile, created = Profile.objects.get_or_create(
+            user=request.user
+        )
+        if created:
+            print("Se ha creado un nuevo perfil para el usuario")
+    except:
+        print("Error al crear el perfil")
 
     if request.method == 'POST':
         profile.bio = request.POST.get('bio')
@@ -66,5 +74,3 @@ def edit_user_profile_view(request):
 
     context = {'profile': profile}
     return render(request, 'user_configuration.html', context)
-
-
