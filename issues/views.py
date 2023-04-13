@@ -59,6 +59,13 @@ def view_isue(request, issue_id):
     User = get_user_model()
     users = User.objects.all()
     activities = None
+    watchers = None
+    asignedusers = None
+    try:
+        watchers = Watcher.objects.get(Issue = issue)
+        asignedusers = AsignedUser.objects.get(Issue = issue)
+    except:
+        print('No hay watchers ni asignedUsers')
     try:
         activities = Activity.objects.filter(issue = issue)
     except Http404:
@@ -72,6 +79,8 @@ def view_isue(request, issue_id):
             'severity': issue.Severity,
             'priority': issue.Priority,
             'users': users,
+            'watchers': watchers,
+            'asignedusers': asignedusers,
             'activities': activities,
             'DeadLine': issue.DeadLine}
     context = {'issue': issue,
@@ -93,11 +102,6 @@ def edit_issue(request):
     priority = request.POST.get('priority')
     watchers = request.POST.getlist('watchers[]')
     users_asigned = request.POST.getlist('asigned_users[]')
-    print('-------------')
-    print(priority)
-    print(severity)
-    print(type)
-    print('-------------')
 
 
     if(len(watchers) > 0):
