@@ -1,0 +1,20 @@
+databases:
+  - name: issuetracker2
+    databaseName: issuetracker2
+    user: mohamed
+
+services:
+  - type: web
+    name: issuetracker2
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn issuetracker2.wsgi:application"
+    envVars:
+      - key: postgres://mohamed:EckX13zC2VJSjIi6s8q5ZI8s3YxVQN0P@dpg-cgs79q3k9u5foahvkhv0-a/issuetracker2
+        fromDatabase:
+          name: issuetracker2
+          property: connectionString
+      - key: django-insecure-x0lfh*)3yz@5yu)b5%zg&5k5_3n(9=y7ry7-o+^v*7*n72g$ku
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
