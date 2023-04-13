@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'issue_view_styles.css'%}">
+</head>
+<body>
+    <form id="msform" method="POST" action="http://127.0.0.1:8000/editIssue/"> 
+        {% csrf_token %}
+        <fieldset>
+            <div>
+                <label >Subject</label>
+                <input name="Subject" type="text" value="{{ issue.Subject }}" />
+            </div>
+            <div>
+                <label>Description</label>
+                <textarea name="Description" required>{{ issue.Description }}</textarea>
+            </div>
+            <div>
+                <label>Status</label>
+                <select name="status">                
+                    <option value=""></option>
+                    <option value="New" {% if issue.status == 'New' %}selected{% endif %}>New</option>
+                    <option value="In progress" {% if issue.status == 'In progress' %}selected{% endif %}>In progress</option>
+                    <option value="Ready for test" {% if issue.status == 'Ready for test' %}selected{% endif %}>Ready for test</option>
+                    <option value="Closed" {% if issue.status == 'Closed' %}selected{% endif %}>Closed</option>
+                    <option value="Needs info" {% if issue.status == 'Needs info' %}selected{% endif %}>Needs info</option>
+                    <option value="Rejected" {% if issue.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                    <option value="Postponed" {% if issue.status == 'Postponed' %}selected{% endif %}>Postponed</option>
+                </select>
+            </div>            
+            <div>
+                <label>Type</label>
+                <select name="type">
+                    <option value="" {% if issue.type == '' %}selected{% endif %}></option>
+                    <option value="Bug" {% if issue.type == 'Bug' %}selected{% endif %}>Bug</option>
+                    <option value="Question" {% if issue.type == 'Question' %}selected{% endif %}>Question</option>
+                    <option value="Enhancement" {% if issue.type == 'Enhancement' %}selected{% endif %}>Enhancement</option>
+                </select>
+            </div>
+            <div>
+                <label>Severity</label>
+                <select name="severity">
+                    <option value="" {% if issue.severity == '' %}selected{% endif %}></option>
+                    <option value="Wishlist" {% if issue.severity == 'Wishlist' %}selected{% endif %}>Wishlist</option>
+                    <option value="Minor" {% if issue.severity == 'Minor' %}selected{% endif %}>Minor</option>
+                    <option value="Normal" {% if issue.severity == 'Normal' %}selected{% endif %}>Normal</option>
+                    <option value="Important" {% if issue.severity == 'Important' %}selected{% endif %}>Important</option>
+                    <option value="Critical" {% if issue.severity == 'Critical' %}selected{% endif %}>Critical</option>
+                </select>
+            </div>
+            <div>
+                <label>Priority</label>
+                <select name="priority">
+                    <option value="" {% if issue.priority == '' %}selected{% endif %}></option>
+                    <option value="Low" {% if issue.priority == 'Low' %}selected{% endif %}>Low</option>
+                    <option value="Normal" {% if issue.priority == 'Normal' %}selected{% endif %}>Normal</option>
+                    <option value="High" {% if issue.priority == 'High' %}selected{% endif %}>High</option>
+                </select>
+            </div>
+            <div>
+                <label>Asigned to</label>
+                <ul>
+                    {% for user in issue.users %}
+                    <li><input type="checkbox" name="asigned_users[]" value= "{{user.username}}" />{{user.username}}</li>
+                    {% empty %}
+                    <li>No hay usuarios disponibles</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                <label>Watchers</label>
+                <ul>
+                    {% for user in issue.users %}
+                    <form method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
+                        <li><input type="checkbox" name = "watchers[]" value = "{{user.username}}"> {{user.username}}</li>
+                        <input name="id" type="hidden" value="{{ issue.id }}" />
+                      </form>
+                    {% empty %}
+                    <li>No hay usuarios disponibles</li>
+                    {% endfor %}
+                </ul>
+                <label>DeadLine</label>
+                <input type="date" name="DeadLine" 
+                value="{{ issue.DeadLine.year }}-{% if issue.DeadLine.month < 10 %}0{{ issue.DeadLine.month }}{% else %}{{ issue.DeadLine.month }}{% endif %}-{% if issue.DeadLine.day < 10 %}0{{ issue.DeadLine.day }}{% else %}{{ issue.DeadLine.day }}{% endif %}" />
+            </div>
+            <input name="id" type="hidden" value="{{ issue.id }}" />
+            <button class="save_button">Guardar</button>
+        </fieldset>
+      </form>
+      <h1>Activities</h1>
+      <div class="activity">
+        <ul>
+            {% for activity in issue.activities %}
+            <li>
+                <p>
+                    {{activity.creator}}
+                </p>
+                <p>
+                    {{activity.created_at}}
+                </p>
+                <p>
+                    {{activity.type}}
+                </p>
+                {% if activity.user != None %}
+                <p>
+                    {{activity.user}}
+                </p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+      </div>
+    </form>
+    <div class="comments">
+        <h1>Comments</h1>
+        <div>
+            <form id="msform" method="POST" action="http://127.0.0.1:8000/add_comment/"> 
+              <!-- fieldsets -->
+              <fieldset>
+                <input name="id" type="hidden" value="{{ issue.id }}" />
+                <textarea class="fs-textarea" name="Comment" placeholder="Type a new comment here" style="width: 100%; height: 40px;" required></textarea>
+                <br>
+                <input type="submit" name="create" class="create action-button" value="Create" />
+              </fieldset>
+            </form>
+        </div>
+        <div>
+            <ul>
+                {% for comment in comments %}
+                <p>{{ comment.creator_username }}</p>
+                <p>{{ comment.Comment }}</p>
+                <p>{{ comment.Created_at }}</p>
+                <hr>
+                {% empty %}
+                <li>No hay comments</li>
+                {% endfor %}
+            </ul>
+        </div>        
+    </div>
+    <div class="AttachedFiles">
+        <h1>Attached files</h1>
+        <div>
+            <form action="http://127.0.0.1:8000/add_file/" method="post" enctype="multipart/form-data">
+                <!-- fieldsets -->
+                <fieldset>
+                {% csrf_token %}
+                <input name="id" type="hidden" value="{{ issue.id }}" />
+                <input type="file" id="myfile" name="myfile" required><br><br>
+                <input type="submit" value="Subir archivo">
+                </fieldset>
+            </form>
+        </div>
+        <div>
+            <ul>
+                {% for file in files %}
+                <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/file/">
+                    <p>{{ file.Name }}</p>
+                    <input name="id" type="hidden" value="{{ file.id }}" />
+                    <input name="issue" type="hidden" value="{{ issue.id }}" />
+                    {% load static %}
+                    <button class="taiga-btn-delete"></button>
+                </form>        
+                <hr>
+                {% empty %}
+                <li>No hay attached files</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

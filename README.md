@@ -6,7 +6,7 @@
 | Javier Rodríguez Carrasco   |javierrodriguezupc |javierrodriguezupc |
 | Pau Carbó Pascual           |paucp1             |paucp1             |
 | Santiago Lara Celis         |santilara16        |santilara16        |
-| Toni Bosch Castells         |Toni Bosch         |Toni Bosch         |
+| Toni Bosch Castells         |Toni Bosch         |tboschcastells     |         
 
 
 ## Framework utilizado

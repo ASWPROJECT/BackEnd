@@ -16,25 +16,90 @@
       <!-- Barra de navegación -->
       <h1 class="app-title">Issue Tracker</h1>
       <ul>
-        <li><a href="http://127.0.0.1:8000/newIssues">Create new Issue</a></li>
         <li><a href="http://127.0.0.1:8000">View all Issues</a></li>
+        <li><a href="http://127.0.0.1:8000/user-settings/user-profile/">Edit profile</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
       </ul>
     </nav>
   </header> 
 
   <div class="issues">
     <h1>Issues</h1>
+    <div class="taskboard-actions">
+      <div class="issue-table-options">
+        <form class="search-form" method="GET" action="http://127.0.0.1:8000">
+          <input class="search-bar" type="text" name="q" placeholder="subject or description" autocomplete="on">
+          <button type="submit" class="search-action-button"></button>
+        </form>
+
+        <form class="filter-form" method="GET" action="http://127.0.0.1:8000">
+          <label for="status">Status:</label>
+          <select id="status" name="status">                
+              <option value=""></option>
+              <option value="New">New</option>
+              <option value="In progress">In progress</option>
+              <option value="Ready for test">Ready for test</option>
+              <option value="Closed">Closed</option>
+              <option value="Needs info">Needs info</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Postponed">Postponed</option>
+          </select>
+
+          <label for="priority">Priority:</label>
+          <select id="priority" name="priority">
+              <option value=""></option>
+              <option value="Low">Low</option>
+              <option value="Normal">Normal</option>
+              <option value="High">High</option>
+          </select>
+
+          <label for="creator">Created by:</label>
+          <select id="creator" name="creator">
+            <option value="" {% if issue.priority == '' %}selected{% endif %}></option>
+            {% for user in users %}
+            <option value="{{user.username}}">{{user.username}}</option>
+            {% endfor %}
+          </select>
+        
+          <input type="submit" value="Filter">
+        </form>
+        <form class="ordering-form" method="GET" action="http://127.0.0.1:8000">
+          <label for="order_by">Order by:</label>
+          <select id="order_by" name="order_by">                
+              <option value=""></option>
+              <option value="Subject">Subject ascending</option>
+              <option value="-Subject">Subject descending</option>
+              <option value="Created_at">Created at ascending</option>
+              <option value="-Created_at">Created at descending</option>
+          </select>
+          <input type="submit" value="Order">
+      </div>
+      <div class="new-issue">
+        <button class="new-issue-btn" onclick="window.location.href='/newIssues/'">NEW ISSUE</button>        
+        <button class="bulk-insert-btn" onclick="window.location.href='/bulk_insert/'"></button>        
+      </div>
+    </div>  
+    <br>  
+    <br>
     <ul>
       {% for issue in issues %}
-        <li>
-          <h2>{{ issue.Subject }}</h2>
-          <p>{{ issue.Description }}</p>
+      <a class="issue_selected" href="issue/{{ issue.id }}">
+        <li class="taiga-btn-issue">
+            <h2>{{ issue.Subject }}</h2>
+            <p>{{ issue.Description }}</p>
+            {% if issue.DeadLine != None %}
+            <div class="clock">
+              <img src="/static/RedClock.png" width="20" height="20">
+              <span>{{ issue.DeadLine }}</span>
+            </div>
+            {% endif %}
           <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
             <input name="id" type="hidden" value="{{ issue.id }}" />
             {% load static %}
             <button class="taiga-btn-delete"></button>
           </form>
         </li>
+      </a>
       {% empty %}
         <li>No hay issues disponibles</li>
       {% endfor %}

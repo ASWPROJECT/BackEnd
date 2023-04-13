@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Issues</title>
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'issues_styles.css'%}">
+      <style>
+        .user-profile label {
+          display: block;
+          margin-bottom: 0.2rem;
+        }
+
+        .user-profile  {
+          flex: 1;
+          max-width: 500px;
+        }
+
+        .user-profile fieldset {
+            margin-bottom: 1rem;
+        }
+
+        fieldset {
+            border: 0;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            width: 100%;
+        }
+
+        input {
+            line-height: normal;
+        }
+
+        input[type=text], textarea {
+            background: #fff;
+            border: 2px solid #d8dee9;
+            border-radius: 3px;
+            color: #4c566a;
+            margin: 0;
+            padding: 0.3rem 1rem 0.3rem 0.95rem;
+            width: 100%;
+        }
+
+        textarea {
+            min-height: 10rem;
+            resize: vertical;
+        }
+      </style>
+  </head>
+  <body>
+    <!-- Contenido de la página -->
+    <header> 
+      <!-- Encabezado de la página -->
+      <nav>
+        <!-- Barra de navegación -->
+        <h1 class="app-title">Issue Tracker</h1>
+        <ul>
+          <li><a href="http://127.0.0.1:8000">View all Issues</a></li>
+          <li><a href="http://127.0.0.1:8000/user-settings/user-profile/">Edit profile</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+      </nav>
+    </header> 
+    <section class="main user-profile">
+      <h1>User configuration</h1>
+      <form method="POST" action="">
+        {% csrf_token %}
+        <fieldset>
+          <label for="username">Username:</label>
+          <input type="text" name="username" value="{{profile.user.username}}" readonly>
+        </fieldset>
+  
+        <fieldset>
+          <label for="email">Email:</label>
+          <input type="text" name="email" value="{{profile.user.email}}" readonly>
+        </fieldset>
+
+        <fieldset>
+          <label for="first_name">First name:</label>
+          <input type="text" name="first_name" value="{{profile.user.first_name}}" readonly>
+        </fieldset>
+
+        <fieldset>
+          <label for="last_name">Last name:</label>
+          <input type="text" name="first_name" value="{{profile.user.last_name}}" readonly>  
+        </fieldset>
+  
+        <fieldset>
+          <label for="bio">Bio (max. 500 characters):</label>
+          <textarea name="bio" id="bio" placeholder="Tell us something about you">{{ profile.bio }}</textarea>
+        </fieldset>
+
+        {% for message in messages %}
+          <div class="messages">{{ message }}</div>
+        {% endfor %}
+
+        <button type="submit" class="btn-small">Save changes</button>
+      </form>
+    </section>
+  </body>
+</html>

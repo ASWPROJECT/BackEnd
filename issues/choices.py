@@ -27,3 +27,18 @@ priority = (
     ('Normal', 'Normal'),
     ('High', 'High')
 )
+
+
+activities = (
+    ('assigned to', 'assigned to'),
+    ('due date', 'due date'),
+    ('type', 'type'),
+    ('severity', 'severity'),
+    ('priority', 'priority'),
+    ('new attachment', 'new attachment'),
+    ('description', 'description'),
+    ('tags added', 'tags added'),
+    ('Blocked', 'Blocked'),
+    ('sprint', 'sprint'),
+    ('promoted to', 'promoted to')   
+)
