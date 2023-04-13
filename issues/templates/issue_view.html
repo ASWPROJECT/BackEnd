@@ -89,11 +89,11 @@
                 <input type="date" name="DeadLine" 
                 value="{{ issue.DeadLine.year }}-{% if issue.DeadLine.month < 10 %}0{{ issue.DeadLine.month }}{% else %}{{ issue.DeadLine.month }}{% endif %}-{% if issue.DeadLine.day < 10 %}0{{ issue.DeadLine.day }}{% else %}{{ issue.DeadLine.day }}{% endif %}" />
             </div>
-            <div class="lock-unlock">
-                <button class="btn-lock">
+            <div class="block-block">
+                <button class="btn-block">
                     <a href="http://127.0.0.1:8000/issue/{{issue.id}}/block_issue/">🔒</a>
                 </button>
-                <button class="btn-unlock">
+                <button class="btn-unblock">
                     <a href="http://127.0.0.1:8000/issue/{{issue.id}}/desblock_issue/">🔓</a>
                 </button>
                 {% if issue.Block_reason != None %}

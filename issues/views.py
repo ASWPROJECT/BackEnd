@@ -315,7 +315,7 @@ def delete_file(request):
 def block_issue_view(request, issue_id):
     issue = get_object_or_404(Issue, id=issue_id)
     if request.method == 'POST':
-        issue.Block_reason = 'Locked: ' + request.POST.get('Block_reason')
+        issue.Block_reason = 'Blocked: ' + request.POST.get('Block_reason')
         issue.save()
         return redirect("http://127.0.0.1:8000/issue/"+str(issue_id))
     
