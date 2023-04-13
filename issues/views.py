@@ -149,7 +149,11 @@ def bulk_insert(request):
 def add_file(request):
     if request.method == 'POST':
         issue = request.POST.get('id')
-        file_obj = {'Issue': issue}
+        file = request.FILES['myfile']
+        file_obj = {
+            'File': file,
+            'Issue': issue
+        }
         print(file_obj)
         requests.post('http://127.0.0.1:8000/api/files', json = file_obj)
         return HttpResponseRedirect('/issue/' + issue)
@@ -160,5 +164,4 @@ def delete_file(request):
     id = request.POST.get('id')
     issue = request.POST.get('issue')
     AttachedFile.objects.filter(id=id).delete()
-
     return view_isue(request, issue)

@@ -99,18 +99,20 @@
     <div class="AttachedFiles">
         <h1>Attached files</h1>
         <div>
-            <form id="msform" method="POST" action="http://127.0.0.1:8000/add_file/"> 
+            <form action="http://127.0.0.1:8000/add_file/" method="post" enctype="multipart/form-data">
                 <!-- fieldsets -->
                 <fieldset>
+                    {% csrf_token %}
                 <input name="id" type="hidden" value="{{ issue.id }}" />
-                <input type="submit" name="create" class="create action-button" value="Create" />
+                <input type="file" id="myfile" name="myfile" required><br><br>
+                <input type="submit" value="Subir archivo">
                 </fieldset>
             </form>
         </div>
         <div>
             <ul>
                 {% for file in files %}
-                <p>{{ file.id }}</p>
+                <p>{{ file.file }}</p>
                 <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/file/"> 
                     <input name="id" type="hidden" value="{{ file.id }}" />
                     <input name="issue" type="hidden" value="{{ issue.id }}" />
