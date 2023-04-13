@@ -192,8 +192,10 @@ def add_comment(request):
     if request.method == 'POST':
         comment = request.POST.get('Comment')
         issue = request.POST.get('id')
+        creator_id = User.objects.get(username=request.user.username).id
         comment_obj = {'Comment': comment,
-                   'Issue': issue}
+                   'Issue': issue,
+                   'Creator': creator_id}
         print(comment_obj)
         requests.post('http://127.0.0.1:8000/api/comments', json = comment_obj)
         return HttpResponseRedirect('/issue/' + issue)

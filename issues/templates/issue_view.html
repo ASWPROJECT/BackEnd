@@ -132,6 +132,7 @@
         <div>
             <ul>
                 {% for comment in comments %}
+                <p>{{ comment.creator_username }}</p>
                 <p>{{ comment.Comment }}</p>
                 <p>{{ comment.Created_at }}</p>
                 <hr>
