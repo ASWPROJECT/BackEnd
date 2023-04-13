@@ -14,7 +14,7 @@ services:
         fromDatabase:
           name: issuetracker2
           property: 
-            connectionString:
+            connectionString: postgres://mohamed:EckX13zC2VJSjIi6s8q5ZI8s3YxVQN0P@dpg-cgs79q3k9u5foahvkhv0-a.frankfurt-postgres.render.com/issuetracker2
             database: issuetracker2
             host: dpg-cgs79q3k9u5foahvkhv0-a
             password: EckX13zC2VJSjIi6s8q5ZI8s3YxVQN0P
