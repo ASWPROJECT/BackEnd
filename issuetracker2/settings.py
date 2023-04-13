@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'storages',
     'issues',
     'users',
     'social_django'
@@ -141,3 +142,15 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'allIssues'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'login'
+
+
+#Amazon S3
+AWS_ACCESS_KEY_ID = 'AKIA52ID4COFZ4DEXVXE'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'issuetracker2asw'
+
+#STATIC_URL = "https://s3.amazonaws.com/%s/static/" % AWS_STORAGE_BUCKET_NAME
+MEDIA_URL = "https://s3.amazonaws.com/%s/media/" % AWS_STORAGE_BUCKET_NAME
+
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'issuetracker2.storage_backends.PublicMediaStorage'
