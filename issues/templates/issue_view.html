@@ -88,11 +88,16 @@
                 <input type="date" name="DeadLine" 
                 value="{{ issue.DeadLine.year }}-{% if issue.DeadLine.month < 10 %}0{{ issue.DeadLine.month }}{% else %}{{ issue.DeadLine.month }}{% endif %}-{% if issue.DeadLine.day < 10 %}0{{ issue.DeadLine.day }}{% else %}{{ issue.DeadLine.day }}{% endif %}" />
             </div>
-            <div>
-                <button class="button-block">
-                    <a href="http://127.0.0.1:8000/issue/{{issue.id}}/block_issue/">Block/Desblock Issue</a>
+            <div class="lock-unlock">
+                <button class="btn-lock">
+                    <a href="http://127.0.0.1:8000/issue/{{issue.id}}/block_issue/">🔒</a>
                 </button>
-                <p class="block-reason">{{ issue.Block_reason }}</p>
+                <button class="btn-unlock">
+                    <a href="http://127.0.0.1:8000/issue/{{issue.id}}/desblock_issue/">🔓</a>
+                </button>
+                {% if issue.Block_reason != None %}
+                    <p class="block-reason">{{ issue.Block_reason }}</p>
+                {% endif %}
             </div>
             <input name="id" type="hidden" value="{{ issue.id }}" />
             <button class="save_button">Guardar</button>
