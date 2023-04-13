@@ -46,8 +46,10 @@
             <h2>{{ issue.Subject }}</h2>
             <p>{{ issue.Description }}</p>
             {% if issue.DeadLine != None %}
-            <img src="/static/RedClock.png" width="20" height="20">
-            <span>{{ issue.DeadLine }}</span>
+            <div class="clock">
+              <img src="/static/RedClock.png" width="20" height="20">
+              <span>{{ issue.DeadLine }}</span>
+            </div>
             {% endif %}
           <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
             <input name="id" type="hidden" value="{{ issue.id }}" />

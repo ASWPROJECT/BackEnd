@@ -277,3 +277,11 @@ section h1{
     margin-bottom: 10px;
 }
   
+.clock {
+    display: flex;
+}
+
+.clock span {
+    color: #666666;
+    margin-left: 1%;
+}
