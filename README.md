@@ -8,6 +8,8 @@
 | Santiago Lara Celis         |santilara16        |santilara16        |
 | Toni Bosch Castells         |Toni Bosch         |tboschcastells     |         
 
+## Deployed
+- https://issuetracker2.fly.dev/
 
 ## Framework utilizado
 - Django
