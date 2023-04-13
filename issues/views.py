@@ -221,8 +221,10 @@ def add_file(request):
     if request.method == 'POST':
         issue = request.POST.get('id')
         file = request.FILES['myfile']
+        name = str(file)
         file_obj = {
             'File': file,
+            'Name': name,
             'Issue': issue
         }
         print(file_obj)
