@@ -135,18 +135,20 @@ button, input, optgroup, select, textarea {
   <div class = "lightbox">
     <form class = "lightbox-form" method="POST" action="">
       <h2 class="title">Blocked request</h2>
+      {% csrf_token %}
+      <p>{{issue.id}}</p>
       <div>
         <div class="form-wrapper">
           <div class="main">
             <fieldset>
-              <textarea name="Block_reason" placeholder="Please explain the reason">{{ issue.Block_reason }}</textarea>
+              <textarea name="Block_reason" placeholder="Please explain the reason"></textarea>
 
             </fieldset>
           </div>
           <!--Siddlebar-->
         </div>
         <div class="btn-container">
-          <input type="submit" name="create" class="create action-button" value="Create">
+          <input type="submit" name="create" class="create action-button" value="Save">
         </div>
       </div>
     </form>

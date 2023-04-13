@@ -9,9 +9,6 @@
     <link rel="stylesheet" href="{% static 'issue_view_styles.css'%}">
 </head>
 <body>
-    <p>Estás en el issue número {{ issue.id }}</p>
-    <p>http://127.0.0.1:8000/issue/{{ issue.id }}</p>
-
     <form id="msform" method="POST" action="http://127.0.0.1:8000/editIssue/"> 
         {% csrf_token %}
         <fieldset>
@@ -91,16 +88,12 @@
                 <input type="date" name="DeadLine" 
                 value="{{ issue.DeadLine.year }}-{% if issue.DeadLine.month < 10 %}0{{ issue.DeadLine.month }}{% else %}{{ issue.DeadLine.month }}{% endif %}-{% if issue.DeadLine.day < 10 %}0{{ issue.DeadLine.day }}{% else %}{{ issue.DeadLine.day }}{% endif %}" />
             </div>
-
-
-            <form id="msform" method="POST">
-                {% csrf_token %}
-                <input name="id" type="hidden" value="{{ issue.id }}" />
-                <button type="submit" formaction="{% url 'block_issue' issue_id=issue.id %}">Ir a Block Issue</button>
-            </form>
-            
-
-
+            <div>
+                <button class="button-block">
+                    <a href="http://127.0.0.1:8000/issue/{{issue.id}}/block_issue/">Block/Desblock Issue</a>
+                </button>
+                <p class="block-reason">{{ issue.Block_reason }}</p>
+            </div>
             <input name="id" type="hidden" value="{{ issue.id }}" />
             <button class="save_button">Guardar</button>
         </fieldset>
@@ -184,6 +177,7 @@
             </ul>
         </div>
     </div>
+    <button class="close-button" onclick="location.href='http://127.0.0.1:8000'">X</button>
 </body>
 </html>
 

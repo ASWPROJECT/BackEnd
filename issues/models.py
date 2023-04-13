@@ -15,6 +15,7 @@ class Issue(models.Model):
     Due_Date = models.DateTimeField(auto_now_add=True)
     Creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     DeadLine = models.DateField(null=True, blank=True)
+    Block_reason = models.TextField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return self.Subject

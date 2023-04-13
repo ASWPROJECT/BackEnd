@@ -82,7 +82,8 @@ def view_isue(request, issue_id):
             'watchers': watchers,
             'asignedusers': asignedusers,
             'activities': activities,
-            'DeadLine': issue.DeadLine}
+            'DeadLine': issue.DeadLine,
+            'Block_reason': issue.Block_reason}
     context = {'issue': issue,
                'comments': comments_json,
                'files': files_json}
@@ -240,9 +241,12 @@ def delete_file(request):
 @login_required(login_url='login')
 @csrf_exempt
 def block_issue_view(request, issue_id):
-    print("holaaa")
+    issue = get_object_or_404(Issue, id=issue_id)
+
     if request.method == 'POST':
-        print("sdfasdfasdfasdf")
-        return redirect('block_issue', issue_id=issue_id)
-        
+        issue.Block_reason = request.POST.get('Block_reason')
+        issue.save()
+
+        return redirect("http://127.0.0.1:8000/issue/"+str(issue_id))
+    
     return render(request, 'block_issue.html')
