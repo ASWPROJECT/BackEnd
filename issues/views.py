@@ -105,7 +105,8 @@ def view_isue(request, issue_id):
             'watchers': watchers,
             'asignedusers': asignedusers,
             'activities': activities,
-            'DeadLine': issue.DeadLine}
+            'DeadLine': issue.DeadLine,
+            'Block_reason': issue.Block_reason}
     context = {'issue': issue,
                'comments': comments_json,
                'files': files_json}
@@ -263,3 +264,22 @@ def delete_file(request):
     issue = request.POST.get('issue')
     AttachedFile.objects.filter(id=id).delete()
     return view_isue(request, issue)
+
+@login_required(login_url='login')
+@csrf_exempt
+def block_issue_view(request, issue_id):
+    issue = get_object_or_404(Issue, id=issue_id)
+    if request.method == 'POST':
+        issue.Block_reason = 'Locked: ' + request.POST.get('Block_reason')
+        issue.save()
+        return redirect("http://127.0.0.1:8000/issue/"+str(issue_id))
+    
+    return render(request, 'block_issue.html')
+
+@login_required(login_url='login')
+@csrf_exempt
+def desblock_issue_view(request, issue_id):
+    issue = get_object_or_404(Issue, id=issue_id)
+    issue.Block_reason = None
+    issue.save()
+    return redirect("http://127.0.0.1:8000/issue/"+str(issue_id))

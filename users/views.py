@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.http import Http404
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -53,7 +54,10 @@ def logout_view(request):
 @login_required
 @csrf_exempt
 def edit_user_profile_view(request):
-    profile = Profile.objects.get(user=request.user)
+    try: 
+        profile = Profile.objects.get(user=request.user)
+    except Http404:
+        print("No existen perfiles")
 
     if request.method == 'POST':
         profile.bio = request.POST.get('bio')
