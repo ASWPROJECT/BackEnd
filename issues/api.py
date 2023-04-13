@@ -33,7 +33,6 @@ class FilesView(generics.ListCreateAPIView):
         queryset = models.AttachedFile.objects.all()
 
         id = self.request.query_params.get('id')
-        print('La id es:' + id)
         if id is not None:
             queryset = queryset.filter(Issue_id=id)
         return queryset

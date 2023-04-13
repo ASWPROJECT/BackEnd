@@ -79,7 +79,10 @@
                 <label>Watchers</label>
                 <ul>
                     {% for user in issue.users %}
-                    <li><input type="checkbox" name = "watchers[]" value = "{{user.username}}"> {{user.username}}</li>
+                    <form method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
+                        <li><input type="checkbox" name = "watchers[]" value = "{{user.username}}"> {{user.username}}</li>
+                        <input name="id" type="hidden" value="{{ issue.id }}" />
+                      </form>
                     {% empty %}
                     <li>No hay usuarios disponibles</li>
                     {% endfor %}
@@ -99,11 +102,11 @@
 
 
             <input name="id" type="hidden" value="{{ issue.id }}" />
-            <button>Guardar</button>
+            <button class="save_button">Guardar</button>
         </fieldset>
       </form>
       <h1>Activities</h1>
-      <div>
+      <div class="activity">
         <ul>
             {% for activity in issue.activities %}
             <li>
@@ -154,23 +157,26 @@
     <div class="AttachedFiles">
         <h1>Attached files</h1>
         <div>
-            <form id="msform" method="POST" action="http://127.0.0.1:8000/add_file/"> 
+            <form action="http://127.0.0.1:8000/add_file/" method="post" enctype="multipart/form-data">
                 <!-- fieldsets -->
                 <fieldset>
+                    {% csrf_token %}
                 <input name="id" type="hidden" value="{{ issue.id }}" />
-                <input type="submit" name="create" class="create action-button" value="Create" />
+                <input type="file" id="myfile" name="myfile" required><br><br>
+                <input type="submit" value="Subir archivo">
                 </fieldset>
             </form>
         </div>
         <div>
             <ul>
                 {% for file in files %}
-                <p>{{ file.id }}</p>
                 <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/file/"> 
+                    <p>{{ file.File }}</p>
                     <input name="id" type="hidden" value="{{ file.id }}" />
                     <input name="issue" type="hidden" value="{{ issue.id }}" />
-                    <input type="submit" name="delete" class="delete action-button" value="Delete" />
-                  </form>        
+                    {% load static %}
+                    <button class="taiga-btn-delete"></button>
+                </form>        
                 <hr>
                 {% empty %}
                 <li>No hay attached files</li>

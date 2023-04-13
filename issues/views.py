@@ -59,6 +59,13 @@ def view_isue(request, issue_id):
     User = get_user_model()
     users = User.objects.all()
     activities = None
+    watchers = None
+    asignedusers = None
+    try:
+        watchers = Watcher.objects.get(Issue = issue)
+        asignedusers = AsignedUser.objects.get(Issue = issue)
+    except:
+        print('No hay watchers ni asignedUsers')
     try:
         activities = Activity.objects.filter(issue = issue)
     except Http404:
@@ -72,6 +79,8 @@ def view_isue(request, issue_id):
             'severity': issue.Severity,
             'priority': issue.Priority,
             'users': users,
+            'watchers': watchers,
+            'asignedusers': asignedusers,
             'activities': activities,
             'DeadLine': issue.DeadLine}
     context = {'issue': issue,
@@ -93,11 +102,6 @@ def edit_issue(request):
     priority = request.POST.get('priority')
     watchers = request.POST.getlist('watchers[]')
     users_asigned = request.POST.getlist('asigned_users[]')
-    print('-------------')
-    print(priority)
-    print(severity)
-    print(type)
-    print('-------------')
 
 
     if(len(watchers) > 0):
@@ -115,7 +119,7 @@ def edit_issue(request):
             Issue = issue,
             )
             Activity.objects.create(
-                creator = User.objects.get(username='santi'),
+                creator = User.objects.get(username=request.user.username),
                 issue = issue,
                 type = "assigned to",
                 user = User.objects.get(username=user)
@@ -130,7 +134,7 @@ def edit_issue(request):
         issue.Description = descripition
         
         Activity.objects.create(
-                creator = User.objects.get(username='santi'),
+                creator = User.objects.get(username=request.user.username),
                 issue = issue,
                 type = "description"
         )
@@ -142,7 +146,7 @@ def edit_issue(request):
         issue.Type = type
         
         Activity.objects.create(
-                creator = User.objects.get(username='santi'),
+                creator = User.objects.get(username=request.user.username),
                 issue = issue,
                 type = "type"
         )
@@ -151,7 +155,7 @@ def edit_issue(request):
         issue.Severity = severity
         
         Activity.objects.create(
-                creator = User.objects.get(username='santi'),
+                creator = User.objects.get(username=request.user.username),
                 issue = issue,
                 type = "severity"
         )
@@ -160,7 +164,7 @@ def edit_issue(request):
         issue.Priority = priority
 
         Activity.objects.create(
-                creator = User.objects.get(username='santi'),
+                creator = User.objects.get(username= request.user.username),
                 issue = issue,
                 type = "priority"
         )
@@ -216,7 +220,11 @@ def remove_all_activities(request):
 def add_file(request):
     if request.method == 'POST':
         issue = request.POST.get('id')
-        file_obj = {'Issue': issue}
+        file = request.FILES['myfile']
+        file_obj = {
+            'File': file,
+            'Issue': issue
+        }
         print(file_obj)
         requests.post('http://127.0.0.1:8000/api/files', json = file_obj)
         return HttpResponseRedirect('/issue/' + issue)
@@ -227,7 +235,6 @@ def delete_file(request):
     id = request.POST.get('id')
     issue = request.POST.get('issue')
     AttachedFile.objects.filter(id=id).delete()
-
     return view_isue(request, issue)
 
 @login_required(login_url='login')
