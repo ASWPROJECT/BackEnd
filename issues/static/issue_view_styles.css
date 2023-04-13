@@ -72,7 +72,7 @@ body {
     line-height: 1.5;
 }
 
-#msform button {
+.save_button {
     background-color: #18d6b3;
     color: #fff;
     border: none;
@@ -83,7 +83,7 @@ body {
     margin-top: 20px;
 }
 
-#msform button:hover {
+.save_button:hover {
     background-color: #18d6b3;
 }
 
@@ -106,4 +106,28 @@ body {
 #activity-section p:nth-child(2),
 #activity-section p:nth-child(3) {
     margin-left: 20px;
+}
+
+.taiga-btn-delete {
+    border: none;
+    padding-bottom: 20px;
+    width: 30px;
+    height: 30px;
+    background: url("/static/delete.png") no-repeat center center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%;
+    border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.taiga-btn-delete:hover {
+    background-color: #c0392b;
+}
+
+.taiga-btn-delete img {
+    max-width: 20px;
+    max-height: 20px;
 }

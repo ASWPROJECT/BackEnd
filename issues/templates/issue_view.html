@@ -76,7 +76,12 @@
                 <label>Watchers</label>
                 <ul>
                     {% for user in issue.users %}
-                    <li><input type="checkbox" name = "watchers[]" value = "{{user.username}}"> {{user.username}}</li>
+                    <form method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
+                        <li><input type="checkbox" name = "watchers[]" value = "{{user.username}}"> {{user.username}}</li>
+                        <input name="id" type="hidden" value="{{ issue.id }}" />
+                        {% load static %}
+                        <button class="taiga-btn-delete"></button>
+                      </form>
                     {% empty %}
                     <li>No hay usuarios disponibles</li>
                     {% endfor %}
@@ -86,7 +91,7 @@
                 value="{{ issue.DeadLine.year }}-{% if issue.DeadLine.month < 10 %}0{{ issue.DeadLine.month }}{% else %}{{ issue.DeadLine.month }}{% endif %}-{% if issue.DeadLine.day < 10 %}0{{ issue.DeadLine.day }}{% else %}{{ issue.DeadLine.day }}{% endif %}" />
             </div>
             <input name="id" type="hidden" value="{{ issue.id }}" />
-            <button>Guardar</button>
+            <button class="save_button">Guardar</button>
         </fieldset>
       </form>
       <h1>Activities</h1>
