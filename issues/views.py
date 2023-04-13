@@ -32,6 +32,10 @@ def issues_view(request):
     creator = params.get('creator', '')
     if creator != '':
         url = url + "&creator=" + creator
+    
+    order_by = params.get('order_by', '')
+    if order_by != '':
+        url = url + "&order_by=" + order_by
     # Hacer la solicitud GET a la API
     print(url)
     response = requests.get(url)
