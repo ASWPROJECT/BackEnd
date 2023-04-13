@@ -31,6 +31,38 @@
           <input class="search-bar" type="text" name="q" placeholder="subject or description" autocomplete="on">
           <button type="submit" class="search-action-button"></button>
         </form>
+
+        <form class="filter-form" method="GET" action="http://127.0.0.1:8000">
+          <label for="status">Status:</label>
+          <select id="status" name="status">                
+              <option value=""></option>
+              <option value="New">New</option>
+              <option value="In progress">In progress</option>
+              <option value="Ready for test">Ready for test</option>
+              <option value="Closed">Closed</option>
+              <option value="Needs info">Needs info</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Postponed">Postponed</option>
+          </select>
+
+          <label for="priority">Priority:</label>
+          <select id="priority" name="priority">
+              <option value=""></option>
+              <option value="Low">Low</option>
+              <option value="Normal">Normal</option>
+              <option value="High">High</option>
+          </select>
+
+          <label for="creator">Created by:</label>
+          <select id="creator" name="creator">
+            <option value="" {% if issue.priority == '' %}selected{% endif %}></option>
+            {% for user in users %}
+            <option value="{{user.username}}">{{user.username}}</option>
+            {% endfor %}
+          </select>
+        
+          <input type="submit" value="Filter">
+        </form>
       </div>
       <div class="new-issue">
         <button class="new-issue-btn" onclick="window.location.href='/newIssues/'">NEW ISSUE</button>        
