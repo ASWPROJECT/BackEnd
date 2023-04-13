@@ -144,7 +144,7 @@
             <form action="http://127.0.0.1:8000/add_file/" method="post" enctype="multipart/form-data">
                 <!-- fieldsets -->
                 <fieldset>
-                    {% csrf_token %}
+                {% csrf_token %}
                 <input name="id" type="hidden" value="{{ issue.id }}" />
                 <input type="file" id="myfile" name="myfile" required><br><br>
                 <input type="submit" value="Subir archivo">
@@ -154,8 +154,8 @@
         <div>
             <ul>
                 {% for file in files %}
-                <p>{{ file.file }}</p>
                 <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/file/"> 
+                    <p>{{ file.Name }}</p>
                     <input name="id" type="hidden" value="{{ file.id }}" />
                     <input name="issue" type="hidden" value="{{ issue.id }}" />
                     <input type="submit" name="delete" class="delete action-button" value="Delete" />
