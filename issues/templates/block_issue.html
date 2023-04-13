@@ -36,12 +36,6 @@ h2 {
     font-weight: 400;
 }
 
-.main {
-    flex: 1;
-    min-width: 0;
-    padding: 1rem;
-}
-
 .lightbox fieldset {
     margin-bottom: 1rem;
 }
@@ -129,6 +123,12 @@ button, input, optgroup, select, textarea {
         background-color: #c00;
     }
 
+    .form-wrapper {
+      align-items: center;
+      justify-content: center;
+    }
+
+
   </style>
 </head>
 <body>
@@ -136,20 +136,13 @@ button, input, optgroup, select, textarea {
     <form class = "lightbox-form" method="POST" action="">
       <h2 class="title">Blocked request</h2>
       {% csrf_token %}
-      <p>{{issue.id}}</p>
-      <div>
-        <div class="form-wrapper">
-          <div class="main">
-            <fieldset>
-              <textarea name="Block_reason" placeholder="Please explain the reason"></textarea>
-
-            </fieldset>
-          </div>
-          <!--Siddlebar-->
-        </div>
-        <div class="btn-container">
-          <input type="submit" name="create" class="create action-button" value="Save">
-        </div>
+      <div class="form-wrapper">
+          <fieldset>
+            <textarea name="Block_reason" placeholder="Please explain the reason"></textarea>
+          </fieldset>
+          <div class="btn-container">
+            <input type="submit" name="create" class="create action-button" value="Save">
+          </div>    
       </div>
     </form>
   </div>

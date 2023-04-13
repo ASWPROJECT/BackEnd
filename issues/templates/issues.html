@@ -94,6 +94,9 @@
               <span>{{ issue.DeadLine }}</span>
             </div>
             {% endif %}
+            {% if issue.Block_reason != None %}
+              <p widht="20" height="20">🔒</p>
+            {% endif %}
           <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
             <input name="id" type="hidden" value="{{ issue.id }}" />
             {% load static %}
