@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from issues.views import issues_view, new_issue_view, delete_by_id, view_isue, edit_issue, add_comment, bulk_insert, remove_all_activities,  add_file, delete_file, block_issue_view, desblock_issue_view
 from users.views import register_view, login_view, logout_view, edit_user_profile_view
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,3 +40,5 @@ urlpatterns = [
     path('issue/<int:issue_id>/block_issue/', block_issue_view, name='block_issue'),
     path('issue/<int:issue_id>/desblock_issue/', desblock_issue_view, name='desblock_issue'),
 ]
+
+urlpatterns += staticfiles_urlpatterns
