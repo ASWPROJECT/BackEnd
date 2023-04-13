@@ -40,5 +40,3 @@ urlpatterns = [
     path('issue/<int:issue_id>/block_issue/', block_issue_view, name='block_issue'),
     path('issue/<int:issue_id>/desblock_issue/', desblock_issue_view, name='desblock_issue'),
 ]
-
-urlpatterns += staticfiles_urlpatterns
