@@ -58,6 +58,7 @@ def logout_view(request):
 @login_required
 @csrf_exempt
 def edit_user_profile_view(request):
+    profile = None
     try:
         profile, created = Profile.objects.get_or_create(
             user=request.user
