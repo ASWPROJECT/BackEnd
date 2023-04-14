@@ -11,12 +11,14 @@ from .models import Issue
 from .models import AttachedFile
 import json
 
+URI = 'https://issuetracker2.onrender.com/'
+
 # Create your views here.import requests
 
 @login_required(login_url='login')
 def issues_view(request):
     params = request.GET
-    url = 'http://127.0.0.1:8000/api/issues?'
+    url = URI+'api/issues?'
     q = params.get('q', '')
     if q != '':
         url = url + "q=" + q
@@ -58,7 +60,7 @@ def new_issue_view(request):
         description = request.POST.get('Description')
         issue = {'Subject': subject,
                  'Description': description}
-        requests.post('http://127.0.0.1:8000/api/issues', json = issue)
+        requests.post(URI+'api/issues', json = issue)
         return redirect('allIssues')
         
     return render(request, 'new_issue.html')
@@ -74,9 +76,9 @@ def delete_by_id(request):
 @login_required(login_url='login')
 def view_isue(request, issue_id):
     #Crida a la api per a obtenir tots els comments del issue
-    comments = requests.get('http://127.0.0.1:8000/api/comments?id=' + str(issue_id))
+    comments = requests.get(URI+'api/comments?id=' + str(issue_id))
     comments_json = comments.json()
-    files = requests.get('http://127.0.0.1:8000/api/files?id=' + str(issue_id))
+    files = requests.get(URI+'api/files?id=' + str(issue_id))
     files_json = files.json()
     issue = get_object_or_404(Issue, id=issue_id)
     User = get_user_model()
@@ -268,7 +270,7 @@ def add_comment(request):
                    'Issue': issue,
                    'Creator': creator_id}
         print(comment_obj)
-        requests.post('http://127.0.0.1:8000/api/comments', json = comment_obj)
+        requests.post(URI+'api/comments', json = comment_obj)
         return HttpResponseRedirect('/issue/' + issue)
   
 
@@ -281,7 +283,7 @@ def bulk_insert(request):
         for line in issues.splitlines():
             print(line)
             issue = {'Subject': line}
-            requests.post('http://127.0.0.1:8000/api/issues', json = issue)
+            requests.post(URI+'api/issues', json = issue)
 
     return render(request, 'bulk_insert.html')
 
@@ -304,7 +306,7 @@ def add_file(request):
             'Issue': issue
         }
         print(file_obj)
-        requests.post('http://127.0.0.1:8000/api/files', json = file_obj)
+        requests.post(URI+'api/files', json = file_obj)
         return HttpResponseRedirect('/issue/' + issue)
 
 @login_required(login_url='login')
