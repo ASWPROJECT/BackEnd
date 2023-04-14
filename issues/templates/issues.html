@@ -16,8 +16,8 @@
       <!-- Barra de navegación -->
       <h1 class="app-title">Issue Tracker</h1>
       <ul>
-        <li><a href="http://127.0.0.1:8000">View all Issues</a></li>
-        <li><a href="http://127.0.0.1:8000/user-settings/user-profile/">Edit profile</a></li>
+        <li><a href="https://issuetracker2.onrender.com/">View all Issues</a></li>
+        <li><a href="https://issuetracker2.onrender.com/user-settings/user-profile/">Edit profile</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
       </ul>
     </nav>
@@ -27,12 +27,12 @@
     <h1>Issues</h1>
     <div class="taskboard-actions">
       <div class="issue-table-options">
-        <form class="search-form" method="GET" action="http://127.0.0.1:8000">
+        <form class="search-form" method="GET" action="https://issuetracker2.onrender.com/">
           <input class="search-bar" type="text" name="q" placeholder="subject or description" autocomplete="on">
           <button type="submit" class="search-action-button"></button>
         </form>
 
-        <form class="filter-form" method="GET" action="http://127.0.0.1:8000">
+        <form class="filter-form" method="GET" action="https://issuetracker2.onrender.com/">
           <label for="status">Status:</label>
           <select id="status" name="status">                
               <option value=""></option>
@@ -63,7 +63,7 @@
         
           <input type="submit" value="Filter">
         </form>
-        <form class="ordering-form" method="GET" action="http://127.0.0.1:8000">
+        <form class="ordering-form" method="GET" action="https://issuetracker2.onrender.com/">
           <label for="order_by">Order by:</label>
           <select id="order_by" name="order_by">                
               <option value=""></option>
@@ -94,7 +94,7 @@
               <span>{{ issue.DeadLine }}</span>
             </div>
             {% endif %}
-          <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
+          <form id="msform" method="POST" action="https://issuetracker2.onrender.com/delete/Issue"> 
             <input name="id" type="hidden" value="{{ issue.id }}" />
             {% load static %}
             <button class="taiga-btn-delete"></button>
