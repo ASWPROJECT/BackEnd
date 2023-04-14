@@ -9,7 +9,7 @@
 | Toni Bosch Castells         |Toni Bosch         |tboschcastells     |         
 
 ## Deployed
-- https://issuetracker2.fly.dev/
+- https://issuetracker2.onrender.com/
 
 ## Framework utilizado
 - Django
