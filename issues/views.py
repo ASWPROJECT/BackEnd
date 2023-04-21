@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 import requests
-from .models import AsignedUser, Issue, Activity, Watcher
+from .models import AsignedUser, Issue, Activity, Watcher, Comment
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .models import Issue
@@ -83,8 +83,9 @@ def delete_by_id(request):
 @login_required(login_url='login')
 def view_isue(request, issue_id):
     #Crida a la api per a obtenir tots els comments del issue
-    comments = requests.get('http://127.0.0.1:8000/api/comments?id=' + str(issue_id))
-    comments_json = comments.json()
+    '''comments = requests.get('http://127.0.0.1:8000/api/comments?id=' + str(issue_id))
+    comments_json = comments.json()'''
+
     files = requests.get('http://127.0.0.1:8000/api/files?id=' + str(issue_id))
     files_json = files.json()
     issue = get_object_or_404(Issue, id=issue_id)
@@ -112,6 +113,11 @@ def view_isue(request, issue_id):
     except Http404:
         print('No tiene activities')
 
+    try:
+        comments = Comment.objects.filter(Issue = issue).order_by('-Created_at')
+    except Http404:
+        print('No tiene comments')
+
     issue = {'Subject': issue.Subject,
             'Description': issue.Description,
             'id': issue.id, 
@@ -126,7 +132,7 @@ def view_isue(request, issue_id):
             'DeadLine': issue.DeadLine,
             'Block_reason': issue.Block_reason}
     context = {'issue': issue,
-               'comments': comments_json,
+               'comments': comments,
                'files': files_json}
     return render(request, 'issue_view.html', context)
 
