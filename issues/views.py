@@ -1,3 +1,5 @@
+import base64
+import os
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
@@ -10,6 +12,7 @@ from django.contrib.auth.models import User
 from .models import Issue
 from .models import AttachedFile
 import json
+
 
 # Create your views here.import requests
 
@@ -295,16 +298,11 @@ def remove_all_activities(request):
 def add_file(request):
     if request.method == 'POST':
         issue = request.POST.get('id')
-        file = request.FILES['myfile']
-        name = str(file)
-        file_obj = {
-            'File': file,
-            'Name': name,
-            'Issue': issue
-        }
-        print(file_obj)
-        requests.post('http://127.0.0.1:8000/api/files', json = file_obj)
-        return HttpResponseRedirect('/issue/' + issue)
+
+        print('----------------------------------------------------------------')
+        requests.post('http://127.0.0.1:8000/api/files', request.POST)
+        #return HttpResponseRedirect('/issue/' + issue)
+        return HttpResponseRedirect('/')
 
 @login_required(login_url='login')
 @csrf_exempt

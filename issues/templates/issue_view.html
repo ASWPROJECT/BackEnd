@@ -161,8 +161,8 @@
                 <!-- fieldsets -->
                 <fieldset>
                 {% csrf_token %}
-                <input name="id" type="hidden" value="{{ issue.id }}" />
-                <input type="file" id="myfile" name="myfile" required><br><br>
+                <input name="Issue" type="hidden" value="{{ issue.id }}" />
+                <input type="file" id="File" name="File" required><br><br>
                 <input type="submit" value="Subir archivo">
                 </fieldset>
             </form>
