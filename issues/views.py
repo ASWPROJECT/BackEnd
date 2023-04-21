@@ -306,10 +306,11 @@ def remove_all_activities(request):
 @csrf_exempt
 def add_file(request):
     if request.method == 'POST':
-        issue = request.POST.get('id')
-
+        file = request.FILES.get('File')
+        
         print('----------------------------------------------------------------')
-        requests.post('http://127.0.0.1:8000/api/files', request.POST)
+        print(file)
+        requests.put('https://wdjcnhfzwg.execute-api.eu-west-3.amazonaws.com/dev/issuetracker2asw/' + str(file), data = base64.b64encode(file.read()).decode('utf-8'))
         #return HttpResponseRedirect('/issue/' + issue)
         return HttpResponseRedirect('/')
 
