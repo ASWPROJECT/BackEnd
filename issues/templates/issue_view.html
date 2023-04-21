@@ -128,6 +128,8 @@
         </ul>
       </div>
     </form>
+    <br>
+    <br>
     <div class="comments">
         <h1>Comments</h1>
         <div>
@@ -141,15 +143,16 @@
               </fieldset>
             </form>
         </div>
-        <div class="activity">
+        <div class="comment">
             <ul>
                 {% for comment in comments %}
-                <p>{{ comment.creator_username }}</p>
-                <p>{{ comment.Comment }}</p>
-                <p>{{ comment.Created_at }}</p>
-                <hr>
-                {% empty %}
-                <li>No hay comments</li>
+                <li>
+                    <p>{{ comment.creator_username }}</p>
+                    <p>{{ comment.Created_at }}</p>
+                    <p>{{ comment.Comment }}</p>
+                    {% empty %}
+                    <li>No hay comments</li>
+                </li>
                 {% endfor %}
             </ul>
         </div>        
