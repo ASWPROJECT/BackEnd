@@ -64,7 +64,7 @@ header {
     color: #666666;
     margin-bottom: 10px;
 }
-  
+
 
 /* Estilo de la barra de navegación */
 nav {
@@ -190,7 +190,7 @@ nav a:hover {
 
 .search-action-button {
     border: none;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
     width: 40px;
     height: 40px;
     background: url("/static/search.png") no-repeat center center;
@@ -284,4 +284,28 @@ section h1{
 .clock span {
     color: #666666;
     margin-left: 1%;
+}
+
+/*Estilo de los select*/
+.select-filters {
+    font-size: 13px;
+    background: #fff;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 2px 2px rgba(24, 214, 179, 0.5);
+    height: 37px;
+    line-height: 30px;
+    padding: 0 16px;
+    width: 170px;
+}
+  
+.select-filters:focus {
+    outline: none;
+    box-shadow: 0 0 5px #719ECE;
+}
+  
+.select-filters:hover {
+    background-color: #ddd;
+    color: #333;
+    cursor: pointer;
 }

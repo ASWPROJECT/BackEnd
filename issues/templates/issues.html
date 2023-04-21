@@ -28,14 +28,11 @@
     <h1>Issues</h1>
     <div class="taskboard-actions">
       <div class="issue-table-options">
-        <form class="search-form" method="GET" action="http://127.0.0.1:8000">
-          <input class="search-bar" type="text" name="q" placeholder="subject or description" autocomplete="on" value="{{q_s}}">
-          <button type="submit" class="search-action-button"></button>
-        </form>
-
         <form class="filter-form" method="GET" action="http://127.0.0.1:8000">
-          <label for="status">Status:</label>
-          <select id="status" name="status">                
+          <input class="search-bar" type="text" name="q" placeholder="subject or description" autocomplete="on" value="{{q_s}}">
+
+          <label class="search-bar" for="status">Status:</label>
+          <select class="select-filters" id="status" name="status">                
               <option value="" {% if status_s == '' %}selected{% endif %}></option>
               <option value="New" {% if status_s == 'New' %}selected{% endif %}>New</option>
               <option value="In progress" {% if status_s == 'In progress' %}selected{% endif %}>In progress</option>
@@ -46,36 +43,40 @@
               <option value="Postponed" {% if status_s == 'Postponed' %}selected{% endif %}>Postponed</option>
           </select>
 
-          <label for="priority">Priority:</label>
-          <select id="priority" name="priority">
+          <label class="search-bar" for="priority">Priority:</label>
+          <select class="select-filters" id="priority" name="priority">
               <option value="" {% if priority_s == '' %}selected{% endif %}></option>
               <option value="Low" {% if priority_s == 'Low' %}selected{% endif %}>Low</option>
               <option value="Normal" {% if priority_s == 'Normal' %}selected{% endif %}>Normal</option>
               <option value="High" {% if priority_s == 'High' %}selected{% endif %}>High</option>
           </select>
 
-          <label for="creator">Created by:</label>
-          <select id="creator" name="creator">
+          <label class="search-bar" for="creator">Created by:</label>
+          <select class="select-filters" id="creator" name="creator">
             <option value="" {% if creator_s == 'u' %}selected{% endif %}></option>
             {% for user in users %}
             <option value="{{user.username}}" {% if creator_s == user.username %}selected{% endif %}>{{user.username}}</option>
             {% endfor %}
           </select>
-        
-          <input type="submit" value="Filter">
-        </form>
-        <form class="ordering-form" method="GET" action="http://127.0.0.1:8000">
-          <label for="order_by">Order by:</label>
-          <select id="order_by" name="order_by">                
+
+          <label class="search-bar" for="order_by">Order by:</label>
+          <select class="select-filters" id="order_by" name="order_by">                
               <option value="" {% if order_by_s == '' %}selected{% endif %}></option>
               <option value="Subject" {% if order_by_s == 'Subject' %}selected{% endif %}>Subject ascending</option>
               <option value="-Subject" {% if order_by_s == '-Subject' %}selected{% endif %}>Subject descending</option>
               <option value="Created_at" {% if order_by_s == 'Created_at' %}selected{% endif %}>Created at ascending</option>
               <option value="-Created_at" {% if order_by_s == '-Created_at' %}selected{% endif %}>Created at descending</option>
           </select>
-          <input type="submit" value="Order">
+        
+          <button type="submit" class="search-action-button"></button>
         </form>
+        <form class="filter-form" method="GET" action="http://127.0.0.1:8000">
+          <button type="submit">Clear filters</button>
+        </form>  
       </div>
+      <br>  
+      <br>
+      <br>
       <div class="new-issue">
         <button class="new-issue-btn" onclick="window.location.href='/newIssues/'">NEW ISSUE</button>        
         <button class="bulk-insert-btn" onclick="window.location.href='/bulk_insert/'"></button>  
