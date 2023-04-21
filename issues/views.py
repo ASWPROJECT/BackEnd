@@ -59,8 +59,10 @@ def new_issue_view(request):
     if request.method == 'POST':
         subject = request.POST.get('Subject')
         description = request.POST.get('Description')
+        creator_id = User.objects.get(username=request.user.username).id
         issue = {'Subject': subject,
-                 'Description': description}
+                 'Description': description,
+                'Creator': creator_id}
         requests.post('http://127.0.0.1:8000/api/issues', json = issue)
         return redirect('allIssues')
         
@@ -280,9 +282,11 @@ def add_comment(request):
 def bulk_insert(request):
     if request.method == 'POST':
         issues = request.POST.get('issues')
+        creator_id = User.objects.get(username=request.user.username).id
         for line in issues.splitlines():
             print(line)
-            issue = {'Subject': line}
+            issue = {'Subject': line,
+                     'Creator': creator_id}
             requests.post('http://127.0.0.1:8000/api/issues', json = issue)
 
     return render(request, 'bulk_insert.html')
