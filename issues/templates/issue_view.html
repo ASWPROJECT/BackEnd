@@ -101,7 +101,7 @@
                 {% endif %}
             </div>
             <input name="id" type="hidden" value="{{ issue.id }}" />
-            <button class="save_button">Guardar</button>
+            <button class="save_button">Save</button>
         </fieldset>
       </form>
       <h1>Activities</h1>
@@ -137,11 +137,11 @@
                 <input name="id" type="hidden" value="{{ issue.id }}" />
                 <textarea class="fs-textarea" name="Comment" placeholder="Type a new comment here" style="width: 100%; height: 40px;" required></textarea>
                 <br>
-                <input type="submit" name="create" class="create action-button" value="Create" />
+                <input type="submit" name="create" class="save_button" value="Create" />
               </fieldset>
             </form>
         </div>
-        <div>
+        <div class="activity">
             <ul>
                 {% for comment in comments %}
                 <p>{{ comment.creator_username }}</p>
