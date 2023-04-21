@@ -68,10 +68,10 @@
               <option value="-Created_at" {% if order_by_s == '-Created_at' %}selected{% endif %}>Created at descending</option>
           </select>
         
-          <button type="submit" class="search-action-button"></button>
+          <button type="submit" class="search-action-button" title="Filter the selected params"></button>
         </form>
         <form class="filter-form" method="GET" action="http://127.0.0.1:8000">
-          <button type="submit">Clear filters</button>
+          <button type="submit" class="clear-filters-button" title="Clear filters"></button>
         </form>  
       </div>
       <br>  
