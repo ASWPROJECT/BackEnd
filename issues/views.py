@@ -68,8 +68,7 @@ def new_issue_view(request):
 def delete_by_id(request):
     id = request.POST.get('id')
     Issue.objects.filter(id=id).delete()
-
-    return issues_view(request)
+    return HttpResponseRedirect('/')
 
 @login_required(login_url='login')
 def view_isue(request, issue_id):

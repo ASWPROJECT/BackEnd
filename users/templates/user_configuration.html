@@ -91,7 +91,7 @@
   
         <fieldset>
           <label for="bio">Bio (max. 500 characters):</label>
-          <textarea name="bio" id="bio" placeholder="Tell us something about you">{{ profile.bio }}</textarea>
+          <textarea name="bio" id="bio" placeholder="Tell us something about you">{% if profile.bio != None %}{{ profile.bio }}{% endif %}</textarea>
         </fieldset>
 
         {% for message in messages %}
