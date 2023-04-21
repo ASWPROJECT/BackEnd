@@ -48,7 +48,12 @@ def issues_view(request):
     # Obtener los datos de la respuesta de la API
     data = response.json()
     context = {'issues': data,
-               'users': users}
+               'users': users,
+               'q_s': q,
+               'status_s': status,
+               'priority_s': priority,
+               'creator_s': creator,
+               'order_by_s': order_by}
     
     # Renderizar la plantilla HTML y pasar los datos de los resultados
     return render(request, 'issues.html', context)
