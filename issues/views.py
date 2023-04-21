@@ -293,6 +293,7 @@ def bulk_insert(request):
             issue = {'Subject': line,
                      'Creator': creator_id}
             requests.post('http://127.0.0.1:8000/api/issues', json = issue)
+        return HttpResponseRedirect('/')
 
     return render(request, 'bulk_insert.html')
 
