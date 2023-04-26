@@ -48,6 +48,17 @@
             min-height: 10rem;
             resize: vertical;
         }
+
+        .change-photo-btn {
+          display: block;
+          margin-top: 10px;
+        }
+
+        .profile-pic {
+          width: 100px;
+          height: 100px;
+          object-fit: cover;
+        }
       </style>
   </head>
   <body>
@@ -67,6 +78,17 @@
     </header> 
     <section class="main user-profile">
       <h1>User configuration</h1>
+      <form method="POST" action="{% url 'picture_profile' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+          <label for="image">Profile picture:</label>
+          <input type="file" name="image" value="{{profile.image}}">
+          {% if profile.image %}
+          <img src="{{ profile.image.url }}" alt="{{ profile.user.username }}'s profile picture">
+        {% endif %}
+        <button type="submit" class="btn-small change-photo-btn">Change photo</button>
+        </fieldset>
+      </form>
       <form method="POST" action="">
         {% csrf_token %}
         <fieldset>
