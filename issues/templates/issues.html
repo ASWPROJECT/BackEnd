@@ -17,6 +17,7 @@
       <h1 class="app-title">Issue Tracker</h1>
       <ul>
         <li><a href="http://127.0.0.1:8000">View all Issues</a></li>
+        <li><a href="http://127.0.0.1:8000/view_profile/">View profile</a></li>
         <li><a href="http://127.0.0.1:8000/user-settings/user-profile/">Edit profile</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
       </ul>
@@ -27,57 +28,59 @@
     <h1>Issues</h1>
     <div class="taskboard-actions">
       <div class="issue-table-options">
-        <form class="search-form" method="GET" action="http://127.0.0.1:8000">
-          <input class="search-bar" type="text" name="q" placeholder="subject or description" autocomplete="on">
-          <button type="submit" class="search-action-button"></button>
-        </form>
-
         <form class="filter-form" method="GET" action="http://127.0.0.1:8000">
-          <label for="status">Status:</label>
-          <select id="status" name="status">                
-              <option value=""></option>
-              <option value="New">New</option>
-              <option value="In progress">In progress</option>
-              <option value="Ready for test">Ready for test</option>
-              <option value="Closed">Closed</option>
-              <option value="Needs info">Needs info</option>
-              <option value="Rejected">Rejected</option>
-              <option value="Postponed">Postponed</option>
+          <input class="search-bar" type="text" name="q" placeholder="subject or description" autocomplete="on" value="{{q_s}}">
+
+          <label class="search-bar" for="status">Status:</label>
+          <select class="select-filters" id="status" name="status">                
+              <option value="" {% if status_s == '' %}selected{% endif %}></option>
+              <option value="New" {% if status_s == 'New' %}selected{% endif %}>New</option>
+              <option value="In progress" {% if status_s == 'In progress' %}selected{% endif %}>In progress</option>
+              <option value="Ready for test" {% if status_s == 'Ready for test' %}selected{% endif %}>Ready for test</option>
+              <option value="Closed" {% if status_s == 'Closed' %}selected{% endif %}>Closed</option>
+              <option value="Needs info" {% if status_s == 'Needs info' %}selected{% endif %}>Needs info</option>
+              <option value="Rejected" {% if status_s == 'Rejected' %}selected{% endif %}>Rejected</option>
+              <option value="Postponed" {% if status_s == 'Postponed' %}selected{% endif %}>Postponed</option>
           </select>
 
-          <label for="priority">Priority:</label>
-          <select id="priority" name="priority">
-              <option value=""></option>
-              <option value="Low">Low</option>
-              <option value="Normal">Normal</option>
-              <option value="High">High</option>
+          <label class="search-bar" for="priority">Priority:</label>
+          <select class="select-filters" id="priority" name="priority">
+              <option value="" {% if priority_s == '' %}selected{% endif %}></option>
+              <option value="Low" {% if priority_s == 'Low' %}selected{% endif %}>Low</option>
+              <option value="Normal" {% if priority_s == 'Normal' %}selected{% endif %}>Normal</option>
+              <option value="High" {% if priority_s == 'High' %}selected{% endif %}>High</option>
           </select>
 
-          <label for="creator">Created by:</label>
-          <select id="creator" name="creator">
-            <option value="" {% if issue.priority == '' %}selected{% endif %}></option>
+          <label class="search-bar" for="creator">Created by:</label>
+          <select class="select-filters" id="creator" name="creator">
+            <option value="" {% if creator_s == 'u' %}selected{% endif %}></option>
             {% for user in users %}
-            <option value="{{user.username}}">{{user.username}}</option>
+            <option value="{{user.username}}" {% if creator_s == user.username %}selected{% endif %}>{{user.username}}</option>
             {% endfor %}
           </select>
-        
-          <input type="submit" value="Filter">
-        </form>
-        <form class="ordering-form" method="GET" action="http://127.0.0.1:8000">
-          <label for="order_by">Order by:</label>
-          <select id="order_by" name="order_by">                
-              <option value=""></option>
-              <option value="Subject">Subject ascending</option>
-              <option value="-Subject">Subject descending</option>
-              <option value="Created_at">Created at ascending</option>
-              <option value="-Created_at">Created at descending</option>
+
+          <label class="search-bar" for="order_by">Order by:</label>
+          <select class="select-filters" id="order_by" name="order_by">                
+              <option value="" {% if order_by_s == '' %}selected{% endif %}></option>
+              <option value="Subject" {% if order_by_s == 'Subject' %}selected{% endif %}>Subject ascending</option>
+              <option value="-Subject" {% if order_by_s == '-Subject' %}selected{% endif %}>Subject descending</option>
+              <option value="Created_at" {% if order_by_s == 'Created_at' %}selected{% endif %}>Created at ascending</option>
+              <option value="-Created_at" {% if order_by_s == '-Created_at' %}selected{% endif %}>Created at descending</option>
           </select>
-          <input type="submit" value="Order">
+        
+          <button type="submit" class="search-action-button" title="Filter the selected params"></button>
+        </form>
+        <form class="filter-form" method="GET" action="http://127.0.0.1:8000">
+          <button type="submit" class="clear-filters-button" title="Clear filters"></button>
+        </form>  
       </div>
+      <br>  
+      <br>
+      <br>
       <div class="new-issue">
         <button class="new-issue-btn" onclick="window.location.href='/newIssues/'">NEW ISSUE</button>        
-        <button class="bulk-insert-btn" onclick="window.location.href='/bulk_insert/'"></button>        
-      </div>
+        <button class="bulk-insert-btn" onclick="window.location.href='/bulk_insert/'"></button>  
+      </div>            
     </div>  
     <br>  
     <br>
@@ -92,6 +95,9 @@
               <img src="/static/RedClock.png" width="20" height="20">
               <span>{{ issue.DeadLine }}</span>
             </div>
+            {% endif %}
+            {% if issue.Block_reason != None %}
+              <p widht="20" height="20">🔒</p>
             {% endif %}
           <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
             <input name="id" type="hidden" value="{{ issue.id }}" />

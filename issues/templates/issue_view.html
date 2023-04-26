@@ -66,7 +66,9 @@
                 <label>Asigned to</label>
                 <ul>
                     {% for user in issue.users %}
-                    <li><input type="checkbox" name="asigned_users[]" value= "{{user.username}}" />{{user.username}}</li>
+                    <li><input type="checkbox" name="asigned_users[]" value= "{{user.username}}"      
+                        {% if user.username in issue.asignedusers %}checked{% endif %}                        
+                        />{{user.username}}</li>
                     {% empty %}
                     <li>No hay usuarios disponibles</li>
                     {% endfor %}
@@ -76,10 +78,9 @@
                 <label>Watchers</label>
                 <ul>
                     {% for user in issue.users %}
-                    <form method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
-                        <li><input type="checkbox" name = "watchers[]" value = "{{user.username}}"> {{user.username}}</li>
-                        <input name="id" type="hidden" value="{{ issue.id }}" />
-                      </form>
+                        <li><input type="checkbox" name = "watchers[]" value = "{{user.username}}" 
+                            {% if user.username in issue.watchers %}checked{% endif %}
+                            > {{user.username}}</li>
                     {% empty %}
                     <li>No hay usuarios disponibles</li>
                     {% endfor %}
@@ -88,8 +89,19 @@
                 <input type="date" name="DeadLine" 
                 value="{{ issue.DeadLine.year }}-{% if issue.DeadLine.month < 10 %}0{{ issue.DeadLine.month }}{% else %}{{ issue.DeadLine.month }}{% endif %}-{% if issue.DeadLine.day < 10 %}0{{ issue.DeadLine.day }}{% else %}{{ issue.DeadLine.day }}{% endif %}" />
             </div>
+            <div class="block-block">
+                <button class="btn-block">
+                    <a href="http://127.0.0.1:8000/issue/{{issue.id}}/block_issue/">🔒</a>
+                </button>
+                <button class="btn-unblock">
+                    <a href="http://127.0.0.1:8000/issue/{{issue.id}}/desblock_issue/">🔓</a>
+                </button>
+                {% if issue.Block_reason != None %}
+                    <p class="block-reason">{{ issue.Block_reason }}</p>
+                {% endif %}
+            </div>
             <input name="id" type="hidden" value="{{ issue.id }}" />
-            <button class="save_button">Guardar</button>
+            <button class="save_button">Save</button>
         </fieldset>
       </form>
       <h1>Activities</h1>
@@ -116,6 +128,8 @@
         </ul>
       </div>
     </form>
+    <br>
+    <br>
     <div class="comments">
         <h1>Comments</h1>
         <div>
@@ -125,19 +139,20 @@
                 <input name="id" type="hidden" value="{{ issue.id }}" />
                 <textarea class="fs-textarea" name="Comment" placeholder="Type a new comment here" style="width: 100%; height: 40px;" required></textarea>
                 <br>
-                <input type="submit" name="create" class="create action-button" value="Create" />
+                <input type="submit" name="create" class="save_button" value="Create" />
               </fieldset>
             </form>
         </div>
-        <div>
+        <div class="comment">
             <ul>
                 {% for comment in comments %}
-                <p>{{ comment.creator_username }}</p>
-                <p>{{ comment.Comment }}</p>
-                <p>{{ comment.Created_at }}</p>
-                <hr>
-                {% empty %}
-                <li>No hay comments</li>
+                <li>
+                    <p>{{ comment.Creator }}</p>
+                    <p>{{ comment.Created_at }}</p>
+                    <p>{{ comment.Comment }}</p>
+                    {% empty %}
+                    <li>No hay comments</li>
+                </li>
                 {% endfor %}
             </ul>
         </div>        
@@ -149,8 +164,8 @@
                 <!-- fieldsets -->
                 <fieldset>
                 {% csrf_token %}
-                <input name="id" type="hidden" value="{{ issue.id }}" />
-                <input type="file" id="myfile" name="myfile" required><br><br>
+                <input name="Issue" type="hidden" value="{{ issue.id }}" />
+                <input type="file" id="File" name="File" required><br><br>
                 <input type="submit" value="Subir archivo">
                 </fieldset>
             </form>
@@ -172,6 +187,7 @@
             </ul>
         </div>
     </div>
+    <button class="close-button" onclick="location.href='http://127.0.0.1:8000'">X</button>
 </body>
 </html>
 

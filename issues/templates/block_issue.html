@@ -5,10 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-      body {
-        font-family: montserrat, arial, verdana;
-      }
-
       .lightbox{
         display: flex;
         align-content: center;
@@ -37,11 +33,6 @@
         margin-bottom: 1rem;
         color: #2e3440;
         font-weight: 400;
-      }
-      .main {
-        flex: 1;
-        min-width: 0;
-        padding: 1rem;
       }
       .lightbox fieldset {
         margin-bottom: 1rem;
@@ -122,26 +113,24 @@
       .close-button:hover {
         background-color: #c00;
       }
+      .form-wrapper {
+        align-items: center;
+        justify-content: center;
+      }
   </style>
 </head>
 <body>
   <div class = "lightbox">
-    <form class = "lightbox-form" method="POST" action="http://127.0.0.1:8000/newIssues/">
-      <h2 class="title">New Issue</h2>
-      <div>
-        <div class="form-wrapper">
-          <div class="main">
-            <fieldset>
-              <input type="text" name="Subject" placeholder="Subject" required data-lenght="500">
-            </fieldset>
-            <fieldset>
-              <textarea rows="7" name="Description" placeholder="Enter a description"></textarea>
-            </fieldset>
-          </div>
-        </div>
-        <div class="btn-container">
-          <input type="submit" name="create" class="create action-button" value="Create">
-        </div>
+    <form class = "lightbox-form" method="POST" action="">
+      <h2 class="title">Blocked request</h2>
+      {% csrf_token %}
+      <div class="form-wrapper">
+          <fieldset>
+            <textarea name="Block_reason" placeholder="Please explain the reason"></textarea>
+          </fieldset>
+          <div class="btn-container">
+            <input type="submit" name="create" class="create action-button" value="Save">
+          </div>    
       </div>
     </form>
   </div>
