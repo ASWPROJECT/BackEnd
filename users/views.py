@@ -59,7 +59,7 @@ def edit_user_profile_view(request):
     profile = None
     try:
         profile, created = Profile.objects.get_or_create(
-            user=request.user, url="https://issuetracker2asw.s3.eu-west-3.amazonaws.com/media/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png"
+            user=request.user
         )
     except:
         print("Error al crear el perfil")
@@ -84,7 +84,8 @@ def change_picture_profile_view(request):
             picture = Picture()
             picture.File = profile_picture
             picture.save()
-            profile.url = picture.File.url
+            profile.url = picture.File.url.split('?')[0]
+            profile.save()
 
     context = {
         'profile': profile, 'image_url': profile.url.split('?')[0]
