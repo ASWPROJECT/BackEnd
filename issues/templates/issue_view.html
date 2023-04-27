@@ -174,12 +174,15 @@
             <ul>
                 {% for file in files %}
                 <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/file/">
-                    <p>{{ file.Name }}</p>
+                    <a href="http://127.0.0.1:8000/download/file/{{file.id}}" download>
+                        {{ file.Name }}
+                    </a>
+                    <br>
                     <input name="id" type="hidden" value="{{ file.id }}" />
                     <input name="issue" type="hidden" value="{{ issue.id }}" />
                     {% load static %}
                     <button class="taiga-btn-delete"></button>
-                </form>        
+                </form>
                 <hr>
                 {% empty %}
                 <li>No hay attached files</li>
