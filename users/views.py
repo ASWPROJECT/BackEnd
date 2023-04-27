@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+
+from issuetracker2 import settings
 from .forms import CreateUserForm
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
@@ -67,8 +69,8 @@ def edit_user_profile_view(request):
         profile.save()
         messages.success(request, 'Your profile has been updated!')
 
-    context = {
-        'profile': profile, 'image_url': profile.url}
+    context = {'profile': profile,
+               'base_url': settings.BASE_URL}
     return render(request, 'user_configuration.html', context)
 
 @login_required
