@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'issue_view_styles.css'%}">
 </head>
 <body>
-    <form id="msform" method="POST" action="http://127.0.0.1:8000/editIssue/"> 
+    <form id="msform" method="POST" action="{{ base_url }}/editIssue/"> 
         {% csrf_token %}
         <fieldset>
             <div>
@@ -91,10 +91,10 @@
             </div>
             <div class="block-block">
                 <button class="btn-block">
-                    <a href="http://127.0.0.1:8000/issue/{{issue.id}}/block_issue/">🔒</a>
+                    <a href="{{ base_url }}/issue/{{issue.id}}/block_issue/">🔒</a>
                 </button>
                 <button class="btn-unblock">
-                    <a href="http://127.0.0.1:8000/issue/{{issue.id}}/desblock_issue/">🔓</a>
+                    <a href="{{ base_url }}/issue/{{issue.id}}/desblock_issue/">🔓</a>
                 </button>
                 {% if issue.Block_reason != None %}
                     <p class="block-reason">{{ issue.Block_reason }}</p>
@@ -133,7 +133,7 @@
     <div class="comments">
         <h1>Comments</h1>
         <div>
-            <form id="msform" method="POST" action="http://127.0.0.1:8000/add_comment/"> 
+            <form id="msform" method="POST" action="{{ base_url }}/add_comment/"> 
               <!-- fieldsets -->
               <fieldset>
                 <input name="id" type="hidden" value="{{ issue.id }}" />
@@ -160,7 +160,7 @@
     <div class="AttachedFiles">
         <h1>Attached files</h1>
         <div>
-            <form action="http://127.0.0.1:8000/add_file/" method="post" enctype="multipart/form-data">
+            <form action="{{ base_url }}/add_file/" method="post" enctype="multipart/form-data">
                 <!-- fieldsets -->
                 <fieldset>
                 {% csrf_token %}
@@ -174,7 +174,7 @@
             <ul>
                 {% for file in files %}
                 <li>
-                    <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/file/">
+                    <form id="msform" method="POST" action="{{ base_url }}/delete/file/">
                         <a href="http://127.0.0.1:8000/download/file/{{file.id}}" download>
                             {{ file.Name }}
                         </a>
@@ -191,7 +191,7 @@
             </ul>
         </div>
     </div>
-    <button class="close-button" onclick="location.href='http://127.0.0.1:8000'">X</button>
+    <button class="close-button" onclick="location.href='{{ base_url }}'">X</button>
 </body>
 </html>
 

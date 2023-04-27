@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .models import Issue
 from .models import AttachedFile
-import boto3
+from django.conf import settings
 
 
 # Create your views here.import requests
@@ -17,7 +17,7 @@ import boto3
 @login_required(login_url='login')
 def issues_view(request):
     params = request.GET
-    url = 'http://127.0.0.1:8000/api/issues?'
+    url = settings.BASE_URL + '/api/issues?'
     q = params.get('q', '')
     if q != '':
         url = url + "q=" + q
@@ -51,7 +51,8 @@ def issues_view(request):
                'status_s': status,
                'priority_s': priority,
                'creator_s': creator,
-               'order_by_s': order_by}
+               'order_by_s': order_by,
+               'base_url': settings.BASE_URL}
     
     # Renderizar la plantilla HTML y pasar los datos de los resultados
     return render(request, 'issues.html', context)
@@ -66,25 +67,25 @@ def new_issue_view(request):
         issue = {'Subject': subject,
                  'Description': description,
                 'Creator': creator_id}
-        requests.post('http://127.0.0.1:8000/api/issues', json = issue)
+        requests.post(settings.BASE_URL + '/api/issues', json = issue)
         return redirect('allIssues')
         
-    return render(request, 'new_issue.html')
+    context= {'base_url': settings.BASE_URL}
+
+    return render(request, 'new_issue.html', context)
 
 @login_required(login_url='login')
 @csrf_exempt
 def delete_by_id(request):
     id = request.POST.get('id')
     Issue.objects.filter(id=id).delete()
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(settings.BASE_URL)
 
 @login_required(login_url='login')
 def view_isue(request, issue_id):
     #Crida a la api per a obtenir tots els comments del issue
-    '''comments = requests.get('http://127.0.0.1:8000/api/comments?id=' + str(issue_id))
-    comments_json = comments.json()'''
 
-    files = requests.get('http://127.0.0.1:8000/api/files?id=' + str(issue_id))
+    files = requests.get(settings.BASE_URL + '/api/files?id=' + str(issue_id))
     files_json = files.json()
     issue = get_object_or_404(Issue, id=issue_id)
     User = get_user_model()
@@ -285,7 +286,7 @@ def edit_issue(request):
 
     issue.save()
 
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(settings.BASE_URL)
 
 @login_required(login_url='login')
 @csrf_exempt
@@ -298,7 +299,7 @@ def add_comment(request):
                    'Issue': issue,
                    'Creator': creator_id}
         print(comment_obj)
-        requests.post('http://127.0.0.1:8000/api/comments', json = comment_obj)
+        requests.post(settings.BASE_URL + '/api/comments', json = comment_obj)
         return HttpResponseRedirect('/issue/' + issue)
   
 
@@ -311,10 +312,11 @@ def bulk_insert(request):
         creator_id = User.objects.get(username=request.user.username).id
         for line in issues.splitlines():
             print(line)
-            issue = {'Subject': line,
-                     'Creator': creator_id}
-            requests.post('http://127.0.0.1:8000/api/issues', json = issue)
-        return HttpResponseRedirect('/')
+            context = {'Subject': line,
+                     'Creator': creator_id,
+                     'base_url': settings.BASE_URL}
+            requests.post(settings.BASE_URL + '/api/issues', json = context)
+        return HttpResponseRedirect(settings.BASE_URL)
 
     return render(request, 'bulk_insert.html')
 
@@ -374,9 +376,11 @@ def block_issue_view(request, issue_id):
             issue = issue,
             type = "Blocked"
         )
-        return redirect("http://127.0.0.1:8000/issue/"+str(issue_id))
+        return redirect(settings.BASE_URL + "/issue/"+str(issue_id))
     
-    return render(request, 'block_issue.html')
+    context = {'base_url': settings.BASE_URL}
+    
+    return render(request, 'block_issue.html', context)
 
 @login_required(login_url='login')
 @csrf_exempt
@@ -384,7 +388,7 @@ def desblock_issue_view(request, issue_id):
     issue = get_object_or_404(Issue, id=issue_id)
     issue.Block_reason = None
     issue.save()
-    return redirect("http://127.0.0.1:8000/issue/"+str(issue_id))
+    return redirect(settings.BASE_URL + "/issue/"+str(issue_id))
 
 @login_required(login_url='login')
 @csrf_exempt
@@ -393,6 +397,7 @@ def view_profile_view(request):
     assigned =Activity.objects.filter(user = request.user)
     activities = created.union(assigned).order_by('created_at')
 
-    context = {'activities': activities}
+    context = {'activities': activities,
+               'base_url': settings.BASE_URL}
     return render(request, 'view_profile.html', context)
 

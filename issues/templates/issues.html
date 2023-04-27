@@ -16,9 +16,9 @@
       <!-- Barra de navegación -->
       <h1 class="app-title">Issue Tracker</h1>
       <ul>
-        <li><a href="http://127.0.0.1:8000">Issues</a></li>
-        <li><a href="http://127.0.0.1:8000/view_profile/">My Activities</a></li>
-        <li><a href="http://127.0.0.1:8000/user-settings/user-profile/">Edit profile</a></li>
+        <li><a href={{ base_url }}>Issues</a></li>
+        <li><a href="{{ base_url }}/view_profile/">My Activities</a></li>
+        <li><a href="{{ base_url }}/user-settings/user-profile/">Edit profile</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
       </ul>
     </nav>
@@ -28,7 +28,7 @@
     <h1>Issues</h1>
     <div class="taskboard-actions">
       <div class="issue-table-options">
-        <form class="filter-form" method="GET" action="http://127.0.0.1:8000">
+        <form class="filter-form" method="GET" action={{ base_url }}>
           <input class="search-bar" type="text" name="q" placeholder="subject or description" autocomplete="on" value="{{q_s}}">
 
           <label class="search-bar" for="status">Status:</label>
@@ -70,7 +70,7 @@
         
           <button type="submit" class="search-action-button" title="Filter the selected params"></button>
         </form>
-        <form class="filter-form" method="GET" action="http://127.0.0.1:8000">
+        <form class="filter-form" method="GET" action={{ base_url }}>
           <button type="submit" class="clear-filters-button" title="Clear filters"></button>
         </form>  
       </div>
@@ -99,7 +99,7 @@
             {% if issue.Block_reason != None %}
               <p widht="20" height="20">🔒</p>
             {% endif %}
-          <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/Issue"> 
+          <form id="msform" method="POST" action="{{ base_url }}/delete/Issue"> 
             <input name="id" type="hidden" value="{{ issue.id }}" />
             {% load static %}
             <button class="taiga-btn-delete"></button>
