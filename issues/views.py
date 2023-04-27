@@ -1,6 +1,4 @@
-import base64
-import os
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -11,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .models import Issue
 from .models import AttachedFile
-import json
+from django.conf import settings
 
 
 # Create your views here.import requests
@@ -19,7 +17,7 @@ import json
 @login_required(login_url='login')
 def issues_view(request):
     params = request.GET
-    url = 'http://127.0.0.1:8000/api/issues?'
+    url = settings.BASE_URL + '/api/issues?'
     q = params.get('q', '')
     if q != '':
         url = url + "q=" + q
@@ -53,7 +51,8 @@ def issues_view(request):
                'status_s': status,
                'priority_s': priority,
                'creator_s': creator,
-               'order_by_s': order_by}
+               'order_by_s': order_by,
+               'base_url': settings.BASE_URL}
     
     # Renderizar la plantilla HTML y pasar los datos de los resultados
     return render(request, 'issues.html', context)
@@ -68,25 +67,25 @@ def new_issue_view(request):
         issue = {'Subject': subject,
                  'Description': description,
                 'Creator': creator_id}
-        requests.post('http://127.0.0.1:8000/api/issues', json = issue)
+        requests.post(settings.BASE_URL + '/api/issues', json = issue)
         return redirect('allIssues')
         
-    return render(request, 'new_issue.html')
+    context= {'base_url': settings.BASE_URL}
+
+    return render(request, 'new_issue.html', context)
 
 @login_required(login_url='login')
 @csrf_exempt
 def delete_by_id(request):
     id = request.POST.get('id')
     Issue.objects.filter(id=id).delete()
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(settings.BASE_URL)
 
 @login_required(login_url='login')
 def view_isue(request, issue_id):
     #Crida a la api per a obtenir tots els comments del issue
-    '''comments = requests.get('http://127.0.0.1:8000/api/comments?id=' + str(issue_id))
-    comments_json = comments.json()'''
 
-    files = requests.get('http://127.0.0.1:8000/api/files?id=' + str(issue_id))
+    files = requests.get(settings.BASE_URL + '/api/files?id=' + str(issue_id))
     files_json = files.json()
     issue = get_object_or_404(Issue, id=issue_id)
     User = get_user_model()
@@ -178,38 +177,55 @@ def edit_issue(request):
         print('No tiene watchers en la base de datos')
 
 
+    Activity.objects.filter(issue = issue, type = "watches").delete()
+    Activity.objects.filter(issue = issue, type = "assigned to").delete()
+
+
+    print('-------------------------- Borrado:')
+    print(len(Activity.objects.all()))
+
     if(len(watchers) > 0):
         for w in watchers_db:
             w.delete()
-        try:
-            for w in watchers:
+        for w in watchers:
+            try:
                 Watcher.objects.create(
                     User = User.objects.get(username = w),
                     Issue = issue,
                 )
-        except:
-            print("Ya existe")
+            except:
+                print("Ya existe")
+            Activity.objects.create(
+                    creator = User.objects.get(username=request.user.username),
+                    issue = issue,
+                    type = "watches",
+                    user = User.objects.get(username=w)
+            )    
+        print('CREADO')
     else:
         Watcher.objects.filter(Issue = issue).delete()
 
 
     if(len(users_asigned) > 0):
+        print(len(users_asigned))
         for u in asigned_users_db:
             u.delete()
-            for u in users_asigned:
-                try:
-                    AsignedUser.objects.create(
-                        User = User.objects.get(username=u),
-                        Issue = issue,
-                        )
-                except:
-                    print("Ya existe")
-                Activity.objects.create(
-                    creator = User.objects.get(username=request.user.username),
-                    issue = issue,
-                    type = "assigned to",
-                    user = User.objects.get(username=u)
-                )    
+        for u in users_asigned:
+            try:
+                AsignedUser.objects.create(
+                    User = User.objects.get(username=u),
+                    Issue = issue,
+                    )
+            except:
+                print("Ya existe")
+            Activity.objects.create(
+                creator = User.objects.get(username=request.user.username),
+                issue = issue,
+                type = "assigned to",
+                user = User.objects.get(username=u)
+            )
+            print('----------------------------')
+            print(request.user.username + ' ' + u)    
     else:
         AsignedUser.objects.filter(Issue = issue).delete()
         
@@ -270,7 +286,7 @@ def edit_issue(request):
 
     issue.save()
 
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(settings.BASE_URL)
 
 @login_required(login_url='login')
 @csrf_exempt
@@ -283,7 +299,7 @@ def add_comment(request):
                    'Issue': issue,
                    'Creator': creator_id}
         print(comment_obj)
-        requests.post('http://127.0.0.1:8000/api/comments', json = comment_obj)
+        requests.post(settings.BASE_URL + '/api/comments', json = comment_obj)
         return HttpResponseRedirect('/issue/' + issue)
   
 
@@ -296,10 +312,11 @@ def bulk_insert(request):
         creator_id = User.objects.get(username=request.user.username).id
         for line in issues.splitlines():
             print(line)
-            issue = {'Subject': line,
-                     'Creator': creator_id}
-            requests.post('http://127.0.0.1:8000/api/issues', json = issue)
-        return HttpResponseRedirect('/')
+            context = {'Subject': line,
+                     'Creator': creator_id,
+                     'base_url': settings.BASE_URL}
+            requests.post(settings.BASE_URL + '/api/issues', json = context)
+        return HttpResponseRedirect(settings.BASE_URL)
 
     return render(request, 'bulk_insert.html')
 
@@ -314,12 +331,30 @@ def remove_all_activities(request):
 def add_file(request):
     if request.method == 'POST':
         file = request.FILES.get('File')
-        
-        print('----------------------------------------------------------------')
-        print(file)
-        requests.put('https://wdjcnhfzwg.execute-api.eu-west-3.amazonaws.com/dev/issuetracker2asw/' + str(file), data = base64.b64encode(file.read()).decode('utf-8'))
-        #return HttpResponseRedirect('/issue/' + issue)
-        return HttpResponseRedirect('/')
+        issue_id = request.POST.get('Issue')
+        issue = Issue.objects.get(id=int(issue_id))
+        print(issue)
+
+        attachedFile = AttachedFile()
+        attachedFile.Issue = issue
+        attachedFile.File = file
+        attachedFile.Name = str(file)
+        attachedFile.save()
+
+        return HttpResponseRedirect('/issue/' + issue_id)
+
+@login_required(login_url='login')
+@csrf_exempt
+def download_file(request, id):
+    attachedFile = AttachedFile.objects.get(id=id)
+    print(id)
+    file_name = attachedFile.Name
+    file = attachedFile.File
+
+    response = HttpResponse(file, content_type='application')
+    response['Content-Disposition']=f'attachment; filename="{file_name}"'
+    return(response)
+
 
 @login_required(login_url='login')
 @csrf_exempt
@@ -341,9 +376,11 @@ def block_issue_view(request, issue_id):
             issue = issue,
             type = "Blocked"
         )
-        return redirect("http://127.0.0.1:8000/issue/"+str(issue_id))
+        return redirect(settings.BASE_URL + "/issue/"+str(issue_id))
     
-    return render(request, 'block_issue.html')
+    context = {'base_url': settings.BASE_URL}
+    
+    return render(request, 'block_issue.html', context)
 
 @login_required(login_url='login')
 @csrf_exempt
@@ -351,7 +388,7 @@ def desblock_issue_view(request, issue_id):
     issue = get_object_or_404(Issue, id=issue_id)
     issue.Block_reason = None
     issue.save()
-    return redirect("http://127.0.0.1:8000/issue/"+str(issue_id))
+    return redirect(settings.BASE_URL + "/issue/"+str(issue_id))
 
 @login_required(login_url='login')
 @csrf_exempt
@@ -360,6 +397,7 @@ def view_profile_view(request):
     assigned =Activity.objects.filter(user = request.user)
     activities = created.union(assigned).order_by('created_at')
 
-    context = {'activities': activities}
+    context = {'activities': activities,
+               'base_url': settings.BASE_URL}
     return render(request, 'view_profile.html', context)
 

@@ -40,5 +40,6 @@ activities = (
     ('tags added', 'tags added'),
     ('Blocked', 'Blocked'),
     ('sprint', 'sprint'),
+    ('watches', 'watches'),
     ('promoted to', 'promoted to')   
 )
