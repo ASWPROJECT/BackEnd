@@ -13,10 +13,8 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 def register_view(request):
     if request.user.is_authenticated:
-        print("REGISTER 2")
         return redirect('allIssues')
     else:
-        print("REGISTER")
         form = CreateUserForm()
         if request.method == 'POST':
             form = CreateUserForm(request.POST)
@@ -31,10 +29,8 @@ def register_view(request):
     
 def login_view(request):
     if request.user.is_authenticated:
-        print("la tenc petita")
         return redirect('allIssues')
     else:
-        print("LOGIN")
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
@@ -82,14 +78,10 @@ def change_picture_profile_view(request):
 
     if request.method == 'POST':
         profile_picture = request.FILES.get('image')
-        print(profile_picture)
         if profile_picture:
-            # Guardar la imagen en el modelo Profile
             profile.image_url = profile.image.url.split('?')[0]
             profile.image = profile_picture
             profile.save()
-            print(profile.image)
-            print(profile.image.url)
 
     context = {
         'profile': profile
