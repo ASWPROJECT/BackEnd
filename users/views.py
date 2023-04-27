@@ -75,3 +75,23 @@ def edit_user_profile_view(request):
 
     context = {'profile': profile}
     return render(request, 'user_configuration.html', context)
+
+@login_required
+def change_picture_profile_view(request):
+    profile = Profile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        profile_picture = request.FILES.get('image')
+        print(profile_picture)
+        if profile_picture:
+            # Guardar la imagen en el modelo Profile
+            profile.image_url = profile.image.url.split('?')[0]
+            profile.image = profile_picture
+            profile.save()
+            print(profile.image)
+            print(profile.image.url)
+
+    context = {
+        'profile': profile
+    }
+    return render(request, 'user_configuration.html', context)
