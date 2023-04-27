@@ -70,7 +70,8 @@ def edit_user_profile_view(request):
         messages.success(request, 'Your profile has been updated!')
 
     context = {'profile': profile,
-               'base_url': settings.BASE_URL}
+               'base_url': settings.BASE_URL,
+               'image_url': profile.url}
     return render(request, 'user_configuration.html', context)
 
 @login_required
