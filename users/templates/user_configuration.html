@@ -55,8 +55,8 @@
         }
 
         .profile-pic {
-          width: 100px;
-          height: 100px;
+          width: 150px;
+          height: 150px;
           object-fit: cover;
         }
       </style>
@@ -82,7 +82,7 @@
         {% csrf_token %}
         <fieldset>
           <label for="image">Profile picture:</label>
-          <img src="{{profile.image_url}}"><br>
+          <img class="profile-pic" src="{{profile.image_url}}"><br>
           <input type="file" name="image" value="{{profile.image.url}}">
           <button type="submit" class="btn-small change-photo-btn">Change photo</button>
         </fieldset>
