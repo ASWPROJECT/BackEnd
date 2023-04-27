@@ -82,11 +82,12 @@ def change_picture_profile_view(request):
 
     if request.method == 'POST':
         profile_picture = request.FILES.get('image')
+        print(profile_picture)
         if profile_picture:
             # Guardar la imagen en el modelo Profile
             profile.image = profile_picture
             profile.save()
-            print(profile.image.url)
+            print(profile.image)
 
     context = {
         'profile': profile

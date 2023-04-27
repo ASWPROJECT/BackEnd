@@ -82,11 +82,9 @@
         {% csrf_token %}
         <fieldset>
           <label for="image">Profile picture:</label>
+          <img src="{{MEDIA_URL}}{{profile.image}}"><br>
           <input type="file" name="image" value="{{profile.image}}">
-          {% if profile.image %}
-          <img src="{{ profile.image.url }}" alt="{{ profile.user.username }}'s profile picture">
-        {% endif %}
-        <button type="submit" class="btn-small change-photo-btn">Change photo</button>
+          <button type="submit" class="btn-small change-photo-btn">Change photo</button>
         </fieldset>
       </form>
       <form method="POST" action="">

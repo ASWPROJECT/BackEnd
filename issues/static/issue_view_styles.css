@@ -111,7 +111,6 @@ body {
 .taiga-btn-delete {
     border: none;
     padding-bottom: 20px;
-    margin: 1000px;
     width: 30px;
     height: 30px;
     background: url("/static/delete.png") no-repeat center center;
