@@ -165,25 +165,26 @@
                 <fieldset>
                 {% csrf_token %}
                 <input name="Issue" type="hidden" value="{{ issue.id }}" />
-                <input type="file" id="File" name="File" required><br><br>
-                <input type="submit" value="Subir archivo">
+                <input class="custom-file-input" type="file" id="File" name="File" required><br><br>
+                <input class="submit_button" type="submit" value="Subir archivo">
                 </fieldset>
             </form>
         </div>
         <div>
             <ul>
                 {% for file in files %}
-                <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/file/">
-                    <a href="http://127.0.0.1:8000/download/file/{{file.id}}" download>
-                        {{ file.Name }}
-                    </a>
-                    <br>
-                    <input name="id" type="hidden" value="{{ file.id }}" />
-                    <input name="issue" type="hidden" value="{{ issue.id }}" />
-                    {% load static %}
-                    <button class="taiga-btn-delete"></button>
-                </form>
-                <hr>
+                <li>
+                    <form id="msform" method="POST" action="http://127.0.0.1:8000/delete/file/">
+                        <a href="http://127.0.0.1:8000/download/file/{{file.id}}" download>
+                            {{ file.Name }}
+                        </a>
+                        <br>
+                        <input name="id" type="hidden" value="{{ file.id }}" />
+                        <input name="issue" type="hidden" value="{{ issue.id }}" />
+                        {% load static %}
+                        <button class="taiga-btn-delete"></button>
+                    </form>
+                </li>
                 {% empty %}
                 <li>No hay attached files</li>
                 {% endfor %}

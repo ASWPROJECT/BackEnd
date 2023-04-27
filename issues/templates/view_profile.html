@@ -10,7 +10,7 @@
         div {
             width: 80%;
             max-width: 800px;
-            margin: 50px auto;
+            margin: 0px auto;
             background-color: #fff;
             padding: 40px;
             border-radius: 10px;
@@ -21,7 +21,37 @@
             border: 1px solid #ddd;
             padding: 20px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 0px;
+        }
+        .activity ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .activity li {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+            margin-bottom: 0px;
+        }
+        
+        .activity p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .activity p:first-child {
+            font-weight: bold;
+            color: #18d6b3;
+        }
+
+        .activity p:nth-of-type(2) {
+            font-style: italic;
+            color: #999;
         }
     </style>
 </head>
@@ -32,8 +62,8 @@
           <!-- Barra de navegación -->
           <h1 class="app-title">Issue Tracker</h1>
           <ul>
-            <li><a href="http://127.0.0.1:8000">View all Issues</a></li>
-            <li><a href="http://127.0.0.1:8000/view_profile/">View profile</a></li>
+            <li><a href="http://127.0.0.1:8000">Issues</a></li>
+            <li><a href="http://127.0.0.1:8000/view_profile/">My Activities</a></li>
             <li><a href="http://127.0.0.1:8000/user-settings/user-profile/">Edit profile</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
           </ul>
