@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from issues.views import issues_view, new_issue_view, delete_by_id, view_isue, edit_issue, add_comment, bulk_insert, remove_all_activities,  add_file, delete_file, block_issue_view, desblock_issue_view, view_profile_view
+from issues.views import issues_view, new_issue_view, delete_by_id, view_isue, edit_issue, add_comment, bulk_insert, remove_all_activities,  add_file, delete_file, block_issue_view, desblock_issue_view, view_profile_view, download_file
 from users.views import register_view, login_view, logout_view, edit_user_profile_view, change_picture_profile_view
 
 urlpatterns = [
@@ -36,6 +36,7 @@ urlpatterns = [
     path('user-settings/user-profile/', edit_user_profile_view, name='edit_user_profile'),
     path('add_file/', add_file, name='addFile'),
     path('delete/file/', delete_file, name='deleteFile'),
+    path('download/file/<int:id>', download_file, name='downloadFile'),
     path('issue/<int:issue_id>/block_issue/', block_issue_view, name='block_issue'),
     path('issue/<int:issue_id>/desblock_issue/', desblock_issue_view, name='desblock_issue'),
     path('view_profile/', view_profile_view, name='view_profile'),

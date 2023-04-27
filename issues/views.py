@@ -1,6 +1,4 @@
-import base64
-import os
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -11,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .models import Issue
 from .models import AttachedFile
-import json
+import boto3
 
 
 # Create your views here.import requests
@@ -314,12 +312,31 @@ def remove_all_activities(request):
 def add_file(request):
     if request.method == 'POST':
         file = request.FILES.get('File')
-        
-        print('----------------------------------------------------------------')
-        print(file)
-        requests.put('https://wdjcnhfzwg.execute-api.eu-west-3.amazonaws.com/dev/issuetracker2asw/' + str(file), data = base64.b64encode(file.read()).decode('utf-8'))
-        #return HttpResponseRedirect('/issue/' + issue)
-        return HttpResponseRedirect('/')
+        issue_id = request.POST.get('Issue')
+        issue = Issue.objects.get(id=int(issue_id))
+        print(issue)
+
+        attachedFile = AttachedFile()
+        attachedFile.Issue = issue
+        attachedFile.File = file
+        attachedFile.Name = str(file)
+        attachedFile.save()
+
+        #requests.put('https://wdjcnhfzwg.execute-api.eu-west-3.amazonaws.com/dev/issuetracker2asw/' + str(file), data = base64.b64encode(file.read()).decode('utf-8'))
+        return HttpResponseRedirect('/issue/' + issue_id)
+
+@login_required(login_url='login')
+@csrf_exempt
+def download_file(request, id):
+    attachedFile = AttachedFile.objects.get(id=id)
+    print(id)
+    file_name = attachedFile.Name
+    file = attachedFile.File
+
+    response = HttpResponse(file, content_type='application/pdf')
+    response['Content-Disposition']=f'attachment; filename="{file_name}"'
+    return(response)
+
 
 @login_required(login_url='login')
 @csrf_exempt
