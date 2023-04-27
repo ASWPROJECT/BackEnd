@@ -6,5 +6,6 @@ class Profile(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 	image = models.ImageField(null=True)
 	bio = models.TextField(max_length=500, null=True, blank=True)
+	image_url = models.CharField(max_length=500, null=True)
 
 	
