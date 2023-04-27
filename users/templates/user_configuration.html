@@ -48,6 +48,17 @@
             min-height: 10rem;
             resize: vertical;
         }
+
+        .change-photo-btn {
+          display: block;
+          margin-top: 10px;
+        }
+
+        .profile-pic {
+          width: 150px;
+          height: 150px;
+          object-fit: cover;
+        }
       </style>
   </head>
   <body>
@@ -58,8 +69,8 @@
         <!-- Barra de navegación -->
         <h1 class="app-title">Issue Tracker</h1>
         <ul>
-          <li><a href="http://127.0.0.1:8000">View all Issues</a></li>
-          <li><a href="http://127.0.0.1:8000/view_profile/">View profile</a></li>
+          <li><a href="http://127.0.0.1:8000">Issues</a></li>
+          <li><a href="http://127.0.0.1:8000/view_profile/">My activities</a></li>
           <li><a href="http://127.0.0.1:8000/user-settings/user-profile/">Edit profile</a></li>
           <li><a href="{% url 'logout' %}">Logout</a></li>
         </ul>
@@ -67,6 +78,15 @@
     </header> 
     <section class="main user-profile">
       <h1>User configuration</h1>
+      <form method="POST" action="{% url 'picture_profile' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+          <label for="image">Profile picture:</label>
+          <img class="profile-pic" src="{{profile.image_url}}"><br>
+          <input type="file" name="image" value="{{profile.image.url}}">
+          <button type="submit" class="btn-small change-photo-btn">Change photo</button>
+        </fieldset>
+      </form>
       <form method="POST" action="">
         {% csrf_token %}
         <fieldset>
