@@ -176,38 +176,55 @@ def edit_issue(request):
         print('No tiene watchers en la base de datos')
 
 
+    Activity.objects.filter(issue = issue, type = "watches").delete()
+    Activity.objects.filter(issue = issue, type = "assigned to").delete()
+
+
+    print('-------------------------- Borrado:')
+    print(len(Activity.objects.all()))
+
     if(len(watchers) > 0):
         for w in watchers_db:
             w.delete()
-        try:
-            for w in watchers:
+        for w in watchers:
+            try:
                 Watcher.objects.create(
                     User = User.objects.get(username = w),
                     Issue = issue,
                 )
-        except:
-            print("Ya existe")
+            except:
+                print("Ya existe")
+            Activity.objects.create(
+                    creator = User.objects.get(username=request.user.username),
+                    issue = issue,
+                    type = "watches",
+                    user = User.objects.get(username=w)
+            )    
+        print('CREADO')
     else:
         Watcher.objects.filter(Issue = issue).delete()
 
 
     if(len(users_asigned) > 0):
+        print(len(users_asigned))
         for u in asigned_users_db:
             u.delete()
-            for u in users_asigned:
-                try:
-                    AsignedUser.objects.create(
-                        User = User.objects.get(username=u),
-                        Issue = issue,
-                        )
-                except:
-                    print("Ya existe")
-                Activity.objects.create(
-                    creator = User.objects.get(username=request.user.username),
-                    issue = issue,
-                    type = "assigned to",
-                    user = User.objects.get(username=u)
-                )    
+        for u in users_asigned:
+            try:
+                AsignedUser.objects.create(
+                    User = User.objects.get(username=u),
+                    Issue = issue,
+                    )
+            except:
+                print("Ya existe")
+            Activity.objects.create(
+                creator = User.objects.get(username=request.user.username),
+                issue = issue,
+                type = "assigned to",
+                user = User.objects.get(username=u)
+            )
+            print('----------------------------')
+            print(request.user.username + ' ' + u)    
     else:
         AsignedUser.objects.filter(Issue = issue).delete()
         
@@ -332,7 +349,7 @@ def download_file(request, id):
     file_name = attachedFile.Name
     file = attachedFile.File
 
-    response = HttpResponse(file, content_type='application/pdf')
+    response = HttpResponse(file, content_type='application')
     response['Content-Disposition']=f'attachment; filename="{file_name}"'
     return(response)
 
