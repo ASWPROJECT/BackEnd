@@ -126,7 +126,7 @@
 </head>
 <body>
   <div class = "lightbox">
-    <form class = "lightbox-form" method="POST" action="http://127.0.0.1:8000/newIssues/">
+    <form class = "lightbox-form" method="POST" action="{{ base_url }}/newIssues/">
       <h2 class="title">New Issue</h2>
       <div>
         <div class="form-wrapper">
@@ -145,5 +145,5 @@
       </div>
     </form>
   </div>
-  <button class="close-button" onclick="location.href='http://127.0.0.1:8000'">X</button>
+  <button class="close-button" onclick="location.href='{{ base_url }}'">X</button>
 </body>
