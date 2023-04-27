@@ -322,7 +322,6 @@ def add_file(request):
         attachedFile.Name = str(file)
         attachedFile.save()
 
-        #requests.put('https://wdjcnhfzwg.execute-api.eu-west-3.amazonaws.com/dev/issuetracker2asw/' + str(file), data = base64.b64encode(file.read()).decode('utf-8'))
         return HttpResponseRedirect('/issue/' + issue_id)
 
 @login_required(login_url='login')
