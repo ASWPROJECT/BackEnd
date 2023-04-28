@@ -91,3 +91,28 @@ def change_picture_profile_view(request):
         'profile': profile, 'image_url': profile.url.split('?')[0]
     }
     return render(request, 'user_configuration.html', context)
+
+@login_required
+def view_profile(request, username):
+    user = User.objects.get(username=username)
+    try:
+        profile, created = Profile.objects.get_or_create(
+            user=user
+        )
+    except:
+        print("Error al crear el perfil")
+
+    context = {'profile': profile,
+               'base_url': settings.BASE_URL,
+               'image_url': profile.url}
+    
+    return render(request, 'profile.html', context)
+
+
+@login_required
+def view_users(request):
+    users = User.objects.all()
+    print(users)
+    context = {'users': users,
+               'base_url': settings.BASE_URL}
+    return render(request, 'users_list.html', context)

@@ -71,7 +71,6 @@
         <ul>
           <li><a href="{{ base_url }}">Issues</a></li>
           <li><a href="{{ base_url }}/view_profile/">My activities</a></li>
-          <li><a href="{{ base_url }}/list_users/">Users</a></li>
           <li><a href="{{ base_url }}/user-settings/user-profile/">Edit profile</a></li>
           <li><a href="{% url 'logout' %}">Logout</a></li>
         </ul>
@@ -84,8 +83,6 @@
         <fieldset>
           <label for="image">Profile picture:</label>
           <img class="profile-pic" src="{{image_url}}"><br>
-          <input type="file" name="image">
-          <button type="submit" class="btn-small change-photo-btn">Change photo</button>
         </fieldset>
       </form>
       <form method="POST" action="">
@@ -112,14 +109,12 @@
   
         <fieldset>
           <label for="bio">Bio (max. 500 characters):</label>
-          <textarea name="bio" id="bio" placeholder="Tell us something about you">{% if profile.bio != None %}{{ profile.bio }}{% endif %}</textarea>
+          <textarea name="bio" id="bio" readonly placeholder="Tell us something about you">{% if profile.bio != None %}{{ profile.bio }}{% endif %}</textarea>
         </fieldset>
 
         {% for message in messages %}
           <div class="messages">{{ message }}</div>
         {% endfor %}
-
-        <button type="submit" class="btn-small">Save changes</button>
       </form>
     </section>
   </body>

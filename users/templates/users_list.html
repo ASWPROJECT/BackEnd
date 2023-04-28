@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Issues</title>
+      <style>
+        /* Establecer la fuente y el color de fondo */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+        }
+
+        /* Estilo del encabezado */
+        header {
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+          
+        /* Estilo del título de la aplicación */
+        .app-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+        }
+      
+        /* Estilo de la barra de navegación */
+        nav {
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+          
+        /* Estilo del título de la aplicación */
+        .app-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            margin: 0;
+        }
+          
+        /* Estilo de la lista de enlaces */
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+          
+        /* Estilo de los enlaces */
+        nav li {
+            margin-right: 20px;
+        }
+          
+        nav a {
+            text-decoration: none;
+            color: #333333;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+          
+        nav a:hover {
+            color: #3C91E6;
+        }        
+        
+        .user_ul {
+          text-decoration: none;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .user{
+          text-decoration: none;
+          color: black;
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+          
+        }
+        .user_ul li {
+          text-decoration: none;
+          color: black;
+          margin-bottom: 2rem;
+          margin-top: 4rem;
+        }
+
+
+
+      </style>
+  </head>
+  <body>
+    <header> 
+      <!-- Encabezado de la página -->
+      <nav>
+        <!-- Barra de navegación -->
+        <h1 class="app-title">Issue Tracker</h1>
+        <ul>
+          <li><a href={{ base_url }}>Issues</a></li>
+          <li><a href="{{ base_url }}/view_profile/">My Activities</a></li>
+          <li><a href="{{ base_url }}/list_users/">Users</a></li>
+          <li><a href="{{ base_url }}/user-settings/user-profile/">Edit profile</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+      </nav>
+    </header>   
+      <ul class="user_ul">
+        {% for user in users %}
+        <li><a class="user" href='{{base_url}}/profile/{{user.username}}'>{{user.username}}</a></li>
+        {% empty %}
+        <li>No hay usuarios disponibles</li>
+        {% endfor %}
+      </ul>
+  </body>
+</html>
