@@ -76,17 +76,24 @@
           margin: 0;
         }
 
-        .user {
+        .user{
           text-decoration: none;
           color: black;
           background-color: #fff;
           padding: 20px;
           border-radius: 10px;
           box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
-          margin-bottom: 0px;
-          margin: 200;
+          
         }
-      
+        .user_ul li {
+          text-decoration: none;
+          color: black;
+          margin-bottom: 2rem;
+          margin-top: 4rem;
+        }
+
+
+
       </style>
   </head>
   <body>
@@ -106,7 +113,7 @@
     </header>   
       <ul class="user_ul">
         {% for user in users %}
-        <li><a class="user" href='{{base_url}}/profile/{{user.username}}'>{{user.username}}</a>
+        <li><a class="user" href='{{base_url}}/profile/{{user.username}}'>{{user.username}}</a></li>
         {% empty %}
         <li>No hay usuarios disponibles</li>
         {% endfor %}
