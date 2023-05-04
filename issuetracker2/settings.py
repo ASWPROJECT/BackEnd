@@ -157,3 +157,7 @@ MEDIA_URL = "https://s3.amazonaws.com/%s/media/" % AWS_STORAGE_BUCKET_NAME
 
 #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'issuetracker2.storage_backends.PublicMediaStorage'
+
+# Configure Django App for Heroku.
+import django_on_heroku
+django_on_heroku.settings(locals())
