@@ -18,7 +18,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # url base
-BASE_URL = "http://127.0.0.1:8000"
+#ASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "https://git.heroku.com/issuetracker2-asw.git"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -160,6 +161,7 @@ MEDIA_URL = "https://s3.amazonaws.com/%s/media/" % AWS_STORAGE_BUCKET_NAME
 
 #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'issuetracker2.storage_backends.PublicMediaStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Configure Django App for Heroku.
 import django_on_heroku
