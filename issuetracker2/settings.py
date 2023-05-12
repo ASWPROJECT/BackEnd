@@ -18,8 +18,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # url base
-#ASE_URL = "http://127.0.0.1:8000"
-BASE_URL = "https://issuetracker2-asw.herokuapp.com"
+BASE_URL = "http://127.0.0.1:8000"
+#BASE_URL = "https://issuetracker2-asw.herokuapp.com"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
