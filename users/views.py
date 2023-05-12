@@ -11,6 +11,9 @@ from .forms import CreateUserForm
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from rest_framework.authtoken.models import Token
+import requests
+from rest_framework.decorators import api_view
 
 # Create your views here.
 def register_view(request):
@@ -21,13 +24,26 @@ def register_view(request):
         if request.method == 'POST':
             form = CreateUserForm(request.POST)
             if form.is_valid():
-                form.save()
-                user = form.cleaned_data.get('username')
-                messages.success(request, f"Account with username ({user}) was created successfully")
-                return redirect('login')
+                user = form.save()
+                username = form.cleaned_data.get('username')
+                
+                # Make a request to the token authentication endpoint
+                url = settings.BASE_URL + '/api-token-auth/'
+
+                response = requests.post(url, data={
+                    'username': username,
+                    'password': form.cleaned_data.get('password1')
+                })
+                
+                if response.status_code == 200:
+                    #token = response.json().get('token')                    
+                    messages.success(request, f"Account with username ({username}) was created successfully")
+                    return redirect('login')
+                else:
+                    messages.error(request, 'Authentication failed')
             
         context = {'form': form}
-        return render(request, 'register.html', context)
+        return render(request, 'register.html', context)    
     
 def login_view(request):
     if request.user.is_authenticated:

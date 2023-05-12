@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from issues.views import issues_view, new_issue_view, delete_by_id, view_isue, edit_issue, add_comment, bulk_insert, remove_all_activities,  add_file, delete_file, block_issue_view, desblock_issue_view, view_profile_view, download_file
 from users.views import register_view, login_view, logout_view, edit_user_profile_view, change_picture_profile_view, view_profile, view_users
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -42,5 +43,7 @@ urlpatterns = [
     path('view_profile/', view_profile_view, name='view_profile'),
     path('change_picture_profile/', change_picture_profile_view, name='picture_profile'),
     path('profile/<str:username>', view_profile, name='view_profile'),
-    path('list_users/', view_users, name='view_users')
+    path('list_users/', view_users, name='view_users'),
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),  
+
 ]

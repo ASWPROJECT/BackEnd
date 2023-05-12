@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'storages',
     'issues',
     'users',
-    'social_django'
+    'social_django',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -166,3 +167,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Configure Django App for Heroku.
 import django_on_heroku
 django_on_heroku.settings(locals())
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication', 
+    ]
+}
