@@ -1,17 +1,22 @@
-from issues import models, serializers
+from rest_framework.response import Response
+from rest_framework import status
+from issues.models import *
+from issues.serializers import *
 from rest_framework import generics
 from django.db.models import Q
+from rest_framework.views import APIView
+
 
 
 class IssuesView(generics.ListCreateAPIView):
-    serializer_class = serializers.IssueSerializer
+    serializer_class = IssueSerializer
 
     def get_queryset(self):
         order_by = self.request.query_params.get('order_by')
         if order_by is not None:
-            queryset = models.Issue.objects.all().order_by(order_by)
+            queryset = Issue.objects.all().order_by(order_by)
         else:
-            queryset = models.Issue.objects.all()
+            queryset = Issue.objects.all()
 
         q = self.request.query_params.get('q')
         if q is not None:
@@ -31,11 +36,22 @@ class IssuesView(generics.ListCreateAPIView):
         return queryset
 
 
+class ViewIssue(APIView):
+
+    def get(self, request, pk):
+        try:
+            issue = Issue.objects.get(pk=pk)
+        except Issue.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = IssueDetailSerializer(issue)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class CommentsView(generics.ListCreateAPIView):
-    serializer_class = serializers.CommentSerializer
+    serializer_class = CommentSerializer
 
     def get_queryset(self):
-        queryset = models.Comment.objects.all().order_by('-Created_at')
+        queryset = Comment.objects.all().order_by('-Created_at')
 
         id = self.request.query_params.get('id')
         if id is not None:
@@ -43,10 +59,10 @@ class CommentsView(generics.ListCreateAPIView):
         return queryset
     
 class FilesView(generics.ListCreateAPIView):
-    serializer_class = serializers.FileSerializer
+    serializer_class = FileSerializer
 
     def get_queryset(self):
-        queryset = models.AttachedFile.objects.all()
+        queryset = AttachedFile.objects.all()
 
         id = self.request.query_params.get('id')
         if id is not None:

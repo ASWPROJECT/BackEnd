@@ -27,16 +27,18 @@ class Comment(models.Model):
     Issue = models.ForeignKey(Issue, to_field='id', related_name='comments', null=False, on_delete=models.CASCADE)
     Creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', null=True)
 
+
 class Activity(models.Model):
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_activities')
-    created_at = models.DateTimeField(auto_now_add=True)
-    issue = models.ForeignKey(Issue, to_field='id', null=False, on_delete=models.CASCADE)
-    type = models.CharField(max_length=50, choices=choices.activities, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_activities')
+    Creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='activities')
+    Created_at = models.DateTimeField(auto_now_add=True)
+    Issue = models.ForeignKey(Issue, to_field='id', null=False, on_delete=models.CASCADE, related_name='activities')
+    Type = models.CharField(max_length=50, choices=choices.activities, null=True, blank=True)
+    User = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_activities')
+
 
 class AsignedUser(models.Model):
-    User = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    Issue = models.ForeignKey(Issue, to_field='id', null=False, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_users')
+    Issue = models.ForeignKey(Issue, to_field='id', null=False, on_delete=models.CASCADE, related_name='assigned_users')
 
     class Meta:
         constraints = [
@@ -47,8 +49,8 @@ class AsignedUser(models.Model):
 
 
 class Watcher(models.Model):
-    User = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    Issue = models.ForeignKey(Issue, to_field='id', null=False, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='watchers')
+    Issue = models.ForeignKey(Issue, to_field='id', null=False, on_delete=models.CASCADE, related_name='watchers') 
     class Meta:
         constraints = [
             models.UniqueConstraint(

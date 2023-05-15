@@ -8,7 +8,6 @@ class IssueSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class CommentSerializer(serializers.ModelSerializer):
     #Created_at = serializers.DateTimeField(format="%d %b %Y %H:%M")
     creator_username = serializers.CharField(source='Creator.username', read_only=True)
@@ -43,4 +42,16 @@ class WatcherSerializer(serializers.ModelSerializer):
 class AttachedFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.AttachedFile
+        fields = '__all__'
+
+
+class IssueDetailSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(many=True)
+    files = FileSerializer(many=True)
+    activities = ActivitySerializer(many=True)
+    assigned_users = AsignedUserSerializer(many=True)
+    watchers = WatcherSerializer(many=True)
+
+    class Meta:
+        model = models.Issue
         fields = '__all__'
