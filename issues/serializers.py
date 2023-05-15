@@ -46,11 +46,11 @@ class AttachedFileSerializer(serializers.ModelSerializer):
 
 
 class IssueDetailSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True)
-    files = FileSerializer(many=True)
-    activities = ActivitySerializer(many=True)
-    assigned_users = AsignedUserSerializer(many=True)
-    watchers = WatcherSerializer(many=True)
+    comments = CommentSerializer(many=True, read_only=True)
+    files = FileSerializer(many=True, read_only=True)
+    activities = ActivitySerializer(many=True, read_only=True)
+    assigned_users = AsignedUserSerializer(many=True, read_only=True)
+    watchers = WatcherSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.Issue

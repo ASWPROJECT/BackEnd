@@ -5,7 +5,7 @@ from issues import choices
 # Create your models here.
 
 class Issue(models.Model):
-    Subject = models.CharField(max_length=250)
+    Subject = models.CharField(max_length=250, null=True, blank=True)
     Description = models.TextField(max_length=500, null=True, blank=True)
     Created_at = models.DateTimeField(auto_now_add=True)
     Status = models.CharField(max_length=50, choices=choices.status, null=True, blank=True)
