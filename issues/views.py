@@ -4,6 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 import requests
+
+from issues.serializers import AttachedFileSerializer
 from .models import AsignedUser, Issue, Activity, Watcher, Comment
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -410,3 +412,41 @@ def view_profile_view(request):
                'base_url': settings.BASE_URL}
     return render(request, 'view_profile.html', context)
 
+
+@login_required(login_url='login')
+@api_view(['GET', 'POST', 'DELETE'])
+@csrf_exempt
+def file(request):
+    try:
+        file = AttachedFile.objects.get(id = request.AttachedFile.id)
+    except AttachedFile.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    serializer = AttachedFileSerializer(file, data=request.data, partial= True)
+
+    if request.method == 'GET':
+        serializer = AttachedFileSerializer(file)
+        return Response(serializer.data)
+    
+    if request.method == 'POST':
+        issue_id = request.data.get('Issue')        
+
+        if Issue.objects.exists(id=int(issue_id)):
+            if serializer.is_valid():
+                issue = Issue.objects.get(id=int(issue_id))
+                file = request.FILES.get('File')
+                attachedFile = AttachedFile()
+                attachedFile.Issue = issue
+                attachedFile.File = file
+                attachedFile.Name = str(file)
+                attachedFile.save()
+                return Response(serializer.data)
+        else:
+            return Response({'error': 'El issue con id \'' + issue_id + '\' no esitse'} , status=status.HTTP_400_BAD_REQUEST)
+        
+    if request.method == 'DELETE':
+        id = request.POST.get('id')
+        try:
+            AttachedFile.objects.filter(id=id).delete()
+            return Response({'success': True, 'message': 'File deleted'})
+        except:
+            return Response({'error': 'El file con id \'' + id + '\' no esitse'} , status=status.HTTP_400_BAD_REQUEST)
