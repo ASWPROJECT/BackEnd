@@ -98,7 +98,7 @@ def change_picture_profile_view(request):
     return render(request, 'user_configuration.html', context)
 
 @login_required
-@api_view('GET')
+@api_view(['GET'])
 def view_profile(request, username):
     user = Profile.objects.get(username=username)
     if request.method == 'GET':
@@ -114,7 +114,7 @@ def view_profile(request, username):
 
 
 @login_required
-@api_view('GET')
+@api_view(['GET'])
 def view_users(request):
     try:
         profile = Profile.objects.all()
