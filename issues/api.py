@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from issues.models import *
@@ -67,10 +68,28 @@ class BulkInsert(APIView):
 
     def post(self, request):
         user = request.user
-        subjects = request.data.get('subjects', '').splitlines()
+        try:
+            subjects = request.data.get('subjects').splitlines()
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         for subject in subjects:
             Issue.objects.create(
                 Subject=subject,
                 Creator=user
             )
+        return Response(status=status.HTTP_201_CREATED)
+
+
+class AddComment(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def post(self, request, pk):
+        user = request.user
+        comment = request.data.get('comment')
+        issue = get_object_or_404(Issue, pk=pk)
+        Comment.objects.create(
+            Comment=comment,
+            Issue=issue,
+            Creator=user)
         return Response(status=status.HTTP_201_CREATED)
