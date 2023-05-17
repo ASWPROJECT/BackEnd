@@ -10,6 +10,11 @@ from django.contrib.auth.models import User
 from .models import Issue
 from .models import AttachedFile
 from django.conf import settings
+from rest_framework.decorators import api_view
+from rest_framework import status
+from rest_framework.response import Response
+
+
 
 
 # Create your views here.import requests
@@ -76,10 +81,14 @@ def new_issue_view(request):
 
 @login_required(login_url='login')
 @csrf_exempt
+@api_view(['DELETE'])
 def delete_by_id(request):
     id = request.POST.get('id')
-    Issue.objects.filter(id=id).delete()
-    return HttpResponseRedirect(settings.BASE_URL)
+    if request.method == 'DELETE':
+        try:
+            Issue.objects.filter(id=id).delete()
+        except Issue.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 @login_required(login_url='login')
 def view_isue(request, issue_id):
