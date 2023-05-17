@@ -17,9 +17,15 @@ class IssuesView(generics.ListCreateAPIView):
     def get_queryset(self):
         order_by = self.request.query_params.get('order_by')
         if order_by is not None:
-            queryset = Issue.objects.all().order_by(order_by)
+            try:
+                queryset = Issue.objects.all().order_by(order_by)
+            except Issue.DoesNotExist:
+                return Response({'error': 'No hay Issues'}, status=status.HTTP_404_NOT_FOUND)
         else:
-            queryset = Issue.objects.all()
+            try:
+                queryset = Issue.objects.all()
+            except Issue.DoesNotExist:
+                return Response({'error': 'No hay Issues'}, status=status.HTTP_404_NOT_FOUND)
 
         q = self.request.query_params.get('q')
         if q is not None:
