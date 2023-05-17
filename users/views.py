@@ -7,10 +7,15 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from issuetracker2 import settings
+from users.serializers import ProfileSerializer
 from .forms import CreateUserForm
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
 
 # Create your views here.
 def register_view(request):
@@ -93,26 +98,28 @@ def change_picture_profile_view(request):
     return render(request, 'user_configuration.html', context)
 
 @login_required
+@api_view('GET')
 def view_profile(request, username):
-    user = User.objects.get(username=username)
-    try:
-        profile, created = Profile.objects.get_or_create(
-            user=user
-        )
-    except:
-        print("Error al crear el perfil")
+    user = Profile.objects.get(username=username)
+    if request.method == 'GET':
+        try:
+            profile, created = Profile.objects.get_or_create(
+                user=user
+            )
+        except:
+            print("Error al crear el perfil", status=status.HTTP_400_BAD_REQUEST)
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
 
-    context = {'profile': profile,
-               'base_url': settings.BASE_URL,
-               'image_url': profile.url}
-    
-    return render(request, 'profile.html', context)
 
 
 @login_required
+@api_view('GET')
 def view_users(request):
-    users = User.objects.all()
-    print(users)
-    context = {'users': users,
-               'base_url': settings.BASE_URL}
-    return render(request, 'users_list.html', context)
+    try:
+        profile = Profile.objects.all()
+    except Profile.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
