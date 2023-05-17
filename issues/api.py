@@ -20,12 +20,12 @@ class IssuesView(generics.ListCreateAPIView):
             try:
                 queryset = Issue.objects.all().order_by(order_by)
             except Issue.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'No hay Issues'}, status=status.HTTP_404_NOT_FOUND)
         else:
             try:
                 queryset = Issue.objects.all()
             except Issue.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'No hay Issues'}, status=status.HTTP_404_NOT_FOUND)
 
         q = self.request.query_params.get('q')
         if q is not None:
