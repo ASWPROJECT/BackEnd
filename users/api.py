@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
+from issuetracker2 import settings
 from users.models import *
 from users.serializers import *
 from rest_framework import generics
@@ -14,61 +15,35 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authtoken.models import Token
 import requests
 from rest_framework.decorators import api_view
-from issuetracker2 import settings
-
 
 class RegisterView(APIView):
     def post(self, request):
-        serializer = UserSerializer(request.user)
-
         if request.user.is_authenticated:
+            serializer = UserSerializer(request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            form = CreateUserForm()
-            if request.method == 'POST':
-                form = CreateUserForm(request.POST)
-                if form.is_valid():
-                    user = form.save()
-                    username = form.cleaned_data.get('username')
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                username = form.cleaned_data.get('username')
 
-                    # Make a request to the token authentication endpoint
-                    url = settings.BASE_URL + '/api-token-auth/'
+                # Make a request to the token authentication endpoint
+                url = settings.BASE_URL + '/users/api-token-auth/'
 
-                    response = requests.post(url, data={
-                        'username': username,
-                        'password': form.cleaned_data.get('password1')
-                    })
+                response = requests.post(url, data={
+                    'username': username,
+                    'password': form.cleaned_data.get('password1')
+                })
 
-                    if response.status_code == 200:
-                    #token = response.json().get('token')                    
-                        return Response(serializer.data, status=status.HTTP_201_CREATED)
-                    else: return Response(status=status.HTTP_401_UNAUTHORIZED)
-                else: return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+                if response.status_code == 200:
+                    # token = response.json().get('token')
 
-class LoginView(APIView):
-    def post(self, request):
-        serializer = UserSerializer(request.user)
-        if request.user.is_authenticated:
-                return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-
-            user = authenticate(request, username=username, password=password)      #Comprova si l'usuari introduit ja existeix
-
-            if user is not None:
-                login(request,user)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                    serializer = UserSerializer(user)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    return Response(status=response.status_code)
             else:
-                return Response('Username or password is incorrect', status=status.HTTP_401_UNAUTHORIZED)
-
-class Logout(APIView):
-    authentication_classes(IsAuthenticated,)
-    permission_classes(TokenAuthentication,)
-
-    def post(self, request):
-        logout(request)
-        return Response(status=status.HTTP_200_OK)
+                return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class EditProfileView(APIView):
     authentication_classes(IsAuthenticated,)
