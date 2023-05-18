@@ -36,6 +36,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('issues.urls')),
+    path('users/',include('users.url')),
     path('', issues_view, name='allIssues'),
     path('newIssues/', new_issue_view, name='getData'),
     path('delete/Issue', delete_by_id, name='getData'),
