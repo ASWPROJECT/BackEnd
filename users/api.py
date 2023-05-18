@@ -32,7 +32,7 @@ class RegisterView(APIView):
                     username = form.cleaned_data.get('username')
 
                     # Make a request to the token authentication endpoint
-                    url = settings.BASE_URL + '/api-token-auth/'
+                    url = settings.BASE_URL + '/users/api-token-auth/'
 
                     response = requests.post(url, data={
                         'username': username,
