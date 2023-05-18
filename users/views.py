@@ -7,10 +7,15 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from issuetracker2 import settings
+from users.serializers import ProfileSerializer
 from .forms import CreateUserForm
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
 
 # Create your views here.
 def register_view(request):
@@ -92,27 +97,3 @@ def change_picture_profile_view(request):
     }
     return render(request, 'user_configuration.html', context)
 
-@login_required
-def view_profile(request, username):
-    user = User.objects.get(username=username)
-    try:
-        profile, created = Profile.objects.get_or_create(
-            user=user
-        )
-    except:
-        print("Error al crear el perfil")
-
-    context = {'profile': profile,
-               'base_url': settings.BASE_URL,
-               'image_url': profile.url}
-    
-    return render(request, 'profile.html', context)
-
-
-@login_required
-def view_users(request):
-    users = User.objects.all()
-    print(users)
-    context = {'users': users,
-               'base_url': settings.BASE_URL}
-    return render(request, 'users_list.html', context)
