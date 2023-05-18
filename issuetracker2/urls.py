@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from issues.views import file, issues_view, new_issue_view, delete_by_id, toggle_block_issue, view_isue, edit_issue, add_comment, bulk_insert, remove_all_activities, view_profile_view
+from issues.views import file, issues_view, new_issue_view, delete_by_id, toggle_block_issue, view_isue, edit_issue, remove_all_activities, view_profile_view
 from users.views import register_view, login_view, logout_view, edit_user_profile_view, change_picture_profile_view, view_profile, view_users
 from rest_framework import permissions
 from rest_framework.authtoken.views import obtain_auth_token
