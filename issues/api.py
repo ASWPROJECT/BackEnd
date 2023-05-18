@@ -182,3 +182,33 @@ class ToggleBlockIssue(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class DeleteIssues(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def delete(self, request, id):
+        if request.method == 'DELETE':
+            try:
+                Issue.objects.filter(id=id).delete()
+            except Issue.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_200_OK)
+
+class AddIssue(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def post(self, request):
+        if request.method == 'POST':
+            subject = request.POST.get('Subject')
+            description = request.POST.get('Description')
+            creator = User.objects.get(username=request.user.username)
+            try:
+                Issue.objects.create(
+                    Subject = subject,
+                    Description = description,
+                    Creator = creator
+                )
+            except:
+                return Response({'error': 'Al crear el issue'}, status=status.HTTP_400_BAD_REQUEST)
