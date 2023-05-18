@@ -97,29 +97,3 @@ def change_picture_profile_view(request):
     }
     return render(request, 'user_configuration.html', context)
 
-@login_required
-@api_view(['GET'])
-def view_profile(request, username):
-    user = Profile.objects.get(username=username)
-    if request.method == 'GET':
-        try:
-            profile, created = Profile.objects.get_or_create(
-                user=user
-            )
-        except:
-            print("Error al crear el perfil", status=status.HTTP_400_BAD_REQUEST)
-        serializer = ProfileSerializer(profile)
-        return Response(serializer.data)
-
-
-
-@login_required
-@api_view(['GET'])
-def view_users(request):
-    try:
-        profile = Profile.objects.all()
-    except Profile.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    if request.method == 'GET':
-        serializer = ProfileSerializer(profile)
-        return Response(serializer.data)
