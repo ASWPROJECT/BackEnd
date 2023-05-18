@@ -129,7 +129,7 @@ class Files(APIView):
         return Response(status=status.HTTP_201_CREATED)
     
     def get(self, request):
-        id = request.GET.get('id')
+        id = request.data.get('id')
         try:
             file = AttachedFile.objects.get(id = id)
             serializer = AttachedFileSerializer(file)
@@ -138,9 +138,9 @@ class Files(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def delete(self, request):
-        id = request.DELETE.get('id')
+        id = request.data.get('id')
         try:
-            AttachedFile.objects.delete(id = id)
+            AttachedFile.objects.get(id = id).delete()
         except AttachedFile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_200_OK)
