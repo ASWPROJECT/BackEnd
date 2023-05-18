@@ -121,3 +121,60 @@ class AddComment(APIView):
             Issue=issue,
             Creator=user)
         return Response(status=status.HTTP_201_CREATED)
+    
+class Files(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def post(self, request, pk):
+        file = request.FILES.get('File')
+        issue = get_object_or_404(Issue, pk=pk)
+
+        AttachedFile.objects.create(
+            Issue = issue,
+            File = file,
+            Name = str(file)
+        )
+        return Response(status=status.HTTP_201_CREATED)
+    
+    def get(self, request, pk):
+        try:
+            file = AttachedFile.objects.get(pk = pk)
+            serializer = AttachedFileSerializer(file)
+        except AttachedFile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def delete(self, request, pk):
+        try:
+            AttachedFile.objects.delete(pk = pk)
+        except AttachedFile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_200_OK)
+    
+class ToggleBlockIssue(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+
+    '''issue = get_object_or_404(Issue, id=issue_id)
+        if request.method == 'PUT':
+            if request.PUT.get('Block_reason') == None:            
+                issue.Block_reason = None
+                issue.save()
+                return Response({'success': True, 'message': 'Issue desblocked'})
+            
+            else:
+                issue.Block_reason = 'Blocked: ' + request.POST.get('Block_reason')
+                issue.save()
+                try:
+                    Activity.objects.create(
+                        creator = User.objects.get(username=request.user.username),
+                        issue = issue,
+                        type = "Blocked"
+                    )
+                except:
+                    return Response({'error': 'Al crear el activity'}, status=status.HTTP_400_BAD_REQUEST)
+
+                return Response({'success': True, 'message': 'Issue blocked'})'''
+    
