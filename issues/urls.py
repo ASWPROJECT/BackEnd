@@ -11,5 +11,4 @@ urlpatterns = [
     path('comments/', api.CommentsView.as_view()),
     path('files/', api.Files.as_view()),
     path('delete/<int:id>', api.DeleteIssues.as_view()), 
-    path('newIssue/', api.AddIssue.as_view()), 
 ]
