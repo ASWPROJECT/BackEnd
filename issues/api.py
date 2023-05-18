@@ -116,8 +116,8 @@ class Files(APIView):
     authentication_classes(IsAuthenticated,)
     permission_classes(TokenAuthentication,)
 
-    def post(self, request, pk):
-        file = request.FILES.get('File')
+    def post(self, request):
+        file = request.FILES.get('file')
         issue_id = request.POST.get('issue_id')
         issue = get_object_or_404(Issue, id = issue_id)
 
@@ -128,17 +128,19 @@ class Files(APIView):
         )
         return Response(status=status.HTTP_201_CREATED)
     
-    def get(self, pk):
+    def get(self, request):
+        id = request.data.get('id')
         try:
-            file = AttachedFile.objects.get(pk = pk)
+            file = AttachedFile.objects.get(id = id)
             serializer = AttachedFileSerializer(file)
         except AttachedFile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def delete(self, request, pk):
+    def delete(self, request):
+        id = request.data.get('id')
         try:
-            AttachedFile.objects.delete(pk = pk)
+            AttachedFile.objects.get(id = id).delete()
         except AttachedFile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_200_OK)
@@ -148,22 +150,19 @@ class ToggleBlockIssue(APIView):
     permission_classes(TokenAuthentication,)
 
 
-    def put(self, request, pk):
-        issue_id = request.PUT.get('issue_id')
+    def put(self, request, issue_id):
         issue = get_object_or_404(Issue, id=issue_id)
               
-        issue.Block_reason = request.PUT.get('block_reason')
+        issue.Block_reason = request.POST.get('block_reason')
         issue.save()
-        serializer = IssueSerializer(issue)
-        serializer.save()
+        serializer = IssueSerializer(issue, data=request.data)        
         
-        
-        if request.PUT.get('block_reason') != None:
+        if request.POST.get('block_reason') != None:
             try:
                 Activity.objects.create(
-                    creator = User.objects.get(username=request.user.username),
-                    issue = issue,
-                    type = "Blocked"
+                    Creator = User.objects.get(username=request.user.username),
+                    Issue = issue,
+                    Type = "Blocked"
                 )
             except:
                 return Response({'error': 'Al crear el activity'}, status=status.HTTP_400_BAD_REQUEST)

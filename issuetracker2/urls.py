@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from users.views import register_view, login_view, logout_view, edit_user_profile_view, change_picture_profile_view
 from rest_framework import permissions
 from rest_framework.authtoken.views import obtain_auth_token
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
@@ -24,12 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('issues/', include('issues.urls')),
     path('users/', include('users.urls')),
-    path('register/', register_view, name='register'),
-    path('login/', login_view, name='login'),
-    path('logout/', logout_view, name='logout'),
-    path('social-auth/', include('social_django.urls'), name = 'social'),
-    path('user-settings/user-profile/', edit_user_profile_view, name='edit_user_profile'),
-    path('change_picture_profile/', change_picture_profile_view, name='picture_profile'),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "docs/",
