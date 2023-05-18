@@ -66,17 +66,6 @@ class ViewIssue(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class CommentsView(generics.ListCreateAPIView):
-    serializer_class = CommentSerializer
-
-    def get_queryset(self):
-        queryset = Comment.objects.all().order_by('-Created_at')
-
-        id = self.request.query_params.get('id')
-        if id is not None:
-            queryset = queryset.filter(Issue_id=id)
-        return queryset
     
 class FilesView(generics.ListCreateAPIView):
     serializer_class = FileSerializer
