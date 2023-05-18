@@ -9,5 +9,6 @@ urlpatterns = [
     path('<int:issue_id>/toggle_block_issue/', api.ToggleBlockIssue.as_view()),
     path('<int:id>/delete', api.DeleteIssues.as_view()), 
     path('bulk-insert', api.BulkInsert.as_view()),
-    path('files/', api.Files.as_view()),
+    path('files/', api.AddFiles.as_view()),
+    path('files/<int:id>', api.Files.as_view()),
 ]
