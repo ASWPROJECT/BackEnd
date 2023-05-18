@@ -334,72 +334,6 @@ def bulk_insert(request):
 
 def remove_all_activities(request):
     Activity.objects.all().delete()
-    
-
-
-@login_required(login_url='login')
-@csrf_exempt
-def add_file(request):
-    if request.method == 'POST':
-        file = request.FILES.get('File')
-        issue_id = request.POST.get('Issue')
-        issue = Issue.objects.get(id=int(issue_id))
-        print(issue)
-
-        attachedFile = AttachedFile()
-        attachedFile.Issue = issue
-        attachedFile.File = file
-        attachedFile.Name = str(file)
-        attachedFile.save()
-
-        return HttpResponseRedirect('/issue/' + issue_id)
-
-@login_required(login_url='login')
-@csrf_exempt
-def download_file(request, id):
-    attachedFile = AttachedFile.objects.get(id=id)
-    print(id)
-    file_name = attachedFile.Name
-    file = attachedFile.File
-
-    response = HttpResponse(file, content_type='application')
-    response['Content-Disposition']=f'attachment; filename="{file_name}"'
-    return(response)
-
-
-@login_required(login_url='login')
-@csrf_exempt
-def delete_file(request):
-    id = request.POST.get('id')
-    issue = request.POST.get('issue')
-    AttachedFile.objects.filter(id=id).delete()
-    return view_isue(request, issue)
-
-@login_required(login_url='login')
-@csrf_exempt
-def block_issue_view(request, issue_id):
-    issue = get_object_or_404(Issue, id=issue_id)
-    if request.method == 'POST':
-        issue.Block_reason = 'Blocked: ' + request.POST.get('Block_reason')
-        issue.save()
-        Activity.objects.create(
-            creator = User.objects.get(username=request.user.username),
-            issue = issue,
-            type = "Blocked"
-        )
-        return redirect(settings.BASE_URL + "/issue/"+str(issue_id))
-    
-    context = {'base_url': settings.BASE_URL}
-    
-    return render(request, 'block_issue.html', context)
-
-@login_required(login_url='login')
-@csrf_exempt
-def desblock_issue_view(request, issue_id):
-    issue = get_object_or_404(Issue, id=issue_id)
-    issue.Block_reason = None
-    issue.save()
-    return redirect(settings.BASE_URL + "/issue/"+str(issue_id))
 
 @login_required(login_url='login')
 @csrf_exempt
@@ -417,30 +351,31 @@ def view_profile_view(request):
 @api_view(['GET', 'POST', 'DELETE'])
 @csrf_exempt
 def file(request):
-    try:
-        file = AttachedFile.objects.get(id = request.AttachedFile.id)
-    except AttachedFile.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    serializer = AttachedFileSerializer(file, data=request.data, partial= True)
-
     if request.method == 'GET':
+        file = AttachedFile.objects.get(id = request.AttachedFile.id)
         serializer = AttachedFileSerializer(file)
         return Response(serializer.data)
     
     if request.method == 'POST':
-        issue_id = request.data.get('Issue')        
+        issue_id = request.data.get('Issue')
 
-        if Issue.objects.exists(id=int(issue_id)):
-            if serializer.is_valid():
-                issue = Issue.objects.get(id=int(issue_id))
-                file = request.FILES.get('File')
-                attachedFile = AttachedFile()
-                attachedFile.Issue = issue
-                attachedFile.File = file
-                attachedFile.Name = str(file)
+        try:
+            issue = Issue.objects.get(id=int(issue_id))
+            file = request.FILES.get('File')
+
+            attachedFile = AttachedFile()
+            attachedFile.Issue = issue
+            attachedFile.File = file
+            attachedFile.Name = str(file)
+
+            try:
                 attachedFile.save()
-                return Response(serializer.data)
-        else:
+            except:
+                return Response({'error': 'Al crear el archivo'}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(serializer.data)
+        
+        except Issue.DoesNotExist():
             return Response({'error': 'El issue con id \'' + issue_id + '\' no esitse'} , status=status.HTTP_400_BAD_REQUEST)
         
     if request.method == 'DELETE':
@@ -450,3 +385,29 @@ def file(request):
             return Response({'success': True, 'message': 'File deleted'})
         except:
             return Response({'error': 'El file con id \'' + id + '\' no esitse'} , status=status.HTTP_400_BAD_REQUEST)
+
+
+@login_required(login_url='login')
+@api_view(['PUT'])
+@csrf_exempt
+def toggle_block_issue(request, issue_id):
+    issue = get_object_or_404(Issue, id=issue_id)
+    if request.method == 'PUT':
+        if request.PUT.get('Block_reason') == None:            
+            issue.Block_reason = None
+            issue.save()
+            return Response({'success': True, 'message': 'Issue desblocked'})
+        
+        else:
+            issue.Block_reason = 'Blocked: ' + request.POST.get('Block_reason')
+            issue.save()
+            try:
+                Activity.objects.create(
+                    creator = User.objects.get(username=request.user.username),
+                    issue = issue,
+                    type = "Blocked"
+                )
+            except:
+                return Response({'error': 'Al crear el activity'}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({'success': True, 'message': 'Issue blocked'})
