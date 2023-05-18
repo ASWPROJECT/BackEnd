@@ -29,6 +29,8 @@ class RegisterView(APIView):
                 'username': username,
                 'password': form.cleaned_data.get('password1')
             })
+            
+            profile, created = Profile.objects.get_or_create(user=user)
 
             if response.status_code == 201:
                 serializer = UserSerializer(user)
@@ -101,9 +103,9 @@ class ViewUsers(APIView):
 
     def get(self, request):
         try:
-            profile = Profile.objects.all()
+            profiles = Profile.objects.all()
         except Profile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         if request.method == 'GET':
-            serializer = ProfileSerializer(profile)
+            serializer = ProfileSerializer(profiles, many=True)
             return Response(serializer.data)
