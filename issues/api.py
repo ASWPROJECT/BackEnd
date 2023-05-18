@@ -10,7 +10,6 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 
-
 class IssuesView(generics.ListCreateAPIView):
     serializer_class = IssueSerializer
 
@@ -43,6 +42,29 @@ class IssuesView(generics.ListCreateAPIView):
         if creator is not None:
             queryset = queryset.filter(Creator__username__icontains=creator)
         return queryset
+
+
+class ViewIssue(APIView):
+
+    def get(self, request, pk):
+        try:
+            issue = Issue.objects.get(pk=pk)
+        except Issue.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = IssueDetailSerializer(issue)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        try:
+            issue = Issue.objects.get(pk=pk)
+        except Issue.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = IssueDetailSerializer(issue, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentsView(generics.ListCreateAPIView):
