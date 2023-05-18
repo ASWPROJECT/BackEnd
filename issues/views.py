@@ -299,38 +299,6 @@ def edit_issue(request):
 
     return HttpResponseRedirect(settings.BASE_URL)
 
-@login_required(login_url='login')
-@csrf_exempt
-def add_comment(request):
-    if request.method == 'POST':
-        comment = request.POST.get('Comment')
-        issue = request.POST.get('id')
-        creator_id = User.objects.get(username=request.user.username).id
-        comment_obj = {'Comment': comment,
-                   'Issue': issue,
-                   'Creator': creator_id}
-        print(comment_obj)
-        requests.post(settings.BASE_URL + '/api/comments', json = comment_obj)
-        return HttpResponseRedirect('/issue/' + issue)
-  
-
-
-@login_required(login_url='login')
-@csrf_exempt
-def bulk_insert(request):
-    if request.method == 'POST':
-        issues = request.POST.get('issues')
-        creator_id = User.objects.get(username=request.user.username).id
-        for line in issues.splitlines():
-            print(line)
-            context = {'Subject': line,
-                     'Creator': creator_id,
-                     'base_url': settings.BASE_URL}
-            requests.post(settings.BASE_URL + '/api/issues', json = context)
-        return HttpResponseRedirect(settings.BASE_URL)
-
-    return render(request, 'bulk_insert.html')
-
 
 def remove_all_activities(request):
     Activity.objects.all().delete()

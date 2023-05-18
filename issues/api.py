@@ -97,7 +97,8 @@ class BulkInsert(APIView):
     def post(self, request):
         user = request.user
         try:
-            subjects = request.data.get('subjects').splitlines()
+            subjects = request.data.get('subjects')
+            print(subjects)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         for subject in subjects:
