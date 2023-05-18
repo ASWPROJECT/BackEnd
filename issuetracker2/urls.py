@@ -18,20 +18,8 @@ from django.urls import path, include
 from issues.views import file, issues_view, new_issue_view, delete_by_id, toggle_block_issue, view_isue, edit_issue, add_comment, bulk_insert, remove_all_activities, view_profile_view
 from users.views import register_view, login_view, logout_view, edit_user_profile_view, change_picture_profile_view, view_profile, view_users
 from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-schema_view = get_schema_view(
-   openapi.Info(
-      title="Issue Tracker 2 API",
-      default_version='v1',
-      description="API doc for ASW project Issue Tracker 2",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -58,8 +46,13 @@ urlpatterns = [
     path('change_picture_profile/', change_picture_profile_view, name='picture_profile'),
     path('profile/<str:username>', view_profile, name='view_profile'),
     path('list_users/', view_users, name='view_users'),
-
-    path('swagger.yaml/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redocs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "docs/",
+        SpectacularSwaggerView.as_view(
+            template_name="swagger-ui.html", url_name="schema"
+        ),
+        name="swagger-ui",
+    ),
 ]
