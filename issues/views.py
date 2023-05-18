@@ -21,76 +21,8 @@ from rest_framework.response import Response
 
 # Create your views here.import requests
 
-@login_required(login_url='login')
-def issues_view(request):
-    params = request.GET
-    url = settings.BASE_URL + '/api/issues?'
-    q = params.get('q', '')
-    if q != '':
-        url = url + "q=" + q
-    
-    status = params.get('status', '')
-    if status != '':
-        url = url + "&status=" + status
 
-    priority = params.get('priority', '')
-    if priority != '':
-        url = url + "&priority=" + priority
-    
-    creator = params.get('creator', '')
-    if creator != '':
-        url = url + "&creator=" + creator
-    
-    order_by = params.get('order_by', '')
-    if order_by != '':
-        url = url + "&order_by=" + order_by
-    # Hacer la solicitud GET a la API
-    print(url)
-    response = requests.get(url)
-    User = get_user_model()
-    users = User.objects.all()
-    
-    # Obtener los datos de la respuesta de la API
-    data = response.json()
-    context = {'issues': data,
-               'users': users,
-               'q_s': q,
-               'status_s': status,
-               'priority_s': priority,
-               'creator_s': creator,
-               'order_by_s': order_by,
-               'base_url': settings.BASE_URL}
-    
-    # Renderizar la plantilla HTML y pasar los datos de los resultados
-    return render(request, 'issues.html', context)
 
-@login_required(login_url='login')
-@csrf_exempt
-def new_issue_view(request):
-    if request.method == 'POST':
-        subject = request.POST.get('Subject')
-        description = request.POST.get('Description')
-        creator_id = User.objects.get(username=request.user.username).id
-        issue = {'Subject': subject,
-                 'Description': description,
-                'Creator': creator_id}
-        requests.post(settings.BASE_URL + '/api/issues', json = issue)
-        return redirect('allIssues')
-        
-    context= {'base_url': settings.BASE_URL}
-
-    return render(request, 'new_issue.html', context)
-
-@login_required(login_url='login')
-@csrf_exempt
-@api_view(['DELETE'])
-def delete_by_id(request):
-    id = request.POST.get('id')
-    if request.method == 'DELETE':
-        try:
-            Issue.objects.filter(id=id).delete()
-        except Issue.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
 @login_required(login_url='login')
 def view_isue(request, issue_id):

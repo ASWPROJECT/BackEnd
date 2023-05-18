@@ -25,9 +25,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('issues.urls')),
     path('users/', include('users.urls')),
-    path('', issues_view, name='allIssues'),
-    path('newIssues/', new_issue_view, name='getData'),
-    path('delete/Issue', delete_by_id, name='getData'),
     path('issue/<int:issue_id>', view_isue, name='getData'),
     path('editIssue/', edit_issue, name='getData'),
     path('delete_activities/', remove_all_activities, name='deleteActivities'),
@@ -38,8 +35,6 @@ urlpatterns = [
     path('user-settings/user-profile/', edit_user_profile_view, name='edit_user_profile'),
     path('view_profile/', view_profile_view, name='view_profile'),
     path('change_picture_profile/', change_picture_profile_view, name='picture_profile'),
-    path('profile/<str:username>', view_profile, name='view_profile'),
-    path('list_users/', view_users, name='view_users'),    
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "docs/",
