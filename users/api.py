@@ -1,3 +1,4 @@
+import json
 from rest_framework.response import Response
 from rest_framework import status
 from issuetracker2 import settings
@@ -32,7 +33,12 @@ class RegisterView(APIView):
 
             if response.status_code == 201:
                 serializer = UserSerializer(user)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                token = response.json().get('token')                    
+                response_data = {
+                    'profile': serializer.data,
+                    'token': token
+                }
+                return Response(response_data, status=status.HTTP_201_CREATED)
             else:
                 return Response(status=response.status_code)
         else:
@@ -91,8 +97,22 @@ class ViewProfile(APIView):
                 )
             except:
                 return Response({'error': 'Error al crear el perfil'}, status=status.HTTP_400_BAD_REQUEST)
-            serializer = ProfileSerializer(profile)
-            return Response(serializer.data)
+            auth_header = request.headers.get('Authorization')
+            if auth_header and 'Token' in auth_header:
+                token_key = auth_header.split('Token ')[1]
+                print("Token:", token_key)  # Print the token key
+
+                # Find the token in the database
+                try:
+                    token = Token.objects.get(key=token_key)
+                except Token.DoesNotExist:
+                    return Response("Invalid token", status=status.HTTP_401_UNAUTHORIZED)
+                serializer = ProfileSerializer(profile)
+                response_data = {
+                    'profile': serializer.data,
+                    'token': token.key  # Include the token in the response
+                }
+                return Response(response_data)
         
 
 class ViewUsers(APIView):
