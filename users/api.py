@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
+from issuetracker2 import settings
 from users.models import *
 from users.serializers import *
 from rest_framework import generics
@@ -14,67 +15,34 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authtoken.models import Token
 import requests
 from rest_framework.decorators import api_view
-from issuetracker2 import settings
-
 
 class RegisterView(APIView):
     def post(self, request):
-        serializer = UserSerializer(request.user)
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
 
-        if request.user.is_authenticated:
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            form = CreateUserForm()
-            if request.method == 'POST':
-                form = CreateUserForm(request.POST)
-                if form.is_valid():
-                    user = form.save()
-                    username = form.cleaned_data.get('username')
+            url = settings.BASE_URL + '/users/api-token-auth/'
 
-                    # Make a request to the token authentication endpoint
-                    url = settings.BASE_URL + '/users/api-token-auth/'
+            response = requests.post(url, data={
+                'username': username,
+                'password': form.cleaned_data.get('password1')
+            })
 
-                    response = requests.post(url, data={
-                        'username': username,
-                        'password': form.cleaned_data.get('password1')
-                    })
-
-                    if response.status_code == 200:
-                    #token = response.json().get('token')                    
-                        return Response(serializer.data, status=status.HTTP_201_CREATED)
-                    else: return Response(status=status.HTTP_401_UNAUTHORIZED)
-                else: return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class LoginView(APIView):
-    def post(self, request):
-        serializer = UserSerializer(request.user)
-        if request.user.is_authenticated:
-                return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-
-            user = authenticate(request, username=username, password=password)      #Comprova si l'usuari introduit ja existeix
-
-            if user is not None:
-                login(request,user)
+            if response.status_code == 201:
+                serializer = UserSerializer(user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
-                return Response('Username or password is incorrect', status=status.HTTP_401_UNAUTHORIZED)
-
-class Logout(APIView):
-    authentication_classes(IsAuthenticated,)
-    permission_classes(TokenAuthentication,)
-
-    def post(self, request):
-        logout(request)
-        return Response(status=status.HTTP_200_OK)
+                return Response(status=response.status_code)
+        else:
+            return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class EditProfileView(APIView):
     authentication_classes(IsAuthenticated,)
     permission_classes(TokenAuthentication,)
 
-    def post(self, request):
+    def put(self, request):
         profile = None
         try:
             profile, created = Profile.objects.get_or_create(
@@ -83,10 +51,29 @@ class EditProfileView(APIView):
         except: 
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
-        profile.bio = request.POST.get('bio')
+        profile.bio = request.data.get('bio')
         profile.save()
         serializer = ProfileSerializer(profile)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    
+class ChangePictureProfileView(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def put(self, request):
+        try:
+            profile = Profile.objects.get(user=request.user)
+        except Profile.DoesNotExist:
+            return Response({'error': 'No existe el usuario'}, status=status.HTTP_404_NOT_FOUND)
+        
+        profile_picture = request.FILES.get('image')
+        if profile_picture:
+            picture = Picture()
+            picture.File = profile_picture
+            picture.save()
+            profile.url = picture.File.url.split('?')[0]
+            profile.save()
+            return Response(status=status.HTTP_202_ACCEPTED)
         
 class ViewProfile(APIView):
     authentication_classes(IsAuthenticated,)
