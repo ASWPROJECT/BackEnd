@@ -121,3 +121,64 @@ class AddComment(APIView):
             Issue=issue,
             Creator=user)
         return Response(status=status.HTTP_201_CREATED)
+    
+class Files(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def post(self, request, pk):
+        file = request.FILES.get('File')
+        issue_id = request.POST.get('issue_id')
+        issue = get_object_or_404(Issue, id = issue_id)
+
+        AttachedFile.objects.create(
+            Issue = issue,
+            File = file,
+            Name = str(file)
+        )
+        return Response(status=status.HTTP_201_CREATED)
+    
+    def get(self, pk):
+        try:
+            file = AttachedFile.objects.get(pk = pk)
+            serializer = AttachedFileSerializer(file)
+        except AttachedFile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def delete(self, request, pk):
+        try:
+            AttachedFile.objects.delete(pk = pk)
+        except AttachedFile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_200_OK)
+    
+class ToggleBlockIssue(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+
+    def put(self, request, pk):
+        issue_id = request.PUT.get('issue_id')
+        issue = get_object_or_404(Issue, id=issue_id)
+              
+        issue.Block_reason = request.PUT.get('block_reason')
+        issue.save()
+        serializer = IssueSerializer(issue)
+        serializer.save()
+        
+        
+        if request.PUT.get('block_reason') != None:
+            try:
+                Activity.objects.create(
+                    creator = User.objects.get(username=request.user.username),
+                    issue = issue,
+                    type = "Blocked"
+                )
+            except:
+                return Response({'error': 'Al crear el activity'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
