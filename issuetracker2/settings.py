@@ -47,17 +47,18 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'whitenoise.runserver_nostatic',
-
     'rest_framework',
-    'storages',
+    'storages',    
+    'social_django',
+    'rest_framework.authtoken',
+
     'issues',
     'users',
-    'social_django',
-    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -197,10 +198,4 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-CORS_ALLOWED_ORIGINS = [
-    'http://*',
-    'https://*',
-]
-
-# Optional: If you want to allow sending cookies across domains, set the following:
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
