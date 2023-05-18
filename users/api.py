@@ -63,3 +63,35 @@ class EditProfileView(APIView):
         serializer = ProfileSerializer(profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
+class ViewProfile(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def get(self, request):
+        try:
+            user = User.objects.get(username=request.user.username)
+        except User.DoesNotExist:
+            return Response({'error': 'No existe el usuario'}, status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'GET':
+            try:
+                profile, created = Profile.objects.get_or_create(
+                    user=user
+                )
+            except:
+                return Response({'error': 'Error al crear el perfil'}, status=status.HTTP_400_BAD_REQUEST)
+            serializer = ProfileSerializer(profile)
+            return Response(serializer.data)
+        
+
+class ViewUsers(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def get(self, request):
+        try:
+            profile = Profile.objects.all()
+        except Profile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'GET':
+            serializer = ProfileSerializer(profile)
+            return Response(serializer.data)
