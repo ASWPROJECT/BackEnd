@@ -8,8 +8,6 @@ urlpatterns = [
     path('user-settings/user-profile/', api.EditProfileView.as_view()),
     path('profile/', api.ViewProfile.as_view()),
     path('users/', api.ViewUsers.as_view()),
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),  
-
-
-
+    path('api-token-auth/', obtain_auth_token),  
+    path('change_picture_profile/', api.ChangePictureProfileView.as_view()),  
 ]
