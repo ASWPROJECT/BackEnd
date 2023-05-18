@@ -25,7 +25,7 @@ BASE_URL = "https://issuetracker2-asw.herokuapp.com"
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x0lfh*)3yz@5yu)b5%zg&5k5_3n(9=y7ry7-o+^v*7*n72g$ku'
+#SECRET_KEY = 'django-insecure-x0lfh*)3yz@5yu)b5%zg&5k5_3n(9=y7ry7-o+^v*7*n72g$ku'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
