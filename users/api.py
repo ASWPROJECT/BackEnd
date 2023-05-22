@@ -33,7 +33,7 @@ class RegisterView(APIView):
             
             profile, created = Profile.objects.get_or_create(user=user)
 
-            if response.status_code == 201:
+            if response.status_code == 200:
                 serializer = UserSerializer(user)
                 token = response.json().get('token')                    
                 response_data = {
