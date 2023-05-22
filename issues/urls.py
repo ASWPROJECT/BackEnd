@@ -11,4 +11,5 @@ urlpatterns = [
     path('bulk-insert', api.BulkInsert.as_view()),
     path('files/', api.AddFiles.as_view()),
     path('files/<int:id>', api.Files.as_view()),
+    path('activities', api.Activities.as_view()),
 ]

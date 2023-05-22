@@ -192,3 +192,13 @@ class DeleteIssues(APIView):
                 return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_200_OK)
 
+class Activities(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def get(self, request):
+        try:
+            queryset = Activity.objects.filter(Q(User = request.user)|Q(Creator = request.user))
+            return Response (ActivitySerializer(queryset, many = True).data, status=status.HTTP_200_OK)
+        except Activity.DoesNotExist:
+            return Response({'error': 'No hay Activities'}, status=status.HTTP_404_NOT_FOUND)
