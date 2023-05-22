@@ -19,7 +19,7 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# url base
+# URL Base
 #BASE_URL = "http://127.0.0.1:8000"
 BASE_URL = "https://issuetracker2-asw.herokuapp.com"
 
