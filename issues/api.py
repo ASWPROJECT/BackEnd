@@ -42,6 +42,13 @@ class IssuesView(generics.ListCreateAPIView):
         if creator is not None:
             queryset = queryset.filter(Creator__username__icontains=creator)
         return queryset
+    
+    def delete(self, request):
+        try:
+            Issue.objects.all().delete()
+        except Issue.DoesNotExist:
+            return Response({'error': 'No hay Issues'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 class ViewIssue(APIView):
     def get(self, request, pk):
@@ -63,6 +70,7 @@ class ViewIssue(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
     
 class FilesView(generics.ListCreateAPIView):
