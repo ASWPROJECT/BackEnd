@@ -20,22 +20,30 @@ from rest_framework.decorators import api_view
 class RegisterView(APIView):
     def post(self, request):
         form = CreateUserForm(request.POST)
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        if User.objects.filter(username=username).exists():
+            return Response({'error': 'This username is already in use.'}, status=status.HTTP_409_CONFLICT)
+        if User.objects.filter(email=email).exists():
+            return Response({'error': 'This email is already in use.'}, status=status.HTTP_409_CONFLICT)
         if form.is_valid():
-            user = form.save()
             username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+
+            user = form.save()
 
             url = settings.BASE_URL + '/users/api-token-auth/'
 
             response = requests.post(url, data={
                 'username': username,
-                'password': form.cleaned_data.get('password1')
+                'password': password
             })
-            
+
             profile, created = Profile.objects.get_or_create(user=user)
 
             if response.status_code == 200:
                 serializer = UserSerializer(user)
-                token = response.json().get('token')                    
+                token = response.json().get('token')
                 response_data = {
                     'profile': serializer.data,
                     'token': token
