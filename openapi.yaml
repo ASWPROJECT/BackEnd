@@ -1,0 +1,976 @@
+openapi: 3.0.3
+info:
+  title: Issuetracker2
+  version: 1.0.0
+  description: "This is the Open API documentation for the REST API of our beloved application **Issuetracker2** deployed at <https://fib-asw-wotapi.fly.dev/>. <br> All the operations requires authentication except 'users/register/' and 'users/api-token-auth/'. In this case, you must **Authorize** your request by providing the token value you got when you created the user."
+  
+servers:
+  - url: 'https://issuetracker2-asw.herokuapp.com/'
+  - url: 'http://127.0.0.1:8000/'
+paths:
+  /issues/:
+    get:
+      summary: Obtiene todas las issues
+      description: Obtiene todas las issues que han sido creadas en el sistema
+      operationId: issues_list
+      tags:
+      - issues
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Issue'
+          description: 'Retorna correctamente los datos'
+        '404':
+          description: No hay issues registrados
+    post:
+      summary: Crea un nuevo issue
+      description: Mediante este post se crea un nuevo issue, con los parametros indicados
+      operationId: issues_create
+      tags:
+      - issues
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Issue'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Issue'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Issue'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+          description: ''
+  /issues/{id}/delete:
+    delete:
+      summary: Elimina un issue
+      description: Elimina del sistem el issue identificado con el id pasado por paràmetro
+      operationId: issues_delete_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - issues
+      responses:
+        '202':
+          description: Issue eliminado correctamente
+        '404':
+          description: No hay issues registrados
+  /issues/{issue_id}/toggle_block_issue/:
+    put:
+      operationId: issues_toggle_block_issue_update
+      summary: Bloquea o desbloquea un issue para que no se pueda editar si está bloqueado
+      parameters:
+      - in: path
+        name: issue_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - issues
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      requestBody:
+        description: Proporciona el valor de la razón de bloqueo si quieres bloquear el Issue o dejar este parámetro vacío para desbloquear el Issue
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                block_reason:
+                  type: string
+                  example: 'Block'
+      responses:
+        '201':
+          description: successful created
+        '400':
+          description: bad request
+  /issues/{id}:
+    get:
+      summary: Coger Issue por Id
+      description: Retorna un unico Issue
+      operationId: issues_retrieve
+      parameters:
+      - in: path
+        name: id
+        description: ID del Issue a retornar
+        schema:
+          type: integer
+        required: true
+      tags:
+      - issues
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+          description: successful operation
+        '404':
+          description: not found
+    put:
+      summary: Actualizar Issue por Id
+      description: Actualiza un unico Issue 
+      operationId: issues_update
+      parameters:
+      - in: path
+        name: id
+        description: ID del Issue a actualizar
+        schema:
+          type: integer
+        required: true
+      requestBody:
+        description: Añade la información a actualizar
+        content:
+          application/json:
+            schema:
+              required:
+              - Subject
+              - Description
+              - Status
+              - Type
+              - Severity
+              - Priority
+              - DeadLine
+              type: object
+              properties:
+                Subject:
+                  type: string
+                  maxLength: 250
+                  example: 'My subject'
+                  nullable: true
+                Description:
+                  type: string
+                  maxLength: 500
+                  example: 'My description'
+                  nullable: true
+                Status:
+                  type: string
+                  example: 'My status'
+                  nullable: true
+                Type:
+                  type: string
+                  example: 'My type'
+                  nullable: true
+                Severity:
+                  type: string
+                  example: 'My severity'
+                  nullable: true
+                Priority:
+                  type: string
+                  example: 'My priority'
+                  nullable: true
+                DeadLine:
+                  type: string
+                  format: date
+                  example: '2023-05-20'
+                  nullable: true
+      tags:
+      - issues
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+          description: successful operation
+        '400':
+          description: bad request
+        '404':
+          description: not found
+  /issues/{id}/comments:
+    post:
+      summary: Añadir comentario a Issue
+      description: Añade un comentario a un Issue identificado por Id 
+      operationId: issues_comments_create
+      parameters:
+      - in: path
+        name: id
+        description: ID del Issue a comentar
+        schema:
+          type: integer
+        required: true
+      requestBody:
+        description: Añade el comentario para el Issue
+        content:
+          application/json:
+            schema:
+              required:
+              - comment
+              type: object
+              properties:
+                comment:
+                  type: string
+                  maxLength: 1000
+                  example: 'My comment'
+      tags:
+      - issues
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+          description: created
+        '400':
+          description: bad request
+        '404':
+          description: not found
+  /issues/bulk-insert:
+    post:
+      summary: Bulk insert de Issues
+      description: Añade nuevos Issues de forma rapida 
+      operationId: issues_bulk_insert_create
+      requestBody:
+        description: Array de subjects de nuevos issues
+        content:
+          application/json:
+            schema:
+              required:
+              - subjects
+            examples:
+              example1:
+                value:
+                  - "Subject 1"
+                  - "Subject 2"
+                  - "Subject 3"
+      tags:
+      - issues
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: created
+        '400':
+          description: bad request
+  /issues/files/: 
+    post:
+      operationId: issues_files_create
+      summary: Crea un nuevo file associado a un issue
+      tags:
+      - issues
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      requestBody:
+        description: Proporciona el Issue y el fichero que quiere ser creado
+        content:
+          application/json:
+            schema:
+              required:
+              - issue_id
+              - file
+              type: object
+              properties:
+                issue_id:
+                  type: integer
+                  example: 1
+                file:
+                  type: object
+                  example: 'image.png'
+        required: true
+      responses:
+        '201':
+          description: Successful creation
+        '404':
+          description: Issue doesn't exists
+  /issues/files/{id}:
+    get:
+      operationId: issues_files_retrieve
+      parameters:
+      - in: path
+        name: id
+        description: ID of file to return
+        schema:
+          type: integer
+        required: true
+      summary: Devuelve el file con la id pasada como parámtero
+      tags:
+      - issues
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    Issue:
+                      type: integer
+                      example: '1'
+                    Name:
+                      type: string
+                      example: 'file_name.py'
+                    File:
+                      type: string
+                      example: 'file_name.py'
+                    Created_at:
+                      type: string
+                      minLength: 4
+                      maxLength: 280
+                      example: '2023-05-19 03:25:48.083417'
+          description: successful operation
+        '404':
+          description: File doesn't exists
+    delete:
+      parameters:
+      - in: path
+        name: id
+        description: ID of file to delete
+        schema:
+          type: integer
+        required: true
+      operationId: issues_files_destroy
+      summary: Elimina el file con la id pasada como parámtero
+      tags:
+      - issues
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '202':
+          description: Accepted
+        '404':
+          description: File doesn't exists
+  /schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /users/api-token-auth/:
+    post:
+      operationId: users_api_token_auth_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - username
+              - password
+              type: object
+              properties:
+                username:
+                  type: string
+                  minLength: 4
+                  example: 'pau'
+                password:
+                  type: string
+                  minLength: 8
+                  maxLength: 280
+                  example: '12345678p'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      responses:
+        '201':
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    token:
+                      type: string
+                      minLength: 1
+                      example: '8d011ce6a461c67a1a5958abf194284484650c79'
+
+  /users/change-bio-profile/:
+    put:
+      operationId: users_change_bio_profile_update
+      tags:
+      - users
+      summary: Actualiza la biografia del usuario
+      requestBody:
+        description: Introduce la biografia del usuario
+        content:
+          application/json:
+            schema:
+              required:
+              - bio
+              type: object
+              properties:
+                bio:
+                  type: string
+                  minLength: 4
+                  example: 'Soy un estudiante de informatica de la FIB-UPC'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '202':
+          description: 'Accepted'
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      minLength: 1
+                      example: '2'
+                    bio:
+                      type: string
+                      minLength: 4
+                      maxLength: 280
+                      example: 'Soy un estudiante de informatica de la FIB-UPC'
+                    url:
+                      type: string
+                      minLength: 4
+                      maxLength: 280
+                      example: 'https://issuetracker2asw.s3.eu-west-3.amazonaws.com/media/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png'
+                    user:
+                      type: string
+                      minLength: 4
+                      maxLength: 280
+                      example: 'tonibosch'
+        '401':
+            description: 'Unauthorized'
+            content:
+              application/json:
+                schema:
+                    type: object
+                    properties:
+                      details:
+                        type: string
+                        minLength: 1
+                        example: 'Invalid token.'
+
+  /users/change-picture-profile/:
+    put:
+      operationId: users_change_picture_profile_update
+      tags:
+      - users
+      summary: Cambia la foto de perfil del usuario
+      requestBody:
+        description: Introduce la nueva foto de perfil
+        content:
+          application/json:
+            schema:
+              required:
+              - image
+              type: object
+              properties:
+                image:
+                  type: string
+                  minLength: 4
+                  example: 'imagen.jpg'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '202':
+          description: 'Foto de perfil actualizada'
+        '404':
+          description: 'No existe el usuario'
+  /users/profile/:
+    get:
+      summary: Muestra el perfil
+      description: Se muestran los datos del perfil del usuario registrado.
+      operationId: users_profile_retrieve
+      tags:
+      - users
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    user:
+                      type: string
+                      minLength: 4
+                      example: 'username'
+                    bio:
+                      type: string
+                      minLength: 4
+                      maxLength: 280
+                      example: 'My content'
+                    url:
+                      type: string
+                      minLength: 4
+                      maxLength: 280
+                      example: 'My url'
+          description: No response body
+
+        '404':
+          description: El usuario no esta registrado en el sistema
+        '400':
+          description: Ha habido un problema en la obtención/creación
+  /users/register/:
+    post:
+      operationId: users_register_create
+      tags:
+      - users
+      summary: Crea un nuevo usuario
+      requestBody:
+        description: Introduce los datos del usuario
+        content:
+          application/json:
+            schema:
+              required:
+              - username
+              - email
+              - password1
+              - password2
+              type: object
+              properties:
+                username:
+                  type: string
+                  minLength: 4
+                  example: 'tonibosch'
+                email:
+                  type: string
+                  minLength: 4
+                  maxLength: 280
+                  example: 'tonii@gmail.com'
+                first_name:
+                  type: string
+                  minLength: 4
+                  maxLength: 280
+                  example: 'toni'
+                last_name:
+                  type: string
+                  minLength: 4
+                  maxLength: 280
+                  example: 'bosch'
+                password1:
+                  type: string
+                  minLength: 8
+                  maxLength: 280
+                  example: '12345678t'
+                password2:
+                  type: string
+                  minLength: 8
+                  maxLength: 280
+                  example: '12345678t'
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: 'Usuario creado'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    minLength: 4
+                    example: 'tonibosch'
+                  email:
+                    type: string
+                    minLength: 4
+                    maxLength: 280
+                    example: 'tonii@gmail.com'
+                  first_name:
+                    type: string
+                    minLength: 4
+                    maxLength: 280
+                    example: 'toni'
+                  last_name:
+                    type: string
+                    minLength: 4
+                    maxLength: 280
+                    example: 'bosch'
+                  password:
+                    type: string
+                    minLength: 8
+                    maxLength: 280
+                    example: 'pbkdf2_sha256$390000$vPhadoJxAjbdp2Xz3YtNhm$5NhdbRI8K0RkZUK20uRVE/QPgatDq3Nxc+PYDFmVYMc='
+                  token:
+                    type: string
+                    minLength: 8
+                    maxLength: 280
+                    example: '5c553d264b72f1b2a277848a82e0ada512b1d36e'
+        '400':
+          description: 'Usuario o email repetido o contraseÃ±as no coincidentes'
+  /users/users/:
+    get:
+      summary: Muestra los usuarios
+      description: Retorna los datos del perfil de todos los usuarios registrados en el sistema
+      operationId: users_users_retrieve
+      tags:
+      - users
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - tokenAuth: [a571977cf3bf557efd80fb12cd154fb6b46aa307]
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    user:
+                      type: string
+                      minLength: 4
+                      example: 'username'
+                    bio:
+                      type: string
+                      minLength: 4
+                      maxLength: 280
+                      example: 'My content'
+                    url:
+                      type: string
+                      minLength: 4
+                      maxLength: 280
+                      example: 'My url'
+          description: No response body
+        '404':
+          description: El usuario no esta registrado en el sistema
+components:
+  schemas:
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+    BlankEnum:
+      enum:
+      - ''
+    Issue:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        Subject:
+          type: string
+          nullable: true
+          maxLength: 250
+        Description:
+          type: string
+          nullable: true
+          maxLength: 500
+        Created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        Status:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        Type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        Severity:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/SeverityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        Priority:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        Due_Date:
+          type: string
+          format: date-time
+          readOnly: true
+        DeadLine:
+          type: string
+          format: date
+          nullable: true
+        Block_reason:
+          type: string
+          nullable: true
+          maxLength: 500
+        Creator:
+          type: integer
+          nullable: true
+      required:
+      - Created_at
+      - Due_Date
+      - id
+    NullEnum:
+      enum:
+      - null
+    PriorityEnum:
+      enum:
+      - Low
+      - Normal
+      - High
+      type: string
+      description: |-
+        * `Low` - Low
+        * `Normal` - Normal
+        * `High` - High
+    SeverityEnum:
+      enum:
+      - Wishlist
+      - Minor
+      - Normal
+      - Important
+      - Critical
+      type: string
+      description: |-
+        * `Wishlist` - Wishlist
+        * `Minor` - Minor
+        * `Normal` - Normal
+        * `Important` - Important
+        * `Critical` - Critical
+    StatusEnum:
+      enum:
+      - New
+      - In progress
+      - Ready for test
+      - Closed
+      - Needs info
+      - Rejected
+      - Posponed
+      type: string
+      description: |-
+        * `New` - New
+        * `In progress` - In progress
+        * `Ready for test` - Ready for test
+        * `Closed` - Closed
+        * `Needs info` - Needs info
+        * `Rejected` - Rejected
+        * `Posponed` - Rejected
+    TypeEnum:
+      enum:
+      - Bug
+      - Question
+      - Enhancement
+      type: string
+      description: |-
+        * `Bug` - Bug
+        * `Question` - Question
+        * `Enhancement` - Enhancement
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

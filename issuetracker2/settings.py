@@ -13,22 +13,24 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# url base
-BASE_URL = "http://127.0.0.1:8000"
-#BASE_URL = "https://issuetracker2-asw.herokuapp.com"
+# URL Base
+#BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "https://issuetracker2-asw.herokuapp.com"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x0lfh*)3yz@5yu)b5%zg&5k5_3n(9=y7ry7-o+^v*7*n72g$ku'
+#SECRET_KEY = 'django-insecure-x0lfh*)3yz@5yu)b5%zg&5k5_3n(9=y7ry7-o+^v*7*n72g$ku'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -44,18 +46,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_spectacular',
     'corsheaders',
-    'rest_framework',
-    'storages',    
-    'social_django',
-    'rest_framework.authtoken',
+    'whitenoise.runserver_nostatic',
 
+    'rest_framework',
+    'storages',
     'issues',
     'users',
+    'social_django',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,7 +67,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'issuetracker2.urls'
 
@@ -91,12 +97,24 @@ WSGI_APPLICATION = 'issuetracker2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}'''
+
+DATABASES = {
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': 'd8v4meuh81pmib',
+       'USER': 'qpapnvnnlqbsby',
+       'PASSWORD': '85dfd952523714b0ad376d414c683877cda862b240005cede70804170dade6a9',
+       'HOST': 'ec2-63-34-69-123.eu-west-1.compute.amazonaws.com',
+       'PORT': '5432',
+   }
 }
+
 
 
 # Password validation
@@ -135,6 +153,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 
 # Default primary key field type
@@ -181,4 +200,10 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://*',
+    'https://*',
+]
+
+# Optional: If you want to allow sending cookies across domains, set the following:
+CORS_ALLOW_CREDENTIALS = True
