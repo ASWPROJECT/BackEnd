@@ -4,3 +4,5 @@ db.sqlite3
 *.pyc
 migrations/
 __pycache__/
+issues/migrations/
+users/migrations/
