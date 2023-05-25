@@ -70,7 +70,31 @@ class ViewIssue(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AssignUser(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def post(self, request, pk):
+        user = request.data.get("user")
+        user_db = get_object_or_404(User, id=user)
+        issue = get_object_or_404(Issue, pk=pk)
+        AsignedUser.objects.filter(Issue=issue).delete()
+        AsignedUser.objects.create(
+            Issue=issue,
+            User=user_db)
+        return Response(status=status.HTTP_201_CREATED)
     
+
+class AssignUserClear(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def post(self, request, pk):
+        issue = get_object_or_404(Issue, pk=pk)
+        AsignedUser.objects.filter(Issue=issue).delete()
+        return Response(status=status.HTTP_200_OK)
 
     
 class FilesView(generics.ListCreateAPIView):

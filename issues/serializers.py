@@ -38,9 +38,11 @@ class ActivitySerializer(serializers.ModelSerializer):
 
 
 class AsignedUserSerializer(serializers.ModelSerializer):
+    Username = serializers.CharField(source='User.username', read_only=True)
+
     class Meta:
         model = models.AsignedUser
-        fields = '__all__'
+        fields = ['User','Username']
 
 
 class WatcherSerializer(serializers.ModelSerializer):
