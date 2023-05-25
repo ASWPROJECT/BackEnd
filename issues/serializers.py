@@ -11,12 +11,12 @@ class IssueSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     #Created_at = serializers.DateTimeField(format="%d %b %Y %H:%M")
-    creator_username = serializers.CharField(source='Creator.username', read_only=True)
+    Username = serializers.CharField(source='Creator.username', read_only=True)
 
     class Meta:
         model = models.Comment
         #fields = '__all__'
-        fields = ['id', 'Comment', 'Created_at', 'Issue', 'Creator', 'creator_username']
+        fields = ['Comment', 'Created_at', 'Creator', 'Username']
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
