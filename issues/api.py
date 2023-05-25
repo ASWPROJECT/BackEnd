@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
@@ -95,8 +96,44 @@ class AssignUserClear(APIView):
         issue = get_object_or_404(Issue, pk=pk)
         AsignedUser.objects.filter(Issue=issue).delete()
         return Response(status=status.HTTP_200_OK)
-
     
+
+class WatchUser(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def post(self, request, pk):
+        issue = get_object_or_404(Issue, pk=pk)
+        try:
+            users = request.data.get("users")
+            print(users)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        for user in users:
+            user_db = get_object_or_404(User, id=user)
+            try:
+                Watcher.objects.create(
+                    User=user_db,
+                    Issue=issue
+                )
+            except IntegrityError:
+                # Handle the case when a Watcher with the same user and issue already exists
+                pass
+        return Response(status=status.HTTP_201_CREATED)
+
+
+class WatchUserClear(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def post(self, request, pk):
+        issue = get_object_or_404(Issue, pk=pk)
+        user = request.data.get("user")
+        user_db = get_object_or_404(User, id=user)
+        Watcher.objects.filter(Issue=issue, User=user_db).delete()
+        return Response(status=status.HTTP_200_OK)
+    
+
 class FilesView(generics.ListCreateAPIView):
     serializer_class = FileSerializer
 
