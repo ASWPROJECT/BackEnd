@@ -46,9 +46,11 @@ class AsignedUserSerializer(serializers.ModelSerializer):
 
 
 class WatcherSerializer(serializers.ModelSerializer):
+    Username = serializers.CharField(source='User.username', read_only=True)
+
     class Meta:
         model = models.Watcher
-        fields = '__all__'
+        fields = ['User','Username']
 
 class AttachedFileSerializer(serializers.ModelSerializer):
     class Meta:
