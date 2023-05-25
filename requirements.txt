@@ -37,3 +37,4 @@ tzdata==2022.7
 urllib3==1.26.15
 whitenoise==6.4.0
 drf_spectacular
+django-cors-headers==4.0.0
