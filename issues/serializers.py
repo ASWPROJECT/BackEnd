@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from issues import models
-import users
 
 
 class IssueSerializer(serializers.ModelSerializer):
@@ -23,10 +22,6 @@ class FileSerializer(serializers.ModelSerializer):
         model = models.AttachedFile
         fields = '__all__'
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = users
-        fields = ['username']
 
 class ActivitySerializer(serializers.ModelSerializer):
     User_username = serializers.SerializerMethodField(source='User.username')
@@ -72,6 +67,7 @@ class AttachedFileSerializer(serializers.ModelSerializer):
 
 
 class IssueDetailSerializer(serializers.ModelSerializer):
+    Creator_username = serializers.CharField(source='Creator.username', read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     files = FileSerializer(many=True, read_only=True)
     activities = ActivitySerializer(many=True, read_only=True)
