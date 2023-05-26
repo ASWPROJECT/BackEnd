@@ -29,11 +29,12 @@ class Comment(models.Model):
 
 
 class Activity(models.Model):
-    Creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='activities')
+    Creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='creator_activities')
     Created_at = models.DateTimeField(auto_now_add=True)
     Issue = models.ForeignKey(Issue, to_field='id', null=False, on_delete=models.CASCADE, related_name='activities')
     Type = models.CharField(max_length=50, choices=choices.activities, null=True, blank=True)
-    User = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_activities')
+    Old_user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='old_assigned_user_activities')
+    User = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='activities')
 
 
 class AsignedUser(models.Model):

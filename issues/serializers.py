@@ -29,12 +29,25 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username']
 
 class ActivitySerializer(serializers.ModelSerializer):
-    User_username = serializers.ReadOnlyField(source='User.username')
+    User_username = serializers.SerializerMethodField(source='User.username')
     Creator_username = serializers.ReadOnlyField(source='Creator.username')
+    Old_user_username = serializers.SerializerMethodField(source='Old_user.username')
 
     class Meta:
         model = models.Activity
-        fields = ['id', 'Created_at', 'Type', 'Issue', 'Creator_username', 'User_username']
+        fields = ['id', 'Created_at', 'Type', 'Issue', 'Creator_username', 'Old_user_username', 'User_username']
+    
+    def get_User_username(self, obj):
+        if obj.User is None:
+            print("hola")
+            return "unassigned"
+        return obj.User.username
+
+    def get_Old_user_username(self, obj):
+        if obj.Old_user is None:
+            print("hola")
+            return "unassigned"
+        return obj.Old_user.username
 
 
 class AsignedUserSerializer(serializers.ModelSerializer):
