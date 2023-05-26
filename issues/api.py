@@ -78,13 +78,27 @@ class AssignUser(APIView):
     permission_classes(TokenAuthentication,)
 
     def post(self, request, pk):
+        creator = request.user
         user = request.data.get("user")
         user_db = get_object_or_404(User, id=user)
         issue = get_object_or_404(Issue, pk=pk)
+        old_user = None
+        try:
+            old_assigned_user = AsignedUser.objects.get(Issue=issue)
+            old_user = old_assigned_user.User
+        except AsignedUser.DoesNotExist:
+            pass
         AsignedUser.objects.filter(Issue=issue).delete()
         AsignedUser.objects.create(
             Issue=issue,
             User=user_db)
+        Activity.objects.create(
+            Creator = creator,
+            Issue = issue,
+            Type = 'assigned to',
+            Old_user = old_user,
+            User = user_db
+        )
         return Response(status=status.HTTP_201_CREATED)
     
 
@@ -93,8 +107,22 @@ class AssignUserClear(APIView):
     permission_classes(TokenAuthentication,)
 
     def post(self, request, pk):
+        creator = request.user
         issue = get_object_or_404(Issue, pk=pk)
+        old_user = None
+        try:
+            old_assigned_user = AsignedUser.objects.get(Issue=issue)
+            old_user = old_assigned_user.User
+        except AsignedUser.DoesNotExist:
+            pass
         AsignedUser.objects.filter(Issue=issue).delete()
+        Activity.objects.create(
+            Creator = creator,
+            Issue = issue,
+            Type = 'assigned to',
+            Old_user = old_user,
+            User = None
+        )
         return Response(status=status.HTTP_200_OK)
     
 

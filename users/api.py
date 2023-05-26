@@ -137,3 +137,30 @@ class ViewUsers(APIView):
         if request.method == 'GET':
             serializer = ProfileSerializer(profiles, many=True)
             return Response(serializer.data)
+        
+class UserProfileView(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def get(self, request):
+        try:
+            user = User.objects.get(username=request.user.username)
+        except User.DoesNotExist:
+            return Response({'error': 'No existe el usuario'}, status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'GET':
+            auth_header = request.headers.get('Authorization')
+            if auth_header and 'Token' in auth_header:
+                token_key = auth_header.split('Token ')[1]
+                print("Token:", token_key)  # Print the token key
+
+                # Find the token in the database
+                try:
+                    token = Token.objects.get(key=token_key)
+                except Token.DoesNotExist:
+                    return Response("Invalid token", status=status.HTTP_401_UNAUTHORIZED)
+                serializer = UserSerializer(user)
+                response_data = {
+                    'user': serializer.data,
+                    'token': token.key  # Include the token in the response
+                }
+                return Response(response_data)

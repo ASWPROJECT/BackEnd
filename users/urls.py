@@ -10,4 +10,6 @@ urlpatterns = [
     path('users/', api.ViewUsers.as_view()),
     path('api-token-auth/', obtain_auth_token),  
     path('change-picture-profile/', api.ChangePictureProfileView.as_view()),  
+    path('edit-user-profile/', api.UserProfileView.as_view()),  
+
 ]
