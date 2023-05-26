@@ -8,13 +8,12 @@ class Issue(models.Model):
     Subject = models.CharField(max_length=250, null=True, blank=True)
     Description = models.TextField(max_length=500, null=True, blank=True)
     Created_at = models.DateTimeField(auto_now_add=True)
-    Status = models.CharField(max_length=50, choices=choices.status, null=True, blank=True)
-    Type = models.CharField(max_length=50, choices=choices.type, null=True, blank=True)
-    Severity = models.CharField(max_length=50, choices=choices.severity, null=True, blank=True)
-    Priority = models.CharField(max_length=50, choices=choices.priority, null=True, blank=True)
-    Due_Date = models.DateTimeField(auto_now_add=True)
+    Status = models.CharField(max_length=50, choices=choices.status, null=True, blank=True, default='New')
+    Type = models.CharField(max_length=50, choices=choices.type, null=True, blank=True, default='Bug')
+    Severity = models.CharField(max_length=50, choices=choices.severity, null=True, blank=True, default='Normal')
+    Priority = models.CharField(max_length=50, choices=choices.priority, null=True, blank=True, default='Normal')
+    Due_Date = models.DateTimeField(null=True, blank=True)
     Creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    DeadLine = models.DateField(null=True, blank=True)
     Block_reason = models.TextField(max_length=500, null=True, blank=True)
 
     def __str__(self):
