@@ -12,6 +12,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'password']
 
+
+class UserPreviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username']
+
 class ProfileSerializer(serializers.ModelSerializer):
     user_username = serializers.ReadOnlyField(source='user.username')
 
