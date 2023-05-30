@@ -143,6 +143,7 @@ class WatchUser(APIView):
             print(users)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        Watcher.objects.filter(Issue=issue).delete()
         for user in users:
             user_db = get_object_or_404(User, id=user)
             try:
