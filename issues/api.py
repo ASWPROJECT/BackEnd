@@ -49,6 +49,21 @@ class IssuesView(generics.ListCreateAPIView):
         except Issue.DoesNotExist:
             return Response({'error': 'No hay Issues'}, status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_202_ACCEPTED)
+    
+    def post(self, request):
+        user = request.user
+        try:
+            subject = request.data.get('Subject')
+            description = request.data.get('Description')
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        Issue.objects.create(
+            Subject=subject,
+            Description=description,
+            Creator=user
+        )
+        return Response(status=status.HTTP_201_CREATED)
+
 
 class ViewIssue(APIView):
     def get(self, request, pk):
