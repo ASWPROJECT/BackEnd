@@ -212,7 +212,8 @@ class AddComment(APIView):
             Comment=comment,
             Issue=issue,
             Creator=user)
-        return Response(status=status.HTTP_201_CREATED)
+        serializer = IssueDetailSerializer(issue)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 class AddFiles(APIView):
     authentication_classes(IsAuthenticated,)
@@ -228,7 +229,8 @@ class AddFiles(APIView):
             File = file,
             Name = str(file)
         )
-        return Response(status=status.HTTP_201_CREATED)
+        serializer = IssueDetailSerializer(issue)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 class Files(APIView):
     authentication_classes(IsAuthenticated,)
