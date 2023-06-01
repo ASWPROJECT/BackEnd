@@ -175,6 +175,17 @@ class ViewUserProfile(APIView):
             profile = Profile.objects.get(user = user)
         except Profile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        if request.method == 'GET':
-            serializer = ProfileSerializer(profile)
-            return Response(serializer.data)
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
+    
+class ViewAnotherUser(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def get(self, request, id):
+        try:
+            user = User.objects.get(id = id)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
