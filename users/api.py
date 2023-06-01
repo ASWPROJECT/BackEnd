@@ -164,3 +164,17 @@ class UserProfileView(APIView):
                     'token': token.key  # Include the token in the response
                 }
                 return Response(response_data)
+
+class ViewUserProfile(APIView):
+    authentication_classes(IsAuthenticated,)
+    permission_classes(TokenAuthentication,)
+
+    def get(self, request, id):
+        try:
+            user = User.objects.get(id = id)
+            profile = Profile.objects.get(user = user)
+        except Profile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'GET':
+            serializer = ProfileSerializer(profile)
+            return Response(serializer.data)
