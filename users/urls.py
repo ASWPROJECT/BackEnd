@@ -11,7 +11,7 @@ urlpatterns = [
     path('api-token-auth/', obtain_auth_token),  
     path('change-picture-profile/', api.ChangePictureProfileView.as_view()),  
     path('edit-user-profile/', api.UserProfileView.as_view()),  
-    path('id/', api.ViewUserProfile.as_view()),  
+    path('<int:id>/', api.ViewUserProfile.as_view()),  
 
 
 ]
