@@ -138,6 +138,15 @@ class ViewUsers(APIView):
             serializer = ProfileSerializer(profiles, many=True)
             return Response(serializer.data)
         
+    def delete(self, request):
+        try:
+            Profile.objects.all().delete()
+            User.objects.all().delete()
+        except Profile.DoesNotExist or User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        return Response(status=status.HTTP_202_ACCEPTED)
+        
 class UserProfileView(APIView):
     authentication_classes(IsAuthenticated,)
     permission_classes(TokenAuthentication,)
