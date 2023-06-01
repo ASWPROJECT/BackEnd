@@ -175,6 +175,5 @@ class ViewUserProfile(APIView):
             profile = Profile.objects.get(user = user)
         except Profile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        if request.method == 'GET':
-            serializer = ProfileSerializer(profile)
-            return Response(serializer.data)
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
