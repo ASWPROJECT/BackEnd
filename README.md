@@ -11,6 +11,9 @@
 ## Deployed
 - https://issuetracker2-asw.herokuapp.com/
 
+## Taiga
+- https://tree.taiga.io/project/javierrodriguezupc-asw/timeline
+
 ## Framework utilizado
 - Django
 
